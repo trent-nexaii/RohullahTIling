@@ -1,0 +1,409 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import CTASection from '../components/CTASection.astro';
+
+const title = "Contact Us | Rohullah Rassuli Tiling Services Wellington";
+const description = "Contact Rohullah Rassuli Tiling Services for a free tiling quote in Wellington. Call 021 026 02044 or fill in our online form. Whitby-based, Wellington-wide.";
+const canonical = "/contact";
+const breadcrumbs = [{ name: "Home", url: "/" }, { name: "Contact" }];
+---
+
+<BaseLayout title={title} description={description} canonical={canonical} breadcrumbs={breadcrumbs} showMobileCTA={false}>
+  <PageHeader title="Contact Rohullah Rassuli Tiling Services" breadcrumbs={breadcrumbs} />
+
+  <!-- Contact Intro -->
+  <section class="section section--light" style="padding-bottom: 0;">
+    <div class="container" style="max-width: 720px; text-align: center;">
+      <p style="font-size: 1.1rem; line-height: 1.75; color: var(--color-text, #555);">Contact Rohullah Rassuli Tiling Services for professional <a href="/services/bathroom-tiling">bathroom</a>, <a href="/services/kitchen-tiling">kitchen</a>, and <a href="/services/floor-tiling">floor tiling</a> across Wellington. Based in Whitby, we serve Porirua, Lower Hutt, Upper Hutt, and the wider Wellington region. Call us or fill in the form below for a free, no-obligation quote.</p>
+    </div>
+  </section>
+
+  <!-- Contact Info & Forms -->
+  <section class="section">
+    <div class="container">
+      <div class="contact-layout">
+
+        <!-- NAP Details Sidebar -->
+        <aside class="contact-details fade-in-up">
+          <h2 class="contact-details__heading">Get in Touch</h2>
+
+          <address class="contact-nap">
+            <div class="contact-nap__item">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M21 10C21 17 12 23 12 23C12 23 3 17 3 10C3 7.61 3.95 5.32 5.64 3.64C7.32 1.95 9.61 1 12 1C14.39 1 16.68 1.95 18.36 3.64C20.05 5.32 21 7.61 21 10Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="12" cy="10" r="3" stroke="currentColor" stroke-width="1.5"/>
+              </svg>
+              <div>
+                <strong>Address</strong>
+                <p>Whitby, Wellington, New Zealand</p>
+              </div>
+            </div>
+
+            <div class="contact-nap__item">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M22 16.92V19.92C22 20.48 21.56 20.93 21 20.97C20.68 21 20.35 21 20 21C10.61 21 3 13.39 3 4C3 3.65 3 3.32 3.03 3C3.07 2.44 3.52 2 4.08 2H7.08C7.56 2 7.99 2.34 8.07 2.81C8.14 3.27 8.23 3.73 8.36 4.17C8.47 4.55 8.36 4.96 8.07 5.24L6.62 6.69C8.06 9.43 10.57 11.94 13.31 13.38L14.76 11.93C15.04 11.64 15.45 11.53 15.83 11.64C16.27 11.77 16.73 11.86 17.19 11.93C17.66 12.01 18 12.44 18 12.92V15.92C18 16.48 17.56 16.93 17 16.97" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <div>
+                <strong>Phone</strong>
+                <p><a href="tel:+6402102602044">021 026 02044</a></p>
+              </div>
+            </div>
+
+            <div class="contact-nap__item">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M4 4H20C21.1 4 22 4.9 22 6V18C22 19.1 21.1 20 20 20H4C2.9 20 2 19.1 2 18V6C2 4.9 2.9 4 4 4Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <polyline points="22,6 12,13 2,6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <div>
+                <strong>Email</strong>
+                <p><a href="mailto:info@rohullahtiling.co.nz">info@rohullahtiling.co.nz</a></p>
+              </div>
+            </div>
+
+            <div class="contact-nap__item">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5"/>
+                <polyline points="12,6 12,12 16,14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <div>
+                <strong>Hours</strong>
+                <p>Monday &ndash; Friday: 8:00 AM &ndash; 5:00 PM</p>
+                <p>Saturday &amp; Sunday: Closed</p>
+              </div>
+            </div>
+          </address>
+
+          <div class="contact-response-note">
+            <p>We will get back to you within 24 hours.</p>
+          </div>
+        </aside>
+
+        <!-- Forms Column -->
+        <div class="contact-forms">
+
+          <!-- Quote Request Form -->
+          <div class="contact-form quote-form-card fade-in-up">
+            <h2>Request a Free Quote</h2>
+            <p class="form-intro">Tell us about your project and we will provide a detailed, no-obligation quote. The more detail you can share, the more accurate your quote will be.</p>
+
+            <form action="#" method="POST" class="form">
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="quote-name">Full Name <span class="required">*</span></label>
+                  <input type="text" id="quote-name" name="full_name" required autocomplete="name" />
+                </div>
+                <div class="form-group">
+                  <label for="quote-phone">Phone Number <span class="required">*</span></label>
+                  <input type="tel" id="quote-phone" name="phone" required autocomplete="tel" />
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="quote-email">Email <span class="required">*</span></label>
+                  <input type="email" id="quote-email" name="email" required autocomplete="email" />
+                </div>
+                <div class="form-group">
+                  <label for="quote-suburb">Suburb / Location</label>
+                  <input type="text" id="quote-suburb" name="suburb" placeholder="e.g. Whitby, Porirua, Lower Hutt" />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="quote-service">Service Interested In</label>
+                <select id="quote-service" name="service">
+                  <option value="">Select a service...</option>
+                  <option value="bathroom-tiling">Bathroom Tiling</option>
+                  <option value="kitchen-tiling">Kitchen Tiling</option>
+                  <option value="floor-tiling">Floor Tiling</option>
+                  <option value="waterproofing">Waterproofing</option>
+                  <option value="underfloor-heating">Underfloor Heating</option>
+                  <option value="tile-repairs">Tile Repairs</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="quote-description">Project Description</label>
+                <textarea id="quote-description" name="description" rows="5" placeholder="Tell us about your project — room size, tile type, any specific requirements..."></textarea>
+              </div>
+
+              <fieldset class="form-group form-group--radio">
+                <legend>Preferred Contact Method</legend>
+                <div class="radio-group">
+                  <label class="radio-label">
+                    <input type="radio" name="preferred_contact" value="phone" checked />
+                    <span>Phone</span>
+                  </label>
+                  <label class="radio-label">
+                    <input type="radio" name="preferred_contact" value="email" />
+                    <span>Email</span>
+                  </label>
+                </div>
+              </fieldset>
+
+              <button type="submit" class="btn btn-primary">Request Your Free Quote</button>
+            </form>
+          </div>
+
+          <!-- Quick Contact Form -->
+          <div class="contact-form fade-in-up">
+            <h2>Quick Contact</h2>
+            <p class="form-intro">Have a quick question? Send us a message and we will be in touch.</p>
+
+            <form action="#" method="POST" class="form">
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="contact-name">Name <span class="required">*</span></label>
+                  <input type="text" id="contact-name" name="name" required autocomplete="name" />
+                </div>
+                <div class="form-group">
+                  <label for="contact-phone">Phone Number</label>
+                  <input type="tel" id="contact-phone" name="phone" autocomplete="tel" />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="contact-email">Email <span class="required">*</span></label>
+                <input type="email" id="contact-email" name="email" required autocomplete="email" />
+              </div>
+
+              <div class="form-group">
+                <label for="contact-message">Message <span class="required">*</span></label>
+                <textarea id="contact-message" name="message" rows="4" required placeholder="How can we help?"></textarea>
+              </div>
+
+              <button type="submit" class="btn btn-outline">Send Message</button>
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Google Maps -->
+  <section class="section section--light">
+    <div class="container">
+      <h2 class="section-title fade-in-up">Find Us</h2>
+      <p class="section-subtitle fade-in-up">Based in Whitby, serving the entire Wellington region</p>
+      <div class="map-container fade-in-up">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d12345!2d174.8717!3d-41.1308!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2sWhitby%2C+Wellington!5e0!3m2!1sen!2snz"
+          width="100%"
+          height="450"
+          style="border:0;"
+          allowfullscreen=""
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          title="Rohullah Rassuli Tiling Services location — Whitby, Wellington"
+        ></iframe>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* Contact Layout */
+  .contact-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+  @media (min-width: 992px) {
+    .contact-layout {
+      grid-template-columns: 320px 1fr;
+      gap: 3rem;
+    }
+  }
+
+  /* NAP Details */
+  .contact-details {
+    background: var(--color-light-bg);
+    border-radius: 8px;
+    padding: 2rem;
+    height: fit-content;
+    position: sticky;
+    top: 6rem;
+  }
+  .contact-details__heading {
+    font-family: var(--font-heading);
+    font-size: 1.4rem;
+    margin-bottom: 1.5rem;
+    color: var(--color-dark-text);
+  }
+  .contact-nap {
+    font-style: normal;
+    display: grid;
+    gap: 1.5rem;
+  }
+  .contact-nap__item {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+  .contact-nap__item svg {
+    flex-shrink: 0;
+    margin-top: 2px;
+    color: var(--color-primary);
+  }
+  .contact-nap__item strong {
+    display: block;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-muted);
+    margin-bottom: 0.25rem;
+  }
+  .contact-nap__item p {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: var(--color-dark-text);
+  }
+  .contact-nap__item a {
+    color: var(--color-primary-dark);
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .contact-nap__item a:hover {
+    text-decoration: underline;
+  }
+  .contact-response-note {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--color-border-warm);
+  }
+  .contact-response-note p {
+    font-size: 0.9rem;
+    color: var(--color-body-text);
+    font-style: italic;
+  }
+
+  /* Contact Forms */
+  .contact-forms {
+    display: grid;
+    gap: 2.5rem;
+  }
+  .contact-form {
+    background: var(--color-white);
+    border-radius: 8px;
+    padding: 2.5rem;
+    box-shadow: var(--shadow-card);
+  }
+  .contact-form h2 {
+    font-family: var(--font-heading);
+    font-size: 1.4rem;
+    margin-bottom: 0.5rem;
+    color: var(--color-dark-text);
+  }
+  .quote-form-card {
+    border-top: 4px solid var(--color-primary);
+  }
+  .form-intro {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--color-body-text);
+    margin-bottom: 1.75rem;
+  }
+
+  /* Form Elements */
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+  @media (min-width: 600px) {
+    .form-row {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  .form-group {
+    margin-bottom: 1.25rem;
+  }
+  .form-group label,
+  .form-group legend {
+    display: block;
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--color-dark-text);
+    margin-bottom: 0.4rem;
+  }
+  .required {
+    color: var(--color-accent);
+  }
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    width: 100%;
+    padding: 12px 14px;
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    color: var(--color-dark-text);
+    background: var(--color-white);
+    border: 1px solid var(--color-border-warm);
+    border-radius: 6px;
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  }
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(212, 160, 23, 0.15);
+  }
+  .form-group textarea {
+    resize: vertical;
+  }
+  .form-group--radio {
+    border: none;
+    padding: 0;
+  }
+  .form-group--radio legend {
+    margin-bottom: 0.5rem;
+  }
+  .radio-group {
+    display: flex;
+    gap: 1.5rem;
+  }
+  .radio-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 400;
+    cursor: pointer;
+  }
+  .radio-label input[type="radio"] {
+    width: auto;
+    accent-color: var(--color-primary);
+  }
+
+  /* Map */
+  .map-container {
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: var(--shadow-card);
+    margin-top: 2rem;
+  }
+  .map-container iframe {
+    display: block;
+    width: 100%;
+    height: 450px;
+  }
+</style>
+
+<script>
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.1 }
+  );
+  document.querySelectorAll('.fade-in-up').forEach((el) => observer.observe(el));
+</script>

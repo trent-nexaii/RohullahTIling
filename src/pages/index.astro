@@ -1,0 +1,247 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ServiceCard from '../components/ServiceCard.astro';
+import TestimonialCard from '../components/TestimonialCard.astro';
+import TrustSignal from '../components/TrustSignal.astro';
+import CTASection from '../components/CTASection.astro';
+
+const reviewSchema = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "name": "Rohullah Rassuli Tiling Services",
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "5",
+    "reviewCount": "3",
+    "bestRating": "5",
+    "worstRating": "1"
+  },
+  "review": [
+    {
+      "@type": "Review",
+      "author": { "@type": "Person", "name": "Sarah M." },
+      "reviewRating": { "@type": "Rating", "ratingValue": "5" },
+      "reviewBody": "Rohullah did an amazing job tiling our bathroom. He was professional from start to finish, offered great advice on tile selection, and the finished result exceeded our expectations."
+    },
+    {
+      "@type": "Review",
+      "author": { "@type": "Person", "name": "James & Lisa T." },
+      "reviewRating": { "@type": "Rating", "ratingValue": "5" },
+      "reviewBody": "We had Rohullah install a new kitchen splashback and re-tile the kitchen floor. His attention to detail was outstanding. He kept the workspace tidy, finished on time, and the end result looks absolutely stunning."
+    },
+    {
+      "@type": "Review",
+      "author": { "@type": "Person", "name": "David R." },
+      "reviewRating": { "@type": "Rating", "ratingValue": "5" },
+      "reviewBody": "Called Rohullah to tile our open-plan living and dining area. He was upfront about costs, worked efficiently, and the large-format floor tiles he laid are perfectly level."
+    }
+  ]
+});
+---
+
+<BaseLayout
+  title="Expert Wellington Tiling Services | Rohullah Rassuli Tiling"
+  description="Wellington's trusted professional tiler. Expert bathroom, kitchen & floor tiling across the Wellington region. Free quotes. Call 021 026 02044 today."
+  canonical="/"
+  schemas={reviewSchema}
+>
+
+  <!-- Hero Section -->
+  <section class="hero tile-grid-bg">
+    <div class="container">
+      <div class="hero__content fade-in-up">
+        <h1>Trusted <span class="highlight">Wellington Tiling Experts</span> — Quality You Can Count On</h1>
+        <p class="hero__subtitle">Professional bathroom, kitchen, and floor tiling across the Wellington region. Expert craftsmanship. Lasting results. Free quotes.</p>
+        <div class="hero__cta-group">
+          <a href="/contact" class="btn btn--primary">Get a Free Quote</a>
+          <a href="tel:+6402102602044" class="btn btn--secondary">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M22 16.92V19.92C22 20.48 21.56 20.93 21 20.97C20.68 21 20.35 21 20 21C10.61 21 3 13.39 3 4C3 3.65 3 3.32 3.03 3C3.07 2.44 3.52 2 4.08 2H7.08C7.56 2 7.99 2.34 8.07 2.81C8.14 3.27 8.23 3.73 8.36 4.17C8.47 4.55 8.36 4.96 8.07 5.24L6.62 6.69C8.06 9.43 10.57 11.94 13.31 13.38L14.76 11.93C15.04 11.64 15.45 11.53 15.83 11.64C16.27 11.77 16.73 11.86 17.19 11.93C17.66 12.01 18 12.44 18 12.92V15.92" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Call Now: 021 026 02044
+          </a>
+        </div>
+        <div class="hero__trust-badges">
+          <span class="hero__badge">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12 15l-2 5l9-9h-5l2-5l-9 9h5z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            10+ Years Experience
+          </span>
+          <span class="hero__badge">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M9 11l3 3L22 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Free Quotes
+          </span>
+          <span class="hero__badge">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="10" r="3" stroke="currentColor" stroke-width="2"/></svg>
+            Wellington-Wide
+          </span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Intro Section -->
+  <section class="section intro-section">
+    <div class="container fade-in-up">
+      <h2>Your Local Wellington Tiling Expert</h2>
+      <div class="intro-section__content">
+        <p>Rohullah Rassuli is a professional tiler based in Whitby, Porirua, bringing over a decade of hands-on tiling experience to homes and businesses across the Wellington region. From precision bathroom renovations to large-scale commercial floor installations, Rohullah delivers the kind of quality craftsmanship that stands the test of time.</p>
+        <p>Specialising in bathroom tiling, kitchen splashbacks, floor tiling, waterproofing, and underfloor heating installation, Rohullah Rassuli Tiling Services is your one-stop solution for all tiling needs. Every project receives the same meticulous attention to detail, whether it is a small tile repair or a full home renovation. We use only premium materials and proven techniques to ensure a flawless finish every time.</p>
+        <p>Proudly serving residential and commercial clients throughout Wellington City, Porirua, Lower Hutt, Upper Hutt, and the Kapiti Coast, we make expert tiling accessible across the entire Wellington region. Get in touch today for a free, no-obligation quote and discover why Wellington homeowners trust Rohullah Rassuli for their tiling projects.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services Grid -->
+  <section class="section services-section">
+    <div class="container fade-in-up">
+      <h2>Our Tiling Services</h2>
+      <div class="services-grid">
+        <ServiceCard
+          title="Bathroom Tiling"
+          href="/services/bathroom-tiling"
+          description="Transform your bathroom with expertly installed wall and floor tiles. From modern ensuites to full bathroom renovations, we deliver waterproof, beautifully tiled spaces built to last."
+          icon='<svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 22V12M20 22V12M2 12h20M4 12V4a2 2 0 012-2h12a2 2 0 012 2v8M9 7h6M9 4v6M15 4v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+        />
+        <ServiceCard
+          title="Kitchen Tiling"
+          href="/services/kitchen-tiling"
+          description="Elevate your kitchen with beautiful splashbacks and floor tiles that combine style and practicality. We help you choose the perfect tiles to complement your kitchen design."
+          icon='<svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 9h18M3 9v10a2 2 0 002 2h14a2 2 0 002-2V9M3 9l2.5-4h13L21 9M12 13v4M8 13v4M16 13v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+        />
+        <ServiceCard
+          title="Floor Tiling"
+          href="/services/floor-tiling"
+          description="Durable, level, and beautifully laid floor tiles for any room in your home or business. We work with porcelain, ceramic, natural stone, and large-format tiles for stunning results."
+          icon='<svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="8" height="8" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="13" y="3" width="8" height="8" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="3" y="13" width="8" height="8" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="13" y="13" width="8" height="8" rx="1" stroke="currentColor" stroke-width="1.5"/></svg>'
+        />
+        <ServiceCard
+          title="Waterproofing"
+          href="/services/waterproofing"
+          description="Protect your home from moisture damage with professional waterproofing for bathrooms, showers, and wet areas. We use industry-approved membranes and methods for total peace of mind."
+          icon='<svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.69l5.66 5.66a8 8 0 11-11.31 0L12 2.69z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+        />
+        <ServiceCard
+          title="Underfloor Heating"
+          href="/services/underfloor-heating"
+          description="Stay warm through Wellington winters with professionally installed underfloor heating beneath your tiles. Energy-efficient comfort for bathrooms, kitchens, and living areas."
+          icon='<svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 9a4 4 0 100 8 4 4 0 000-8zM12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+        />
+        <ServiceCard
+          title="Tile Repairs"
+          href="/services/tile-repairs"
+          description="Cracked, chipped, or loose tiles? Fast, reliable repair and replacement services to restore your tiled surfaces. We match existing tiles wherever possible for a seamless finish."
+          icon='<svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94L14.7 6.3z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+        />
+      </div>
+    </div>
+  </section>
+
+  <!-- Why Choose Us -->
+  <section class="section why-choose-section">
+    <div class="container fade-in-up">
+      <h2>Why Choose Rohullah Rassuli Tiling?</h2>
+      <div class="trust-signals-grid">
+        <TrustSignal
+          title="Years of Experience"
+          description="With over 10 years in the tiling trade, Rohullah brings deep expertise and proven techniques to every project, large or small."
+          icon='<svg width="36" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z" stroke="currentColor" stroke-width="1.5"/><path d="M12 6v6l4 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+        />
+        <TrustSignal
+          title="Quality Workmanship"
+          description="We never cut corners. Every tile is precisely laid, every surface properly prepared, and every finish meticulously checked for a result you will be proud of."
+          icon='<svg width="36" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22 11.08V12a10 10 0 11-5.93-9.14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M22 4L12 14.01l-3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+        />
+        <TrustSignal
+          title="Free Quotes"
+          description="Every project starts with a free, no-obligation quote. We visit your site, discuss your vision, and provide an honest, transparent price with no hidden costs."
+          icon='<svg width="36" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+        />
+        <TrustSignal
+          title="Wellington-Wide Service"
+          description="Based in Whitby, we serve the entire Wellington region including Porirua, Lower Hutt, Upper Hutt, Wellington City, and the Kapiti Coast."
+          icon='<svg width="36" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="10" r="3" stroke="currentColor" stroke-width="1.5"/></svg>'
+        />
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section class="section testimonials-section">
+    <div class="container fade-in-up">
+      <h2>What Our Clients Say</h2>
+      <div class="testimonials-grid">
+        <TestimonialCard
+          quote="Rohullah did an amazing job tiling our bathroom. He was professional from start to finish, offered great advice on tile selection, and the finished result exceeded our expectations. The waterproofing was done thoroughly and we could not be happier with the quality."
+          author="Sarah M."
+          location="Whitby, Porirua"
+          rating={5}
+        />
+        <TestimonialCard
+          quote="We had Rohullah install a new kitchen splashback and re-tile the kitchen floor. His attention to detail was outstanding. He kept the workspace tidy, finished on time, and the end result looks absolutely stunning. Highly recommend his services to anyone in Wellington."
+          author="James & Lisa T."
+          location="Johnsonville"
+          rating={5}
+        />
+        <TestimonialCard
+          quote="Called Rohullah to tile our open-plan living and dining area. He was upfront about costs, worked efficiently, and the large-format floor tiles he laid are perfectly level. Great communication throughout the project. Will definitely use him again for our bathroom renovation."
+          author="David R."
+          location="Lower Hutt"
+          rating={5}
+        />
+      </div>
+    </div>
+  </section>
+
+  <!-- Service Areas -->
+  <section class="section service-areas-section">
+    <div class="container fade-in-up">
+      <h2>Areas We Serve Across Wellington</h2>
+      <div class="service-areas-grid">
+        <div class="service-area-group">
+          <h3>Porirua & Northern</h3>
+          <ul>
+            <li><strong>Whitby</strong> <span class="badge">Home Base</span></li>
+            <li>Papakowhai</li>
+            <li>Aotea</li>
+            <li>Plimmerton</li>
+            <li>Pukerua Bay</li>
+            <li>Porirua</li>
+          </ul>
+        </div>
+        <div class="service-area-group">
+          <h3>Wellington City</h3>
+          <ul>
+            <li>CBD</li>
+            <li>Karori</li>
+            <li>Kilbirnie</li>
+            <li>Newtown</li>
+            <li>Island Bay</li>
+            <li>Miramar</li>
+            <li>Johnsonville</li>
+            <li>Tawa</li>
+          </ul>
+        </div>
+        <div class="service-area-group">
+          <h3>Hutt Valley & Beyond</h3>
+          <ul>
+            <li>Lower Hutt</li>
+            <li>Upper Hutt</li>
+            <li>Petone</li>
+            <li>Eastbourne</li>
+            <li>Kapiti Coast</li>
+          </ul>
+        </div>
+      </div>
+      <div class="service-areas-cta">
+        <a href="/service-areas" class="btn btn--outline">View All Service Areas</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <CTASection
+    heading="Ready to Transform Your Space?"
+    text="Get in touch today for a free, no-obligation quote. Whether you are planning a bathroom renovation, kitchen upgrade, or any tiling project across the Wellington region, Rohullah Rassuli Tiling Services is here to help."
+  />
+
+</BaseLayout>

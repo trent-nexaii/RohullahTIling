@@ -1,0 +1,66 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import CTASection from '../components/CTASection.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  canonical: string;
+  serviceName: string;
+  serviceType: string;
+  serviceDescription: string;
+}
+
+const {
+  title,
+  description,
+  canonical,
+  serviceName,
+  serviceType,
+  serviceDescription,
+} = Astro.props;
+
+const siteUrl = Astro.site?.toString().replace(/\/$/, '') ?? 'https://www.rohullahtiling.co.nz';
+
+const breadcrumbs = [
+  { name: 'Home', url: '/' },
+  { name: 'Services', url: '/services' },
+  { name: serviceName },
+];
+
+const serviceSchema = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "serviceType": serviceType,
+  "name": serviceName,
+  "description": serviceDescription,
+  "provider": {
+    "@type": "LocalBusiness",
+    "name": "Rohullah Rassuli Tiling Services",
+    "url": siteUrl
+  },
+  "areaServed": {
+    "@type": "Place",
+    "name": "Wellington Region"
+  }
+});
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  canonical={canonical}
+  breadcrumbs={breadcrumbs}
+  schemas={serviceSchema}
+>
+  <PageHeader title={serviceName} breadcrumbs={breadcrumbs} />
+
+  <slot />
+
+  <CTASection
+    heading="Ready to Start Your Tiling Project?"
+    text="Get in touch with Rohullah Rassuli Tiling Services for a free, no-obligation quote. We'd love to help bring your vision to life."
+    variant="gold"
+  />
+</BaseLayout>

@@ -1,0 +1,15 @@
+---
+interface Props {
+  icon: string;
+  title: string;
+  description: string;
+}
+
+const { icon, title, description } = Astro.props;
+---
+
+<div class="trust-signal">
+  <div class="trust-signal__icon" set:html={icon} />
+  <h3 class="trust-signal__title">{title}</h3>
+  <p class="trust-signal__description">{description}</p>
+</div>

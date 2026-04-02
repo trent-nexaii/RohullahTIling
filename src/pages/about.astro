@@ -1,0 +1,312 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import CTASection from '../components/CTASection.astro';
+
+const title = "About Us | Rohullah Rassuli Tiling Services Wellington";
+const description = "Meet Rohullah Rassuli — Whitby-based professional tiler with 10+ years experience serving Wellington. Quality craftsmanship, honest pricing, and free quotes.";
+const canonical = "/about";
+const breadcrumbs = [{ name: "Home", url: "/" }, { name: "About" }];
+---
+
+<BaseLayout title={title} description={description} canonical={canonical} breadcrumbs={breadcrumbs}>
+  <PageHeader title="About Rohullah Rassuli Tiling Services" breadcrumbs={breadcrumbs} />
+
+  <!-- Intro Section -->
+  <section class="section section--light">
+    <div class="container">
+      <div class="about-intro">
+        <div class="about-intro__text fade-in-up">
+          <h2 class="section-title section-title--left">Experienced Tiling, Honest Service</h2>
+          <p>Rohullah Rassuli Tiling Services is a dedicated, owner-operated tiling business based in Whitby and proudly serving the greater Wellington region. With years of hands-on experience across residential and commercial projects, Rohullah brings a level of care and craftsmanship that larger companies simply cannot match.</p>
+          <p>Every project — whether a compact <a href="/services/bathroom-tiling">ensuite renovation</a> in Porirua or a large-format <a href="/services/floor-tiling">floor installation</a> in a Wellington CBD apartment — receives the same meticulous attention to detail. Rohullah personally oversees each job from start to finish, ensuring precise tile placement, clean grout lines, and a flawless result that stands the test of time.</p>
+          <p>What sets Rohullah apart is a genuine commitment to doing things right. That means arriving on time, keeping your home clean and tidy throughout the work, providing upfront and honest pricing with no hidden extras, and communicating clearly at every stage. It is a straightforward approach built on respect — for your home, your budget, and your time.</p>
+          <p><strong>Free quotes are always available.</strong> Whether you have a clear plan or need guidance on tile selection and layout, Rohullah is happy to visit your property, discuss your ideas, and provide a detailed, no-obligation quote.</p>
+        </div>
+        <div class="about-intro__image fade-in-up">
+          <div class="image-placeholder">
+            <span>Photo of Rohullah at work</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Values Section -->
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title fade-in-up">Our Values</h2>
+      <p class="section-subtitle fade-in-up">The principles behind every project we take on</p>
+      <div class="values-grid">
+
+        <div class="value-card fade-in-up">
+          <div class="value-card__icon">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <h3 class="value-card__title">Quality Craftsmanship</h3>
+          <p class="value-card__text">Every tile is laid with precision and pride. We use proven techniques and quality materials to deliver results that look beautiful and last for years. No shortcuts, no compromises — just expert tiling you can trust.</p>
+        </div>
+
+        <div class="value-card fade-in-up">
+          <div class="value-card__icon">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 1V23M17 5H9.5C8.57 5 7.68 5.37 7.03 6.03C6.37 6.68 6 7.57 6 8.5C6 9.43 6.37 10.32 7.03 10.97C7.68 11.63 8.57 12 9.5 12H14.5C15.43 12 16.32 12.37 16.97 13.03C17.63 13.68 18 14.57 18 15.5C18 16.43 17.63 17.32 16.97 17.97C16.32 18.63 15.43 19 14.5 19H6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <h3 class="value-card__title">Honest Pricing</h3>
+          <p class="value-card__text">You will always know exactly what your project will cost before work begins. Our quotes are transparent and detailed, with no hidden charges or surprise add-ons. Fair pricing for quality work — that is our promise.</p>
+        </div>
+
+        <div class="value-card fade-in-up">
+          <div class="value-card__icon">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M21 15C21 15.53 20.79 16.04 20.41 16.41C20.04 16.79 19.53 17 19 17H7L3 21V5C3 4.47 3.21 3.96 3.59 3.59C3.96 3.21 4.47 3 5 3H19C19.53 3 20.04 3.21 20.41 3.59C20.79 3.96 21 4.47 21 5V15Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <h3 class="value-card__title">Clear Communication</h3>
+          <p class="value-card__text">From your initial enquiry through to project completion, we keep you informed every step of the way. You will always know what is happening, when it is happening, and what to expect next. No guesswork, no chasing updates.</p>
+        </div>
+
+        <div class="value-card fade-in-up">
+          <div class="value-card__icon">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M3 9L12 2L21 9V20C21 20.53 20.79 21.04 20.41 21.41C20.04 21.79 19.53 22 19 22H5C4.47 22 3.96 21.79 3.59 21.41C3.21 21.04 3 20.53 3 20V9Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <polyline points="9 22 9 12 15 12 15 22" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <h3 class="value-card__title">Respect for Clients' Homes</h3>
+          <p class="value-card__text">We treat your property as if it were our own. Drop sheets are laid, dust is managed, and every workspace is left clean and tidy at the end of each day. Your comfort and peace of mind matter to us throughout the entire project.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Our Approach Section -->
+  <section class="section section--light">
+    <div class="container">
+      <h2 class="section-title fade-in-up">Our Approach</h2>
+      <p class="section-subtitle fade-in-up">How we deliver outstanding results on every tiling project</p>
+      <div class="approach-steps">
+
+        <div class="approach-step fade-in-up">
+          <div class="approach-step__number">1</div>
+          <div class="approach-step__content">
+            <h3>Free Consultation &amp; Quote</h3>
+            <p>It all starts with a conversation. Rohullah visits your property, listens to your ideas, assesses the space, and provides a detailed written quote — completely free and with no obligation. Whether you already have tiles picked out or need advice on what would work best for your space, we are here to help.</p>
+          </div>
+        </div>
+
+        <div class="approach-step fade-in-up">
+          <div class="approach-step__number">2</div>
+          <div class="approach-step__content">
+            <h3>Preparation &amp; Planning</h3>
+            <p>Proper preparation is the foundation of a lasting tiling job. We carefully prepare all surfaces — levelling, <a href="/services/waterproofing">waterproofing</a> where required, and ensuring everything is ready for a perfect bond. We plan tile layouts to minimise waste and maximise visual impact, paying special attention to symmetry and pattern alignment.</p>
+          </div>
+        </div>
+
+        <div class="approach-step fade-in-up">
+          <div class="approach-step__number">3</div>
+          <div class="approach-step__content">
+            <h3>Expert Installation</h3>
+            <p>With surfaces prepared and tiles ready, Rohullah gets to work. Each tile is precisely cut and laid using professional-grade adhesives and tools. Whether it is intricate mosaic work in a shower niche or large-format porcelain across a living area floor, the same standard of precision and care applies to every tile.</p>
+          </div>
+        </div>
+
+        <div class="approach-step fade-in-up">
+          <div class="approach-step__number">4</div>
+          <div class="approach-step__content">
+            <h3>Grouting, Finishing &amp; Clean-Up</h3>
+            <p>Grouting is completed with care, ensuring consistent colour and clean lines throughout. Silicone sealing is applied to wet areas and junctions. Once everything has cured, we thoroughly clean the entire area, remove all waste, and walk you through the finished result to make sure you are completely satisfied.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Photo Gallery -->
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title fade-in-up">Our Work</h2>
+      <p class="section-subtitle fade-in-up">A selection of completed tiling projects across the Wellington region</p>
+      <div class="gallery-grid fade-in-up">
+        <img src="/images/portfolio/bathroom-porcelain-shower.jpg" alt="Large-format porcelain bathroom tiling project in Wellington" width="400" height="300" loading="lazy" style="border-radius: 8px; object-fit: cover; width: 100%; aspect-ratio: 4/3;" />
+        <img src="/images/portfolio/bathroom-marble-look.jpg" alt="Marble-look porcelain bathroom renovation in Wellington" width="400" height="300" loading="lazy" style="border-radius: 8px; object-fit: cover; width: 100%; aspect-ratio: 4/3;" />
+        <img src="/images/portfolio/shower-natural-stone.jpg" alt="Natural stone-look walk-in shower tiling in Wellington" width="400" height="300" loading="lazy" style="border-radius: 8px; object-fit: cover; width: 100%; aspect-ratio: 4/3;" />
+        <img src="/images/portfolio/bathroom-green-subway.jpg" alt="Designer green subway tile bathroom with terrazzo floor" width="400" height="300" loading="lazy" style="border-radius: 8px; object-fit: cover; width: 100%; aspect-ratio: 4/3;" />
+        <img src="/images/portfolio/commercial-geometric-pattern.jpg" alt="Commercial geometric diamond pattern tiling installation" width="400" height="300" loading="lazy" style="border-radius: 8px; object-fit: cover; width: 100%; aspect-ratio: 4/3;" />
+      </div>
+      <div style="text-align: center; margin-top: 2rem;">
+        <a href="/portfolio" class="btn btn--outline">View Full Portfolio</a>
+      </div>
+    </div>
+  </section>
+
+  <CTASection
+    heading="Ready to Start Your Tiling Project?"
+    text="Get in touch with Rohullah Rassuli Tiling Services for a free, no-obligation quote. We'd love to help bring your vision to life."
+    variant="gold"
+  />
+</BaseLayout>
+
+<style>
+  /* About Intro */
+  .about-intro {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+    align-items: start;
+  }
+  @media (min-width: 768px) {
+    .about-intro {
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 4rem;
+    }
+  }
+  .about-intro__text p {
+    margin-bottom: 1.25rem;
+    line-height: 1.8;
+    color: var(--color-body-text);
+  }
+  .about-intro__text p:last-child {
+    margin-bottom: 0;
+  }
+  .about-intro__image {
+    position: sticky;
+    top: 6rem;
+  }
+  .image-placeholder {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    background-color: var(--color-placeholder-bg);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-muted);
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    border: 2px dashed var(--color-border-warm);
+  }
+
+  /* Values Grid */
+  .values-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 2rem;
+    margin-top: 2.5rem;
+  }
+  .value-card {
+    background: var(--color-white);
+    border-radius: 8px;
+    padding: 2rem;
+    box-shadow: var(--shadow-card);
+    transition: box-shadow var(--transition-smooth), transform var(--transition-fast);
+    text-align: center;
+  }
+  .value-card:hover {
+    box-shadow: var(--shadow-card-hover);
+    transform: translateY(-4px);
+  }
+  .value-card__icon {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 1.25rem;
+    background-color: var(--color-light-bg);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-primary);
+  }
+  .value-card__title {
+    font-family: var(--font-heading);
+    font-size: 1.2rem;
+    margin-bottom: 0.75rem;
+    color: var(--color-dark-text);
+  }
+  .value-card__text {
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: var(--color-body-text);
+  }
+
+  /* Approach Steps */
+  .approach-steps {
+    margin-top: 2.5rem;
+    display: grid;
+    gap: 2rem;
+  }
+  .approach-step {
+    display: flex;
+    gap: 1.5rem;
+    align-items: flex-start;
+    background: var(--color-white);
+    border-radius: 8px;
+    padding: 2rem;
+    box-shadow: var(--shadow-card);
+  }
+  .approach-step__number {
+    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+    background: var(--color-primary);
+    color: var(--color-dark-text);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-heading);
+    font-size: 1.25rem;
+    font-weight: 700;
+  }
+  .approach-step__content h3 {
+    font-family: var(--font-heading);
+    font-size: 1.15rem;
+    margin-bottom: 0.5rem;
+    color: var(--color-dark-text);
+  }
+  .approach-step__content p {
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: var(--color-body-text);
+  }
+
+  /* Gallery Grid */
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2.5rem;
+  }
+  .gallery-placeholder {
+    aspect-ratio: 4 / 3;
+    background-color: var(--color-placeholder-bg);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-muted);
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    border: 2px dashed var(--color-border-warm);
+  }
+</style>
+
+<script>
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.1 }
+  );
+  document.querySelectorAll('.fade-in-up').forEach((el) => observer.observe(el));
+</script>

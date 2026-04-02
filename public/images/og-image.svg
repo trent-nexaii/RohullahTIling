@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#2C1E0A"/>
+      <stop offset="100%" style="stop-color:#1A1A1A"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <!-- Gold accent line -->
+  <rect x="80" y="180" width="80" height="4" fill="#D4A017"/>
+  <!-- Company name -->
+  <text x="80" y="250" font-family="Georgia, serif" font-size="56" font-weight="bold" fill="#FFFFFF">ROHULLAH RASSULI</text>
+  <text x="80" y="310" font-family="Georgia, serif" font-size="36" fill="#D4A017" letter-spacing="6">TILING SERVICES</text>
+  <!-- Tagline -->
+  <text x="80" y="390" font-family="Arial, sans-serif" font-size="24" fill="#CCCCCC">Professional Tiling Across the Wellington Region</text>
+  <!-- Contact -->
+  <text x="80" y="450" font-family="Arial, sans-serif" font-size="20" fill="#999999">021 026 02044  |  rohullahtiling.co.nz</text>
+  <!-- Bottom gold bar -->
+  <rect x="0" y="610" width="1200" height="20" fill="#D4A017"/>
+</svg>
