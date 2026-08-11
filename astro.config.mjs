@@ -8,6 +8,11 @@ export default defineConfig({
   build: {
     format: 'directory',
   },
-  integrations: [sitemap()],
+  integrations: [
+    sitemap({
+      // Confirmation screen, not a landing page.
+      filter: (page) => !page.includes('/contact/thank-you'),
+    }),
+  ],
   devToolbar: { enabled: false },
 });

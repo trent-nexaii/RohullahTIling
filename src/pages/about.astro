@@ -2,15 +2,30 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHeader from '../components/PageHeader.astro';
 import CTASection from '../components/CTASection.astro';
+import JobPhoto from '../components/JobPhoto.astro';
 
-const title = "About Us | Rohullah Rassuli Tiling Services Wellington";
+import tealBathroom from '../assets/images/bathroom-teal-vertical-tile.jpg';
+import showerDrain from '../assets/images/shower-floor-fall-to-drain.jpg';
+import showerCorner from '../assets/images/shower-large-format-corner.jpg';
+import commercialWall from '../assets/images/commercial-changing-room-feature-wall.jpg';
+import marbleFloor from '../assets/images/floor-marble-look-large-format.jpg';
+
+const gallery = [
+  { src: tealBathroom, alt: 'Teal vertical subway tile bathroom with terrazzo floor and wall-hung vanity, installed by ROH Tiling' },
+  { src: showerDrain, alt: 'Large-format shower floor tiled with a fall to the central drain, installed by ROH Tiling' },
+  { src: showerCorner, alt: 'Large-format tiled shower corner cut neatly around a frosted window, installed by ROH Tiling' },
+  { src: commercialWall, quality: 48, alt: 'Commercial changing room feature wall in a black and white diamond tile pattern, installed by ROH Tiling' },
+  { src: marbleFloor, alt: 'Marble-look large-format porcelain floor tiling with tight grout lines, installed by ROH Tiling' },
+];
+
+const title = "About Us | ROH Tiling Wellington";
 const description = "Meet Rohullah Rassuli — Whitby-based professional tiler with 10+ years experience serving Wellington. Quality craftsmanship, honest pricing, and free quotes.";
 const canonical = "/about";
 const breadcrumbs = [{ name: "Home", url: "/" }, { name: "About" }];
 ---
 
 <BaseLayout title={title} description={description} canonical={canonical} breadcrumbs={breadcrumbs}>
-  <PageHeader title="About Rohullah Rassuli Tiling Services" breadcrumbs={breadcrumbs} />
+  <PageHeader title="About ROH Tiling" breadcrumbs={breadcrumbs} />
 
   <!-- Intro Section -->
   <section class="section section--light">
@@ -18,15 +33,20 @@ const breadcrumbs = [{ name: "Home", url: "/" }, { name: "About" }];
       <div class="about-intro">
         <div class="about-intro__text fade-in-up">
           <h2 class="section-title section-title--left">Experienced Tiling, Honest Service</h2>
-          <p>Rohullah Rassuli Tiling Services is a dedicated, owner-operated tiling business based in Whitby and proudly serving the greater Wellington region. With years of hands-on experience across residential and commercial projects, Rohullah brings a level of care and craftsmanship that larger companies simply cannot match.</p>
+          <p>ROH Tiling is a dedicated, owner-operated tiling business based in Whitby and proudly serving the greater Wellington region. With years of hands-on experience across residential and commercial projects, Rohullah brings a level of care and craftsmanship that larger companies simply cannot match.</p>
           <p>Every project — whether a compact <a href="/services/bathroom-tiling">ensuite renovation</a> in Porirua or a large-format <a href="/services/floor-tiling">floor installation</a> in a Wellington CBD apartment — receives the same meticulous attention to detail. Rohullah personally oversees each job from start to finish, ensuring precise tile placement, clean grout lines, and a flawless result that stands the test of time.</p>
           <p>What sets Rohullah apart is a genuine commitment to doing things right. That means arriving on time, keeping your home clean and tidy throughout the work, providing upfront and honest pricing with no hidden extras, and communicating clearly at every stage. It is a straightforward approach built on respect — for your home, your budget, and your time.</p>
           <p><strong>Free quotes are always available.</strong> Whether you have a clear plan or need guidance on tile selection and layout, Rohullah is happy to visit your property, discuss your ideas, and provide a detailed, no-obligation quote.</p>
         </div>
         <div class="about-intro__image fade-in-up">
-          <div class="image-placeholder">
-            <span>Photo of Rohullah at work</span>
-          </div>
+          <!-- TODO: portrait of Rohullah in the tiled changing room, once supplied. -->
+          <JobPhoto
+            src={tealBathroom}
+            alt="Teal vertical subway tile bathroom with terrazzo floor and wall-hung vanity, installed by ROH Tiling"
+            ratio="3 / 4"
+            sizes="(min-width: 768px) 34vw, 92vw"
+            widths={[400, 640]}
+          />
         </div>
       </div>
     </div>
@@ -133,11 +153,16 @@ const breadcrumbs = [{ name: "Home", url: "/" }, { name: "About" }];
       <h2 class="section-title fade-in-up">Our Work</h2>
       <p class="section-subtitle fade-in-up">A selection of completed tiling projects across the Wellington region</p>
       <div class="gallery-grid fade-in-up">
-        <img src="/images/portfolio/bathroom-porcelain-shower.jpg" alt="Large-format porcelain bathroom tiling project in Wellington" width="400" height="300" loading="lazy" style="border-radius: 8px; object-fit: cover; width: 100%; aspect-ratio: 4/3;" />
-        <img src="/images/portfolio/bathroom-marble-look.jpg" alt="Marble-look porcelain bathroom renovation in Wellington" width="400" height="300" loading="lazy" style="border-radius: 8px; object-fit: cover; width: 100%; aspect-ratio: 4/3;" />
-        <img src="/images/portfolio/shower-natural-stone.jpg" alt="Natural stone-look walk-in shower tiling in Wellington" width="400" height="300" loading="lazy" style="border-radius: 8px; object-fit: cover; width: 100%; aspect-ratio: 4/3;" />
-        <img src="/images/portfolio/bathroom-green-subway.jpg" alt="Designer green subway tile bathroom with terrazzo floor" width="400" height="300" loading="lazy" style="border-radius: 8px; object-fit: cover; width: 100%; aspect-ratio: 4/3;" />
-        <img src="/images/portfolio/commercial-geometric-pattern.jpg" alt="Commercial geometric diamond pattern tiling installation" width="400" height="300" loading="lazy" style="border-radius: 8px; object-fit: cover; width: 100%; aspect-ratio: 4/3;" />
+        {gallery.map((photo) => (
+          <JobPhoto
+            src={photo.src}
+            alt={photo.alt}
+            quality={photo.quality}
+            ratio="4 / 3"
+            sizes="(min-width: 992px) 340px, (min-width: 600px) 45vw, 92vw"
+            widths={[400, 640, 800]}
+          />
+        ))}
       </div>
       <div style="text-align: center; margin-top: 2rem;">
         <a href="/portfolio" class="btn btn--outline">View Full Portfolio</a>
@@ -147,7 +172,7 @@ const breadcrumbs = [{ name: "Home", url: "/" }, { name: "About" }];
 
   <CTASection
     heading="Ready to Start Your Tiling Project?"
-    text="Get in touch with Rohullah Rassuli Tiling Services for a free, no-obligation quote. We'd love to help bring your vision to life."
+    text="Get in touch with ROH Tiling for a free, no-obligation quote. We'd love to help bring your vision to life."
     variant="gold"
   />
 </BaseLayout>

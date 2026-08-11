@@ -3,46 +3,62 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHeader from '../components/PageHeader.astro';
 import CTASection from '../components/CTASection.astro';
 
-const title = "Tiling Portfolio Wellington | Rohullah Rassuli Projects";
+const title = "Tiling Portfolio Wellington | ROH Tiling";
 const description = "View our portfolio of completed tiling projects across Wellington. Bathroom renovations, shower tiling, commercial work & more. See the quality for yourself.";
 const canonical = "/portfolio";
 const breadcrumbs = [{ name: "Home", url: "/" }, { name: "Portfolio" }];
 
+import JobPhoto from '../components/JobPhoto.astro';
+
+import tealBathroom from '../assets/images/bathroom-teal-vertical-tile.jpg';
+import showerDrain from '../assets/images/shower-floor-fall-to-drain.jpg';
+import showerCorner from '../assets/images/shower-large-format-corner.jpg';
+import commercialWall from '../assets/images/commercial-changing-room-feature-wall.jpg';
+import marbleFloor from '../assets/images/floor-marble-look-large-format.jpg';
+
+// Alt text describes the work and claims no suburb, because the job locations
+// are not recorded. Do not add one without confirming it.
 const projects = [
   {
-    title: "Residential Bathroom — Large-Format Porcelain Tiles",
-    image: "/images/portfolio/bathroom-porcelain-shower.jpg",
-    alt: "Walk-in shower with large-format beige porcelain tiles — floor-to-ceiling installation in a Wellington home",
-    description: "A full bathroom tiling project featuring large-format beige porcelain tiles installed floor-to-ceiling. The walk-in shower includes precisely cut tiles around plumbing penetrations, a stainless steel floor waste with correct falls, and consistent grout lines throughout. This neutral palette creates a warm, spacious feel that works with any bathroom fittings.",
-    tags: ["Bathroom Tiling", "Large-Format Tiles", "Walk-in Shower", "Porcelain", "Wellington"],
+    title: "Designer Bathroom, Teal Vertical Tile",
+    image: tealBathroom,
+    ratio: "3 / 4",
+    alt: "Teal vertical subway tile bathroom with terrazzo floor, wall-hung timber vanity and skylight, installed by ROH Tiling",
+    description: "Floor-to-ceiling teal vertical tile run against a terrazzo-look floor, with a skylight above picking up the glazed finish. Vertical setout is less forgiving than a standard brick bond: every course has to hold plumb across the wall and turn the internal corner without the joint drifting. The tiling wraps the shower area and the vanity wall as one continuous surface.",
+    tags: ["Bathroom Tiling", "Vertical Subway", "Terrazzo Floor", "Feature Wall"],
   },
   {
-    title: "Bathroom Renovation — Marble-Look Porcelain",
-    image: "/images/portfolio/bathroom-marble-look.jpg",
-    alt: "Bathroom renovation with white marble-look porcelain tiles and recessed niche — Wellington tiling project",
-    description: "A stunning bathroom renovation using high-gloss white marble-look porcelain tiles. The floor-to-ceiling installation features a recessed niche for storage, carefully cut around plumbing connections, and a seamless transition from wall to floor tiles. The calacatta-style veining adds luxury to this modern Wellington bathroom.",
-    tags: ["Bathroom Renovation", "Marble-Look Tiles", "Recessed Niche", "Floor-to-Ceiling"],
+    title: "Shower Floor, Fall to Central Drain",
+    image: showerDrain,
+    ratio: "2 / 3",
+    alt: "Large-format tiled shower floor with a mitred fall to a central square drain, installed by ROH Tiling",
+    description: "Large-format porcelain cut and laid to fall evenly toward a central square drain. Getting a large tile to drain properly means cutting the fall into the tile itself rather than relying on the screed alone, so the water runs to the waste from every direction instead of sitting in the low corner. Waterproofing sits under the whole floor and turns up the walls.",
+    tags: ["Shower Tiling", "Falls to Drain", "Large-Format", "Waterproofing"],
   },
   {
-    title: "Walk-in Shower — Natural Stone Look",
-    image: "/images/portfolio/shower-natural-stone.jpg",
-    alt: "Walk-in shower with natural stone-look tiles and frosted privacy window — Wellington home",
-    description: "Another angle of a beautifully tiled bathroom featuring natural stone-look porcelain tiles. The large-format tiles minimise grout lines for a clean, modern aesthetic. Tiles are precisely cut around the frosted privacy window frame and plumbing penetrations, demonstrating the attention to detail that goes into every Rohullah Rassuli tiling project.",
-    tags: ["Shower Tiling", "Natural Stone Look", "Large-Format", "Porcelain"],
+    title: "Walk-in Shower, Large-Format Corner",
+    image: showerCorner,
+    ratio: "4 / 5",
+    alt: "Large-format stone-look tiled shower corner cut neatly around a frosted privacy window, installed by ROH Tiling",
+    description: "Stone-look porcelain in a large format to keep grout lines to a minimum. The tiling is cut around the frosted privacy window so the reveal is square and the joint sits tight to the frame, and the horizontal courses carry through the corner without stepping.",
+    tags: ["Shower Tiling", "Stone Look", "Large-Format", "Porcelain"],
   },
   {
-    title: "Designer Bathroom — Green Subway Feature Wall",
-    image: "/images/portfolio/bathroom-green-subway.jpg",
-    alt: "Modern designer bathroom with green subway tile feature wall, terrazzo floor, and skylight — Wellington bathroom renovation",
-    description: "A striking designer bathroom featuring a floor-to-ceiling green glazed subway tile feature wall paired with terrazzo-look floor tiles. The skylight floods the space with natural light, highlighting the hand-glazed finish of the subway tiles. A floating timber vanity with vessel basin completes this contemporary Wellington bathroom renovation. This project showcases our ability to work with multiple tile types and finishes in a single space.",
-    tags: ["Subway Tiles", "Feature Wall", "Terrazzo", "Designer Bathroom", "Green Tiles"],
+    title: "Commercial Fitout, Geometric Feature Wall",
+    image: commercialWall,
+    quality: 48,
+    ratio: "16 / 9",
+    alt: "Commercial changing room feature wall in a black and white diamond tile pattern beneath white subway tiling, installed by ROH Tiling",
+    description: "A black and white diamond pattern running the full length of a changing room, with plain white subway above. Patterned work over a long run is a setout job before it is a tiling job: the repeat has to stay true from one end of the wall to the other, and the pattern has to land sensibly where the bench brackets and fixings interrupt it.",
+    tags: ["Commercial Tiling", "Geometric Pattern", "Changing Room", "Feature Wall"],
   },
   {
-    title: "Commercial Tiling — Geometric Diamond Pattern",
-    image: "/images/portfolio/commercial-geometric-pattern.jpg",
-    alt: "Commercial tiling project with black and white geometric diamond pattern wall tiles — Wellington commercial space",
-    description: "A large-scale commercial tiling installation featuring a bold black and white geometric diamond pattern. This eye-catching design required precise tile alignment across a long wall, with clean white subway tiles above creating a crisp border. Commercial tiling projects like this demand expertise in layout planning, consistent spacing, and working to tight tolerances — all hallmarks of Rohullah Rassuli Tiling Services.",
-    tags: ["Commercial Tiling", "Geometric Pattern", "Mosaic", "Black & White", "Feature Wall"],
+    title: "Marble-Look Large-Format Floor",
+    image: marbleFloor,
+    ratio: "21 / 9",
+    alt: "Marble-look large-format porcelain floor tiling with tight, consistent grout lines, installed by ROH Tiling",
+    description: "Marble-look porcelain in a large format, laid tight with narrow grout lines so the veining reads across the floor rather than being chopped up by the joints. Large tile is unforgiving of an uneven substrate, so the floor is levelled and checked before any adhesive goes down.",
+    tags: ["Floor Tiling", "Marble Look", "Large-Format", "Porcelain"],
   },
 ];
 ---
@@ -65,12 +81,13 @@ const projects = [
       <div class="portfolio-grid">
         {projects.map((project) => (
           <article class="portfolio-item fade-in-up">
-            <img
+            <JobPhoto
               src={project.image}
               alt={project.alt}
-              width="800"
-              height="600"
-              loading="lazy"
+              quality={project.quality}
+              ratio={project.ratio}
+              sizes="(min-width: 992px) 460px, (min-width: 600px) 46vw, 92vw"
+              widths={[400, 640, 800]}
             />
             <div class="portfolio-item-content">
               <h3>{project.title}</h3>
@@ -93,7 +110,7 @@ const projects = [
       <div class="portfolio-seo fade-in-up">
         <h2 class="section-title">Wellington Tiling You Can Trust</h2>
         <p>Every project in our portfolio was completed by Rohullah Rassuli personally, right here in the Wellington region. From Whitby and Porirua through to Lower Hutt, Upper Hutt, and Wellington CBD, our work speaks for itself. We use only quality porcelain, ceramic, and natural stone tiles sourced from trusted New Zealand suppliers, paired with premium adhesives and grouts that ensure a lasting finish.</p>
-        <p>Whether you are planning a simple bathroom refresh or a full-scale commercial fit-out, the same level of care and craftsmanship goes into every job. Precise cuts, consistent grout lines, correct waterproofing, and a clean, tidy workspace are standard on every Rohullah Rassuli tiling project. We invite you to browse these completed projects and see the quality for yourself — then get in touch for a free, no-obligation quote on your own tiling project.</p>
+        <p>Whether you are planning a simple bathroom refresh or a full-scale commercial fit-out, the same level of care and craftsmanship goes into every job. Precise cuts, consistent grout lines, correct waterproofing, and a clean, tidy workspace are standard on every ROH Tiling project. We invite you to browse these completed projects and see the quality for yourself — then get in touch for a free, no-obligation quote on your own tiling project.</p>
       </div>
     </div>
   </section>

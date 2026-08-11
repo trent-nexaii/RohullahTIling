@@ -1,10 +1,14 @@
 ---
 import ServiceLayout from '../../layouts/ServiceLayout.astro';
+import JobPhoto from '../../components/JobPhoto.astro';
+import marbleFloor from '../../assets/images/floor-marble-look-large-format.jpg';
+import showerDrain from '../../assets/images/shower-floor-fall-to-drain.jpg';
+import commercialWall from '../../assets/images/commercial-changing-room-feature-wall.jpg';
 ---
 
 <ServiceLayout
-  title="Floor Tiling Wellington | Rohullah Rassuli Tiling Services"
-  description="Professional floor tiling in Wellington. Large-format porcelain, timber-look & concrete-look tiles for homes & businesses. Free quotes — call 021 026 02044."
+  title="Floor Tiling Wellington | ROH Tiling"
+  description="Professional floor tiling in Wellington. Large-format porcelain, timber-look & concrete-look tiles for homes & businesses. Free quotes — call 0210 260 2044."
   canonical="/services/floor-tiling"
   serviceName="Floor Tiling"
   serviceType="Floor Tiling"
@@ -17,7 +21,7 @@ import ServiceLayout from '../../layouts/ServiceLayout.astro';
       <div class="split-layout fade-in-up">
         <div>
           <p class="lead">
-            Floor tiles set the tone for every room in your home or business. A well-chosen, professionally installed tile floor is durable, easy to maintain, and adds lasting value to your property. Rohullah Rassuli Tiling Services delivers expert floor tiling across the Wellington region — from single-room upgrades to full commercial fit-outs.
+            Floor tiles set the tone for every room in your home or business. A well-chosen, professionally installed tile floor is durable, easy to maintain, and adds lasting value to your property. ROH Tiling delivers expert floor tiling across the Wellington region — from single-room upgrades to full commercial fit-outs.
           </p>
           <p>
             We work with the latest tile formats and finishes to create floors that look exceptional and perform brilliantly. Whether you want the warmth of timber-look porcelain in your living room, the industrial edge of concrete-look tiles in a retail space, or classic natural stone in a grand entrance, we have the skills and experience to bring your vision to life.
@@ -27,9 +31,13 @@ import ServiceLayout from '../../layouts/ServiceLayout.astro';
           </p>
         </div>
         <div>
-          <div class="image-placeholder image-placeholder--portrait">
-            <span>Floor tiling installation in progress</span>
-          </div>
+          <JobPhoto
+            src={marbleFloor}
+            alt="Marble-look large-format porcelain floor tiling with tight, consistent grout lines, installed by ROH Tiling"
+            ratio="16 / 9"
+            sizes="(min-width: 768px) 45vw, 92vw"
+            widths={[400, 640, 800]}
+          />
         </div>
       </div>
     </div>
@@ -113,7 +121,7 @@ import ServiceLayout from '../../layouts/ServiceLayout.astro';
         The most common cause of floor tile failure is poor substrate preparation. Tiles laid on an uneven, weak, or contaminated surface will crack, tent, or debond over time — no matter how good the tile or adhesive is.
       </p>
       <p>
-        At Rohullah Rassuli Tiling Services, we invest the time to get the substrate right before a single tile is laid. This includes:
+        At ROH Tiling, we invest the time to get the substrate right before a single tile is laid. This includes:
       </p>
       <ul style="color: rgba(255,255,255,0.85); margin: 1.5rem 0; padding-left: 1.5rem;">
         <li style="margin-bottom: 0.75rem;"><strong>Substrate assessment</strong> — checking for cracks, moisture, contamination, and structural soundness</li>
@@ -133,15 +141,29 @@ import ServiceLayout from '../../layouts/ServiceLayout.astro';
     <div class="container">
       <h2 class="section-title">Floor Tiling Gallery</h2>
       <div class="services-grid fade-in-up">
-        <div class="image-placeholder image-placeholder--landscape">
-          <span>Large-format porcelain — Whitby new build</span>
-        </div>
-        <div class="image-placeholder image-placeholder--landscape">
-          <span>Timber-look floor tiles — Karori living room</span>
-        </div>
-        <div class="image-placeholder image-placeholder--landscape">
-          <span>Commercial floor tiling — Wellington CBD office</span>
-        </div>
+        <JobPhoto
+            src={marbleFloor}
+            alt="Marble-look large-format porcelain floor laid across an open plan space, installed by ROH Tiling"
+            ratio="4 / 3"
+            sizes="(min-width: 992px) 340px, (min-width: 600px) 45vw, 92vw"
+            widths={[400, 640, 800]}
+          />
+        <JobPhoto
+            src={showerDrain}
+            alt="Shower floor tiled with a fall to the central drain, installed by ROH Tiling"
+            ratio="4 / 3"
+            sizes="(min-width: 992px) 340px, (min-width: 600px) 45vw, 92vw"
+            widths={[400, 640, 800]}
+          />
+        <JobPhoto
+            src={commercialWall}
+            quality={48}
+            quality={48}
+            alt="Commercial floor and feature wall tiling in a changing room fitout, installed by ROH Tiling"
+            ratio="4 / 3"
+            sizes="(min-width: 992px) 340px, (min-width: 600px) 45vw, 92vw"
+            widths={[400, 640, 800]}
+          />
       </div>
     </div>
   </section>

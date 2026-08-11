@@ -1,0 +1,76 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import { business } from '../../data/business';
+
+const breadcrumbs = [
+  { name: 'Home', url: '/' },
+  { name: 'Contact', url: '/contact' },
+  { name: 'Thank You' },
+];
+---
+
+<BaseLayout
+  title="Thanks, we have your enquiry | ROH Tiling"
+  description="Your enquiry has been sent to ROH Tiling. We will get back to you within one working day."
+  canonical="/contact/thank-you"
+  breadcrumbs={breadcrumbs}
+  noindex={true}
+>
+  <PageHeader title="Thanks, we have your enquiry" breadcrumbs={breadcrumbs} />
+
+  <section class="section">
+    <div class="container" style="max-width: 640px;">
+      <div class="form-success" role="status">
+        <svg width="44" height="44" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5"/>
+          <path d="M8 12.5l2.5 2.5L16 9.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <h2>Your message has been sent</h2>
+        <p>
+          Rohullah will get back to you within one working day. If your job is urgent,
+          calling is faster than waiting on email.
+        </p>
+        <div class="form-success__actions">
+          <a href={business.phoneHref} class="btn btn--primary">Call {business.phoneDisplay}</a>
+          <a href="/portfolio" class="btn btn--outline">See recent work</a>
+        </div>
+      </div>
+
+      <p style="margin-top: 2rem; text-align: center;">
+        Prefer email? Write to <a href={`mailto:${business.email}`}>{business.email}</a>.
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .form-success {
+    background: var(--color-light-bg);
+    border-radius: 8px;
+    border-top: 4px solid var(--color-primary);
+    padding: 2.5rem 2rem;
+    text-align: center;
+  }
+  .form-success svg {
+    color: var(--color-primary);
+    margin-bottom: 1rem;
+  }
+  .form-success h2 {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--color-dark-text);
+  }
+  .form-success p {
+    line-height: 1.7;
+    color: var(--color-body-text);
+  }
+  .form-success__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 1.75rem;
+  }
+</style>

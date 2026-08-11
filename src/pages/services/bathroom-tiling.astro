@@ -1,10 +1,14 @@
 ---
 import ServiceLayout from '../../layouts/ServiceLayout.astro';
+import JobPhoto from '../../components/JobPhoto.astro';
+import tealBathroom from '../../assets/images/bathroom-teal-vertical-tile.jpg';
+import showerDrain from '../../assets/images/shower-floor-fall-to-drain.jpg';
+import showerCorner from '../../assets/images/shower-large-format-corner.jpg';
 ---
 
 <ServiceLayout
-  title="Bathroom Tiling Wellington | Rohullah Rassuli Tiling Services"
-  description="Expert bathroom tiling in Wellington. Full renovations, shower tiling, waterproofing and more. NZS 4858 compliant. Wellington-wide free quotes — call 021 026 02044."
+  title="Bathroom Tiling Wellington | ROH Tiling"
+  description="Expert bathroom tiling in Wellington. Full renovations, shower tiling, waterproofing and more. NZS 4858 compliant. Wellington-wide free quotes — call 0210 260 2044."
   canonical="/services/bathroom-tiling"
   serviceName="Bathroom Tiling"
   serviceType="Bathroom Tiling"
@@ -17,7 +21,7 @@ import ServiceLayout from '../../layouts/ServiceLayout.astro';
       <div class="split-layout fade-in-up">
         <div>
           <p class="lead">
-            A well-tiled bathroom is the centrepiece of any Wellington home. At Rohullah Rassuli Tiling Services, we specialise in bathroom tiling that is not only beautiful but built to last — with proper waterproofing, precise tile placement, and meticulous grouting that protects your home from moisture damage for decades.
+            A well-tiled bathroom is the centrepiece of any Wellington home. At ROH Tiling, we specialise in bathroom tiling that is not only beautiful but built to last — with proper waterproofing, precise tile placement, and meticulous grouting that protects your home from moisture damage for decades.
           </p>
           <p>
             Whether you are planning a complete bathroom renovation, upgrading an ensuite, or simply refreshing tired wall tiles, we handle every stage of the tiling process. From substrate preparation and waterproofing through to the final grout clean-up, you can trust us to deliver a finish that meets New Zealand building standards and exceeds your expectations.
@@ -27,9 +31,13 @@ import ServiceLayout from '../../layouts/ServiceLayout.astro';
           </p>
         </div>
         <div>
-          <div class="image-placeholder image-placeholder--portrait">
-            <span>Bathroom tiling project photo</span>
-          </div>
+          <JobPhoto
+            src={tealBathroom}
+            alt="Teal vertical subway tile bathroom with terrazzo floor and wall-hung vanity, installed by ROH Tiling"
+            ratio="3 / 4"
+            sizes="(min-width: 768px) 45vw, 92vw"
+            widths={[400, 640, 800]}
+          />
         </div>
       </div>
     </div>
@@ -106,7 +114,7 @@ import ServiceLayout from '../../layouts/ServiceLayout.astro';
     <div class="container fade-in-up">
       <h2 class="section-title section-title--white">Waterproofing Compliance</h2>
       <p>
-        Waterproofing is not optional in wet areas — it is a legal requirement under the New Zealand Building Code. All bathroom tiling by Rohullah Rassuli Tiling Services includes waterproofing that meets the NZS 4858 standard for wet area membranes.
+        Waterproofing is not optional in wet areas — it is a legal requirement under the New Zealand Building Code. All bathroom tiling by ROH Tiling includes waterproofing that meets the NZS 4858 standard for wet area membranes.
       </p>
       <p>
         We apply liquid-applied waterproofing membranes to shower walls, floors, and any surface that will be exposed to water. Band reinforcement is used at all internal corners, floor-to-wall junctions, and around penetrations such as shower mixers and waste outlets.
@@ -164,15 +172,27 @@ import ServiceLayout from '../../layouts/ServiceLayout.astro';
     <div class="container">
       <h2 class="section-title">Our Bathroom Tiling Work</h2>
       <div class="services-grid fade-in-up">
-        <div class="image-placeholder image-placeholder--landscape">
-          <span>Bathroom renovation — Wellington CBD</span>
-        </div>
-        <div class="image-placeholder image-placeholder--landscape">
-          <span>Walk-in shower tiling — Lower Hutt</span>
-        </div>
-        <div class="image-placeholder image-placeholder--landscape">
-          <span>Ensuite floor-to-ceiling tiles — Whitby</span>
-        </div>
+        <JobPhoto
+            src={tealBathroom}
+            alt="Teal vertical tile shower wall running full height beside a terrazzo floor, installed by ROH Tiling"
+            ratio="4 / 3"
+            sizes="(min-width: 992px) 340px, (min-width: 600px) 45vw, 92vw"
+            widths={[400, 640, 800]}
+          />
+        <JobPhoto
+            src={showerDrain}
+            alt="Large-format shower floor tiled with a fall to the central drain, installed by ROH Tiling"
+            ratio="4 / 3"
+            sizes="(min-width: 992px) 340px, (min-width: 600px) 45vw, 92vw"
+            widths={[400, 640, 800]}
+          />
+        <JobPhoto
+            src={showerCorner}
+            alt="Large-format tiled shower corner cut neatly around a frosted window, installed by ROH Tiling"
+            ratio="4 / 3"
+            sizes="(min-width: 992px) 340px, (min-width: 600px) 45vw, 92vw"
+            widths={[400, 640, 800]}
+          />
       </div>
     </div>
   </section>

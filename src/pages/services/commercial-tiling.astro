@@ -1,0 +1,121 @@
+---
+import ServiceLayout from '../../layouts/ServiceLayout.astro';
+import JobPhoto from '../../components/JobPhoto.astro';
+import { business } from '../../data/business';
+
+import commercialWall from '../../assets/images/commercial-changing-room-feature-wall.jpg';
+import marbleFloor from '../../assets/images/floor-marble-look-large-format.jpg';
+---
+
+<ServiceLayout
+  title="Commercial Tiling Wellington | Fitout & Changing Room Tiler | ROH Tiling"
+  description="Commercial tiling in Wellington. Fitout floors, changing rooms, amenities and feature walls. Large-format porcelain, work staged around your trading hours. Call 0210 260 2044."
+  canonical="/services/commercial-tiling"
+  serviceName="Commercial Tiling"
+  serviceType="Commercial Tiling"
+  serviceDescription="Commercial tiling across the Wellington region including fitout floors, changing rooms, amenities and tiled feature walls."
+>
+
+  <section class="section">
+    <div class="container">
+      <div class="split-layout fade-in-up">
+        <div>
+          <p class="lead">
+            Commercial tiling is a different job from residential work. The areas are larger, the tolerances are tighter over distance, the substrate is usually concrete rather than sheet flooring, and the programme is set by other trades. ROH Tiling takes on fitout floors, changing rooms, amenities and feature walls across the Wellington region.
+          </p>
+          <p>
+            Rohullah has worked on commercial fitouts for over 10 years, including changing room and amenity blocks where the tiling has to survive constant wet traffic and cleaning chemicals. That means selecting the right slip rating for the position, setting falls that actually drain, and detailing the junctions so water goes where it is meant to.
+          </p>
+          <p>
+            We work to the programme, and we work around it. If the site can only take tilers outside trading hours or between other trades, that is normally workable with enough notice.
+          </p>
+        </div>
+        <div>
+          <JobPhoto
+            src={commercialWall}
+            quality={48}
+            alt="Commercial changing room feature wall in a black and white diamond tile pattern, installed by ROH Tiling"
+            ratio="4 / 3"
+            sizes="(min-width: 768px) 45vw, 92vw"
+            widths={[400, 640, 800]}
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--light">
+    <div class="container">
+      <h2 class="section-title">Commercial Work We Take On</h2>
+      <p class="section-subtitle">Fitouts, amenities and hard-wearing floors across Wellington.</p>
+
+      <div class="services-grid">
+        <div class="service-card fade-in-up">
+          <h3>Fitout Floors</h3>
+          <p>Large-format porcelain across retail and hospitality floors, including work under suspended ceilings and around fixed joinery. Movement joints placed where the slab needs them, not where they are convenient.</p>
+        </div>
+        <div class="service-card fade-in-up">
+          <h3>Changing Rooms and Amenities</h3>
+          <p>Wet-area tiling for changing rooms, showers and toilet blocks. Correct slip ratings underfoot, waterproofing to code behind the tile, and falls set so the floor drains rather than pools.</p>
+        </div>
+        <div class="service-card fade-in-up">
+          <h3>Feature Walls and Patterned Tile</h3>
+          <p>Geometric and patterned tile bands where the setout has to hold true over a long run. This is planning work as much as tiling work, and it is where a rushed job shows most clearly.</p>
+        </div>
+        <div class="service-card fade-in-up">
+          <h3>Body Corporate and Maintenance</h3>
+          <p>Remedial tiling, re-grouting and replacement in common areas, lobbies and stairwells. Matching existing tile where it is still available, and advising honestly when it is not.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="split-layout fade-in-up">
+        <div>
+          <JobPhoto
+            src={marbleFloor}
+            alt="Large-format porcelain floor tiling laid with tight, consistent grout lines, installed by ROH Tiling"
+            ratio="16 / 9"
+            sizes="(min-width: 768px) 45vw, 92vw"
+            widths={[400, 640, 800]}
+          />
+        </div>
+        <div>
+          <h2 class="section-title section-title--left">Working With Builders and Project Managers</h2>
+          <p>
+            We quote off drawings and finishes schedules, and we will tell you early if a specified tile is going to be a problem in the position it is drawn. Large-format tile on an out-of-tolerance slab is the most common one: it is cheaper to price the levelling up front than to discover it on the day.
+          </p>
+          <p>
+            Producer statements for waterproofing are available where the building consent requires them. See <a href="/services/waterproofing">waterproofing</a> for how that work is done and documented.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--light">
+    <div class="container fade-in-up">
+      <h2 class="section-title">Commercial Tiling Across the Wellington Region</h2>
+      <p>
+        We cover Wellington City, Porirua, Lower Hutt, Upper Hutt and the Kapiti Coast. If you have drawings, send them through and we will come back with a price and a realistic idea of how long the tiling will take on site. <a href={business.phoneHref}>Call {business.phoneDisplay}</a> or <a href="/contact">get in touch with the project details</a>.
+      </p>
+    </div>
+  </section>
+
+</ServiceLayout>
+
+<script>
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    },
+    { threshold: 0.1 }
+  );
+  document.querySelectorAll('.fade-in-up').forEach((el) => observer.observe(el));
+</script>

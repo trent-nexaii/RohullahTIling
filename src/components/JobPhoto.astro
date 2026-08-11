@@ -1,0 +1,72 @@
+---
+/**
+ * Every photograph on the site goes through here.
+ *
+ * Astro emits a <picture> with a WebP source and a JPG fallback, generates the
+ * responsive srcset, and writes intrinsic width/height onto the <img> so the
+ * browser reserves the box before the bytes land. That last part is what keeps
+ * cumulative layout shift at zero, so do not drop the aspect-ratio styling or
+ * bypass this component with a raw <img>.
+ */
+import { Picture } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+interface Props {
+  src: ImageMetadata;
+  alt: string;
+  /** Matches how wide the image actually renders. Wrong sizes means wrong file downloaded. */
+  sizes: string;
+  widths?: number[];
+  /** Only ever true for an above-the-fold hero. Everything else stays lazy. */
+  priority?: boolean;
+  ratio?: string;
+  /** Lower it for busy, high-frequency images that resist compression. */
+  quality?: number;
+  class?: string;
+}
+
+const {
+  src,
+  alt,
+  sizes,
+  widths = [400, 640, 800],
+  priority = false,
+  ratio,
+  quality,
+  class: className = '',
+} = Astro.props;
+
+// Never request more pixels than the source has, and never generate a
+// derivative so large it blows the per-image weight budget. 1200px covers a
+// 2x retina render of the widest slot on the site.
+const MAX_WIDTH = 800;
+const ceiling = Math.min(src.width, MAX_WIDTH);
+const candidates = widths.filter((w) => w < ceiling);
+const cappedWidths = [...new Set([...candidates, ceiling])].sort((a, b) => a - b);
+---
+
+<Picture
+  src={src}
+  formats={['webp']}
+  fallbackFormat="jpg"
+  widths={cappedWidths}
+  quality={quality ?? 62}
+  sizes={sizes}
+  alt={alt}
+  loading={priority ? 'eager' : 'lazy'}
+  decoding={priority ? 'sync' : 'async'}
+  fetchpriority={priority ? 'high' : 'auto'}
+  class={`job-photo ${className}`}
+  style={ratio ? `aspect-ratio: ${ratio};` : undefined}
+/>
+
+<style>
+  .job-photo {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 8px;
+    background-color: var(--color-placeholder-bg, #eee);
+  }
+</style>

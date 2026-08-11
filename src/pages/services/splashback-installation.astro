@@ -1,0 +1,102 @@
+---
+import ServiceLayout from '../../layouts/ServiceLayout.astro';
+import JobPhoto from '../../components/JobPhoto.astro';
+import { business } from '../../data/business';
+
+/*
+ * The brief lists a terracotta fluted corner and a white subway kitchen for
+ * this page. Neither photo is in the repository, so the page ships without
+ * them rather than borrowing an unrelated shot or using stock photography.
+ */
+---
+
+<ServiceLayout
+  title="Splashback Installation Wellington | Kitchen Splashback Tiler | ROH Tiling"
+  description="Kitchen and laundry splashback installation across Wellington. Subway, fluted, mosaic and large-format tile, cut neatly around sockets. Free quotes, call 0210 260 2044."
+  canonical="/services/splashback-installation"
+  serviceName="Splashback Installation"
+  serviceType="Splashback Installation"
+  serviceDescription="Kitchen and laundry splashback tiling across the Wellington region, including subway, fluted, mosaic and large-format tile."
+>
+
+  <section class="section">
+    <div class="container">
+      <div class="fade-in-up">
+        <p class="lead">
+          A splashback is a small area of tiling that everyone in the house looks at every day, which is exactly why it is unforgiving. The cuts around the sockets, the way the tile meets the benchtop, the silicone line at the join: those are the details you notice for years. ROH Tiling installs kitchen and laundry splashbacks across Wellington, Porirua and the Hutt Valley.
+        </p>
+        <p>
+          Most splashbacks are a one-day job. The bench and cabinetry get masked and protected, the wall is checked for flatness and made good where it is not, then the tile is set out so the pattern lands sensibly against the rangehood, the window and the ends of the run. Cuts around power points are made with the plate coverage measured first, so nothing is left short.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--light">
+    <div class="container">
+      <h2 class="section-title">Splashback Tile We Install</h2>
+      <p class="section-subtitle">Whatever you have chosen, or we can talk through what suits the kitchen.</p>
+
+      <div class="services-grid">
+        <div class="service-card fade-in-up">
+          <h3>Subway Tile</h3>
+          <p>The default for a reason. Gloss or matt, stacked, brick-bonded or herringbone. Grout colour changes the look more than most people expect, so it is worth deciding that before we start.</p>
+        </div>
+        <div class="service-card fade-in-up">
+          <h3>Fluted and Ribbed Tile</h3>
+          <p>Vertical profile tile that catches the light. The setout matters here because the ribs have to line up across the run, and internal corners need planning rather than improvising.</p>
+        </div>
+        <div class="service-card fade-in-up">
+          <h3>Mosaic and Sheet Tile</h3>
+          <p>Glass, stone and porcelain mosaics on mesh sheets. The join between sheets is where a bad job shows, so sheets are set out dry first to keep the spacing even across the whole splashback.</p>
+        </div>
+        <div class="service-card fade-in-up">
+          <h3>Large-Format and Slab</h3>
+          <p>Single-piece or minimal-join splashbacks in large-format porcelain. Fewer grout lines to keep clean, but the wall has to be genuinely flat, which usually means some preparation first.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container fade-in-up">
+      <h2 class="section-title section-title--left">What the Job Involves</h2>
+      <p>
+        We work around your kitchen rather than through it. Benches and cabinet fronts are covered, cutting is done outside or with dust extraction where that is not possible, and the area is cleaned down at the end of each day. If the splashback is going in as part of a wider kitchen job, we coordinate with your electrician so the socket plates come off and go back on at the right points.
+      </p>
+      <p>
+        Behind a hob, tile needs to handle heat and be genuinely cleanable, so we use adhesives and grouts rated for the position rather than whatever is left over. Junctions between the tile and the benchtop are silicone rather than grout, because that joint moves and grout will crack in it.
+      </p>
+      <p>
+        Splashbacks often go in alongside <a href="/services/kitchen-tiling">kitchen floor tiling</a>, and the same setout thinking applies to both. If you are tiling a bathroom at the same time, see <a href="/services/bathroom-tiling">bathroom tiling</a> and <a href="/services/waterproofing">waterproofing</a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="section section--light">
+    <div class="container fade-in-up">
+      <h2 class="section-title">Splashback Installation Across Wellington</h2>
+      <p>
+        We install splashbacks throughout Wellington City, Porirua, Lower Hutt, Upper Hutt and the Kapiti Coast, for homeowners, kitchen companies and builders. Small jobs are welcome. If you have a single splashback to replace after a benchtop change, that is a normal week for us, not an inconvenience.
+      </p>
+      <p>
+        For a price, the quickest route is a photo of the wall and a rough measurement, then we can give you an indication before booking a free on-site quote. <a href={business.phoneHref}>Call {business.phoneDisplay}</a> or <a href="/contact">send through the details</a>.
+      </p>
+    </div>
+  </section>
+
+</ServiceLayout>
+
+<script>
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    },
+    { threshold: 0.1 }
+  );
+  document.querySelectorAll('.fade-in-up').forEach((el) => observer.observe(el));
+</script>

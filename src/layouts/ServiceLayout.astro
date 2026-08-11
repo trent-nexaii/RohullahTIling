@@ -2,6 +2,7 @@
 import BaseLayout from './BaseLayout.astro';
 import PageHeader from '../components/PageHeader.astro';
 import CTASection from '../components/CTASection.astro';
+import { business } from '../data/business';
 
 interface Props {
   title: string;
@@ -29,21 +30,22 @@ const breadcrumbs = [
   { name: serviceName },
 ];
 
+// `provider` points at the single LocalBusiness node that BaseLayout emits
+// rather than declaring a second one, so the site has exactly one business
+// entity across every page.
 const serviceSchema = JSON.stringify({
   "@context": "https://schema.org",
   "@type": "Service",
+  "@id": `${siteUrl}${canonical}#service`,
   "serviceType": serviceType,
   "name": serviceName,
   "description": serviceDescription,
-  "provider": {
-    "@type": "LocalBusiness",
-    "name": "Rohullah Rassuli Tiling Services",
-    "url": siteUrl
-  },
-  "areaServed": {
+  "url": `${siteUrl}${canonical}`,
+  "provider": { "@id": `${siteUrl}/#business` },
+  "areaServed": business.areaServed.map((name) => ({
     "@type": "Place",
-    "name": "Wellington Region"
-  }
+    name,
+  })),
 });
 ---
 
@@ -60,7 +62,7 @@ const serviceSchema = JSON.stringify({
 
   <CTASection
     heading="Ready to Start Your Tiling Project?"
-    text="Get in touch with Rohullah Rassuli Tiling Services for a free, no-obligation quote. We'd love to help bring your vision to life."
+    text="Get in touch with ROH Tiling for a free, no-obligation quote. We'd love to help bring your vision to life."
     variant="gold"
   />
 </BaseLayout>
