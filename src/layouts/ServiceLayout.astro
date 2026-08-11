@@ -2,6 +2,7 @@
 import BaseLayout from './BaseLayout.astro';
 import PageHeader from '../components/PageHeader.astro';
 import CTASection from '../components/CTASection.astro';
+import { business } from '../data/business';
 
 interface Props {
   title: string;
@@ -21,7 +22,7 @@ const {
   serviceDescription,
 } = Astro.props;
 
-const siteUrl = Astro.site?.toString().replace(/\/$/, '') ?? 'https://www.rohullahtiling.co.nz';
+const siteUrl = Astro.site?.toString().replace(/\/$/, '') ?? business.url;
 
 const breadcrumbs = [
   { name: 'Home', url: '/' },
@@ -29,21 +30,24 @@ const breadcrumbs = [
   { name: serviceName },
 ];
 
+/**
+ * The provider is a reference to the LocalBusiness declared once in
+ * BaseLayout, not a second copy of it. Two LocalBusiness nodes on one page
+ * reads as two businesses.
+ */
 const serviceSchema = JSON.stringify({
-  "@context": "https://schema.org",
-  "@type": "Service",
-  "serviceType": serviceType,
-  "name": serviceName,
-  "description": serviceDescription,
-  "provider": {
-    "@type": "LocalBusiness",
-    "name": "Rohullah Rassuli Tiling Services",
-    "url": siteUrl
-  },
-  "areaServed": {
-    "@type": "Place",
-    "name": "Wellington Region"
-  }
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  '@id': `${siteUrl}${canonical}#service`,
+  serviceType,
+  name: serviceName,
+  description: serviceDescription,
+  url: `${siteUrl}${canonical}`,
+  provider: { '@id': `${siteUrl}/#business` },
+  areaServed: business.areaServed.map((area) => ({
+    '@type': 'Place',
+    name: area,
+  })),
 });
 ---
 
@@ -59,8 +63,8 @@ const serviceSchema = JSON.stringify({
   <slot />
 
   <CTASection
-    heading="Ready to Start Your Tiling Project?"
-    text="Get in touch with Rohullah Rassuli Tiling Services for a free, no-obligation quote. We'd love to help bring your vision to life."
+    heading={`Need ${serviceName} in Wellington?`}
+    text="Get in touch for a free, no-obligation quote. Call for a straight answer, or send the details through the quote form and I will come and price it up."
     variant="gold"
   />
 </BaseLayout>

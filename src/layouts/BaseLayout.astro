@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import { business, services } from '../data/business';
 
 interface Props {
   title: string;
@@ -21,48 +22,75 @@ const {
   showMobileCTA = true,
 } = Astro.props;
 
-const siteUrl = Astro.site?.toString().replace(/\/$/, '') ?? 'https://www.rohullahtiling.co.nz';
+const siteUrl = Astro.site?.toString().replace(/\/$/, '') ?? business.url;
 const canonicalUrl = `${siteUrl}${canonical}`;
 const currentPath = Astro.url.pathname;
 
+/**
+ * The single LocalBusiness node for the whole site. Everything else that needs
+ * to point at the business references this `@id` rather than declaring its own
+ * copy, so there is exactly one LocalBusiness block per page.
+ *
+ * No aggregateRating and no review: the business has no reviews on any
+ * platform, and marking up ratings that do not exist invites a manual action.
+ */
+const businessId = `${siteUrl}/#business`;
+
 const localBusinessSchema = JSON.stringify({
-  "@context": "https://schema.org",
-  "@type": "LocalBusiness",
-  "name": "Rohullah Rassuli Tiling Services",
-  "description": "Professional tiling services across the Wellington region.",
-  "url": "https://www.rohullahtiling.co.nz",
-  "telephone": "+6402102602044",
-  "email": "Rohullah.rassuli@gmail.com",
-  "address": {
-    "@type": "PostalAddress",
-    "addressLocality": "Whitby",
-    "addressRegion": "Wellington",
-    "addressCountry": "NZ"
+  '@context': 'https://schema.org',
+  '@type': 'LocalBusiness',
+  '@id': businessId,
+  name: business.name,
+  legalName: business.registeredName,
+  description: `Tiling for bathrooms, showers, kitchens, splashbacks and floors across the Wellington region. Based in ${business.base}, ${business.yearsExperience} on the tools.`,
+  url: business.url,
+  telephone: business.phoneE164,
+  email: business.email,
+  image: `${siteUrl}/images/og-image.jpg`,
+  founder: {
+    '@type': 'Person',
+    name: business.owner,
   },
-  "geo": {
-    "@type": "GeoCoordinates",
-    "latitude": -41.1308,
-    "longitude": 174.8717
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: business.locality,
+    addressRegion: business.region,
+    addressCountry: 'NZ',
   },
-  "openingHours": "Mo-Fr 08:00-17:00",
-  "areaServed": {
-    "@type": "Place",
-    "name": "Wellington Region"
+  geo: {
+    '@type': 'GeoCoordinates',
+    latitude: business.geo.latitude,
+    longitude: business.geo.longitude,
   },
-  "priceRange": "$$"
+  openingHours: business.hours.schema,
+  areaServed: business.areaServed.map((area) => ({
+    '@type': 'Place',
+    name: area,
+  })),
+  makesOffer: services.map((service) => ({
+    '@type': 'Offer',
+    itemOffered: {
+      '@type': 'Service',
+      name: service.name,
+      description: service.schemaDescription,
+      url: `${siteUrl}${service.href}`,
+      provider: { '@id': businessId },
+    },
+  })),
+  priceRange: '$$',
 });
 
 let breadcrumbSchema = '';
 if (breadcrumbs && breadcrumbs.length > 0) {
   breadcrumbSchema = JSON.stringify({
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    "itemListElement": breadcrumbs.map((crumb, index) => ({
-      "@type": "ListItem",
-      "position": index + 1,
-      "name": crumb.name,
-      ...(crumb.url ? { "item": `${siteUrl}${crumb.url}` } : {})
-    }))
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: breadcrumbs.map((crumb, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      name: crumb.name,
+      ...(crumb.url ? { item: `${siteUrl}${crumb.url}` } : {}),
+    })),
   });
 }
 
@@ -73,17 +101,8 @@ function isActive(path: string): boolean {
   return currentPath.startsWith(path);
 }
 
-const serviceLinks = [
-  { name: 'Bathroom Tiling', href: '/services/bathroom-tiling' },
-  { name: 'Kitchen Tiling', href: '/services/kitchen-tiling' },
-  { name: 'Floor Tiling', href: '/services/floor-tiling' },
-  { name: 'Waterproofing', href: '/services/waterproofing' },
-  { name: 'Underfloor Heating', href: '/services/underfloor-heating' },
-  { name: 'Tile Repairs', href: '/services/tile-repairs' },
-];
-
 const navLinks = [
-  { name: 'Services', href: '/services', children: serviceLinks },
+  { name: 'Services', href: '/services', children: services },
   { name: 'Portfolio', href: '/portfolio' },
   { name: 'Service Areas', href: '/service-areas' },
   { name: 'About', href: '/about' },
@@ -96,38 +115,42 @@ const navLinks = [
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Marks that scripting is available, before first paint. The scroll-reveal
+       animation hides its elements only under `.js`, so without this the page
+       renders in full rather than staying blank. -->
+  <script is:inline>document.documentElement.classList.add('js');</script>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <title>{title}</title>
   <meta name="description" content={description} />
   <link rel="canonical" href={canonicalUrl} />
 
-  <!-- Open Graph -->
+  <!-- Open Graph. The image is a JPG: Facebook, LinkedIn, WhatsApp and
+       Messenger do not render SVG, so an SVG share card shows nothing. -->
   <meta property="og:title" content={title} />
   <meta property="og:description" content={description} />
   <meta property="og:type" content={ogType} />
   <meta property="og:url" content={canonicalUrl} />
   <meta property="og:locale" content="en_NZ" />
-  <meta property="og:site_name" content="Rohullah Rassuli Tiling Services" />
-  <meta property="og:image" content={`${siteUrl}/images/og-image.svg`} />
+  <meta property="og:site_name" content={business.name} />
+  <meta property="og:image" content={`${siteUrl}/images/og-image.jpg`} />
+  <meta property="og:image:type" content="image/jpeg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="Rohullah Rassuli Tiling Services — Professional Tiling Across Wellington" />
+  <meta property="og:image:alt" content={`Teal vertical tile shower and wall-hung vanity, installed by ${business.name}`} />
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content={title} />
   <meta name="twitter:description" content={description} />
-  <meta name="twitter:image" content={`${siteUrl}/images/og-image.svg`} />
+  <meta name="twitter:image" content={`${siteUrl}/images/og-image.jpg`} />
 
-  <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@400;500;700&display=swap"
-    rel="stylesheet"
-  />
+  <!-- Fonts are self-hosted (see the @font-face rules in global.css), so there
+       is no render-blocking stylesheet from a third party and no extra
+       connection to open. Preloaded because the CSS that references them is
+       itself a stylesheet, which would otherwise delay their discovery. -->
+  <link rel="preload" href="/fonts/dm-sans-latin.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="/fonts/playfair-display-latin.woff2" as="font" type="font/woff2" crossorigin />
 
-  <!-- LocalBusiness Schema -->
   <script type="application/ld+json" set:html={localBusinessSchema} />
 
   {breadcrumbSchema && (
@@ -137,15 +160,19 @@ const navLinks = [
   {schemas && (
     <script type="application/ld+json" set:html={schemas} />
   )}
+
+  <slot name="head" />
 </head>
 <body>
 
   <!-- ========== NAVIGATION ========== -->
   <header class="site-header" id="site-header">
     <div class="nav-container">
-      <a href="/" class="logo" aria-label="Rohullah Rassuli Tiling Services — Home">
-        <span class="logo-name">ROHULLAH RASSULI</span>
-        <span class="logo-tagline">TILING SERVICES</span>
+      <!-- No aria-label: the visible logo text is already the accessible name,
+           and an aria-label that omits it fails label-content-name-mismatch. -->
+      <a href="/" class="logo">
+        <span class="logo-name">ROH TILING</span>
+        <span class="logo-tagline">WELLINGTON TILER</span>
       </a>
 
       <!-- Desktop Navigation -->
@@ -181,11 +208,11 @@ const navLinks = [
       </nav>
 
       <!-- Phone Link -->
-      <a href="tel:+6402102602044" class="nav-phone" aria-label="Call us at 021 026 02044">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <a href={business.phoneLink} class="nav-phone" aria-label={`Call ROH Tiling on ${business.phone}`}>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
         </svg>
-        <span>021 026 02044</span>
+        <span>{business.phone}</span>
       </a>
 
       <!-- Hamburger Button -->
@@ -201,10 +228,10 @@ const navLinks = [
       {navLinks.map((link) => (
         <a href={link.href}>{link.name}</a>
       ))}
-      {serviceLinks.map((link) => (
-        <a href={link.href} style="font-size: 1.1rem; opacity: 0.8;">{link.name}</a>
+      {services.map((link) => (
+        <a href={link.href} class="nav-mobile__sub">{link.name}</a>
       ))}
-      <a href="tel:+6402102602044" style="color: var(--color-primary);">021 026 02044</a>
+      <a href={business.phoneLink} style="color: var(--color-primary);">{business.phone}</a>
     </nav>
   </header>
 
@@ -217,12 +244,12 @@ const navLinks = [
   <footer class="site-footer">
     <div class="container footer-grid">
       <div class="footer-col">
-        <a href="/" class="footer-logo" aria-label="Home">
-          <span class="logo-name">ROHULLAH RASSULI</span>
-          <span class="logo-tagline">TILING SERVICES</span>
+        <a href="/" class="footer-logo">
+          <span class="logo-name">ROH TILING</span>
+          <span class="logo-tagline">WELLINGTON TILER</span>
         </a>
         <p class="footer-desc">
-          Professional tiling services across the Wellington region. Quality craftsmanship, attention to detail, and a commitment to excellence on every project.
+          Tiling for bathrooms, showers, kitchens, splashbacks and floors across the Wellington region. {business.yearsExperience} on the tools, based in {business.base}.
         </p>
       </div>
 
@@ -230,21 +257,24 @@ const navLinks = [
         <h3 class="footer-heading">Contact Us</h3>
         <address class="footer-contact">
           <p>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-            Whitby, Wellington, New Zealand
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            {business.base}, {business.country}
           </p>
           <p>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-            <a href="tel:+6402102602044">021 026 02044</a>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            <a href={business.phoneLink}>{business.phone}</a>
           </p>
           <p>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-            <a href="mailto:Rohullah.rassuli@gmail.com">Rohullah.rassuli@gmail.com</a>
-            <!-- PLACEHOLDER EMAIL — replace with actual email -->
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            <a href={`mailto:${business.email}`}>{business.email}</a>
           </p>
           <p>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-            Mon&ndash;Fri: 8:00 AM &ndash; 5:00 PM
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <span>
+              {business.hours.display.map((slot) => (
+                <span class="footer-hours-line">{slot.days}: {slot.time}</span>
+              ))}
+            </span>
           </p>
         </address>
       </div>
@@ -254,6 +284,7 @@ const navLinks = [
         <ul class="footer-links">
           <li><a href="/">Home</a></li>
           <li><a href="/services">Services</a></li>
+          <li><a href="/portfolio">Portfolio</a></li>
           <li><a href="/service-areas">Service Areas</a></li>
           <li><a href="/about">About</a></li>
           <li><a href="/contact">Contact</a></li>
@@ -263,7 +294,7 @@ const navLinks = [
       <div class="footer-col">
         <h3 class="footer-heading">Our Services</h3>
         <ul class="footer-links">
-          {serviceLinks.map((link) => (
+          {services.map((link) => (
             <li><a href={link.href}>{link.name}</a></li>
           ))}
         </ul>
@@ -273,7 +304,7 @@ const navLinks = [
     <div class="footer-bottom">
       <div class="container footer-bottom-inner">
         <div class="footer-bottom-left">
-          <span>&copy; {year} Rohullah Rassuli Tiling Services. All rights reserved.</span>
+          <span>&copy; {year} {business.name}. All rights reserved.</span>
           <span class="footer-bottom-sep">|</span>
           <a href="/privacy">Privacy Policy</a>
           <span class="footer-bottom-sep">|</span>
@@ -283,14 +314,17 @@ const navLinks = [
           <a href="https://www.nexaii.com" target="_blank" rel="noopener noreferrer">Website designed by Nexaii</a>
         </div>
       </div>
+      <div class="container footer-registered">
+        <span>{business.name} is the trading name of {business.registeredName}.</span>
+      </div>
     </div>
   </footer>
 
   <!-- ========== MOBILE STICKY CTA BAR ========== -->
   {showMobileCTA && (
     <div class="mobile-cta-bar" id="mobile-cta-bar">
-      <a href="tel:+6402102602044" class="mobile-cta-btn mobile-cta-phone" aria-label="Call us">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <a href={business.phoneLink} class="mobile-cta-btn mobile-cta-phone" aria-label={`Call Now: ${business.phone}`}>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
         </svg>
         Call Now
@@ -300,6 +334,23 @@ const navLinks = [
   )}
 
   <!-- Client-side JS -->
-  <script is:inline src="/js/main.js"></script>
+  <script is:inline src="/js/main.js" defer></script>
 </body>
 </html>
+
+<style is:global>
+  .nav-mobile__sub {
+    font-size: 1.1rem;
+    opacity: 0.8;
+  }
+
+  .footer-hours-line {
+    display: block;
+  }
+
+  .footer-registered {
+    padding-top: 0.75rem;
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.7);
+  }
+</style>

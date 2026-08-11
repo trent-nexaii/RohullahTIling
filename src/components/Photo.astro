@@ -1,0 +1,93 @@
+---
+/**
+ * A photograph of real work.
+ *
+ * Wraps Astro's <Picture> so every photo on the site is served the same way:
+ * responsive WebP with a JPG fallback, explicit width and height so nothing
+ * reflows while it loads, and lazy by default. Pass `priority` on the one
+ * image that is the largest contentful paint and on no others.
+ *
+ * The wrapper holds the aspect ratio, so the space is reserved before the
+ * bytes arrive and cumulative layout shift stays at zero.
+ */
+import { Picture } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+interface Props {
+  src: ImageMetadata;
+  /** Describes the work. Name a suburb only where it is known to be true. */
+  alt: string;
+  /** CSS aspect ratio for the frame, e.g. "4 / 3". */
+  ratio?: string;
+  /** Which part of the photo to keep when the frame crops it. */
+  position?: string;
+  /** Rendered widths, so the browser can pick the smallest file that fits. */
+  sizes?: string;
+  widths?: number[];
+  /** Set on the LCP image only. Everything else stays lazy. */
+  priority?: boolean;
+  class?: string;
+  caption?: string;
+}
+
+const {
+  src,
+  alt,
+  ratio = '4 / 3',
+  position = 'center',
+  sizes = '(min-width: 992px) 33vw, 100vw',
+  widths = [400, 600, 800, 1200],
+  priority = false,
+  class: className = '',
+  caption,
+} = Astro.props;
+
+// Never ask sharp to upscale: a master narrower than the largest requested
+// width would otherwise be stretched and lose detail for no bandwidth saving.
+const available = widths.filter((w) => w <= src.width);
+const resolvedWidths = available.length > 0 ? available : [src.width];
+---
+
+<figure class={`photo ${className}`.trim()} style={`--photo-ratio: ${ratio}; --photo-position: ${position};`}>
+  <Picture
+    src={src}
+    alt={alt}
+    formats={['webp']}
+    fallbackFormat="jpg"
+    widths={resolvedWidths}
+    sizes={sizes}
+    quality={72}
+    loading={priority ? 'eager' : 'lazy'}
+    decoding={priority ? 'sync' : 'async'}
+    fetchpriority={priority ? 'high' : 'auto'}
+  />
+  {caption && <figcaption class="photo__caption">{caption}</figcaption>}
+</figure>
+
+<style>
+  .photo {
+    margin: 0;
+  }
+
+  .photo :global(picture) {
+    display: block;
+  }
+
+  .photo :global(img) {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: var(--photo-ratio);
+    object-fit: cover;
+    object-position: var(--photo-position);
+    border-radius: 8px;
+    background-color: #ece7df;
+  }
+
+  .photo__caption {
+    margin-top: 0.75rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: var(--color-body-text, #555);
+  }
+</style>

@@ -2,15 +2,19 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHeader from '../components/PageHeader.astro';
 import CTASection from '../components/CTASection.astro';
+import Photo from '../components/Photo.astro';
+import { business } from '../data/business';
 
-const title = "About Us | Rohullah Rassuli Tiling Services Wellington";
+import commercialWall from '../assets/photos/commercial-geometric-wall.jpg';
+
+const title = "About Us | ROH Tiling Wellington";
 const description = "Meet Rohullah Rassuli — Whitby-based professional tiler with 10+ years experience serving Wellington. Quality craftsmanship, honest pricing, and free quotes.";
 const canonical = "/about";
 const breadcrumbs = [{ name: "Home", url: "/" }, { name: "About" }];
 ---
 
 <BaseLayout title={title} description={description} canonical={canonical} breadcrumbs={breadcrumbs}>
-  <PageHeader title="About Rohullah Rassuli Tiling Services" breadcrumbs={breadcrumbs} />
+  <PageHeader title="About ROH Tiling" breadcrumbs={breadcrumbs} />
 
   <!-- Intro Section -->
   <section class="section section--light">
@@ -18,15 +22,23 @@ const breadcrumbs = [{ name: "Home", url: "/" }, { name: "About" }];
       <div class="about-intro">
         <div class="about-intro__text fade-in-up">
           <h2 class="section-title section-title--left">Experienced Tiling, Honest Service</h2>
-          <p>Rohullah Rassuli Tiling Services is a dedicated, owner-operated tiling business based in Whitby and proudly serving the greater Wellington region. With years of hands-on experience across residential and commercial projects, Rohullah brings a level of care and craftsmanship that larger companies simply cannot match.</p>
+          <p>ROH Tiling is a dedicated, owner-operated tiling business based in Whitby and proudly serving the greater Wellington region. With years of hands-on experience across residential and commercial projects, Rohullah brings a level of care and craftsmanship that larger companies simply cannot match.</p>
           <p>Every project — whether a compact <a href="/services/bathroom-tiling">ensuite renovation</a> in Porirua or a large-format <a href="/services/floor-tiling">floor installation</a> in a Wellington CBD apartment — receives the same meticulous attention to detail. Rohullah personally oversees each job from start to finish, ensuring precise tile placement, clean grout lines, and a flawless result that stands the test of time.</p>
           <p>What sets Rohullah apart is a genuine commitment to doing things right. That means arriving on time, keeping your home clean and tidy throughout the work, providing upfront and honest pricing with no hidden extras, and communicating clearly at every stage. It is a straightforward approach built on respect — for your home, your budget, and your time.</p>
           <p><strong>Free quotes are always available.</strong> Whether you have a clear plan or need guidance on tile selection and layout, Rohullah is happy to visit your property, discuss your ideas, and provide a detailed, no-obligation quote.</p>
         </div>
+        <!-- A portrait of Rohullah belongs here: on a one-person trade a face
+             earns more trust than anything else on the page. None was supplied,
+             so this slot carries a photograph of his work in the meantime.
+             Swap it for the portrait as soon as there is one. -->
         <div class="about-intro__image fade-in-up">
-          <div class="image-placeholder">
-            <span>Photo of Rohullah at work</span>
-          </div>
+          <Photo
+            src={commercialWall}
+            alt={`Commercial feature wall in a black and white geometric diamond pattern, installed by ${business.name}`}
+            ratio="4 / 3"
+            sizes="(min-width: 992px) 40vw, 100vw"
+            widths={[400, 600, 900]}
+          />
         </div>
       </div>
     </div>
@@ -147,7 +159,7 @@ const breadcrumbs = [{ name: "Home", url: "/" }, { name: "About" }];
 
   <CTASection
     heading="Ready to Start Your Tiling Project?"
-    text="Get in touch with Rohullah Rassuli Tiling Services for a free, no-obligation quote. We'd love to help bring your vision to life."
+    text="Get in touch with ROH Tiling for a free, no-obligation quote. We'd love to help bring your vision to life."
     variant="gold"
   />
 </BaseLayout>

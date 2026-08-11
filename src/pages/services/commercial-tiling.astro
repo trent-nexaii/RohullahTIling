@@ -1,0 +1,143 @@
+---
+import ServiceLayout from '../../layouts/ServiceLayout.astro';
+import Photo from '../../components/Photo.astro';
+import { business } from '../../data/business';
+
+import commercialPhoto from '../../assets/photos/commercial-geometric-wall.jpg';
+import floorPhoto from '../../assets/photos/large-format-shower-floor.jpg';
+---
+
+<ServiceLayout
+  title="Commercial Tiling Wellington | Fitouts & Amenities | ROH Tiling"
+  description={`Commercial tiling across Wellington: fitouts, changing rooms, amenities and large floor areas. Works around your programme. Free quotes — call ${business.phone}.`}
+  canonical="/services/commercial-tiling"
+  serviceName="Commercial Tiling"
+  serviceType="Commercial Tiling"
+  serviceDescription="Commercial tiling and fitout work, including changing rooms, amenities, feature walls and large floor areas, for businesses across the Wellington region."
+>
+
+  <!-- Intro -->
+  <section class="section">
+    <div class="container">
+      <div class="split-layout fade-in-up">
+        <div>
+          <p class="lead">
+            Commercial tiling is a different job from a home bathroom. The areas are bigger, the setting out has to hold true over long runs, and you are working to somebody else's programme alongside other trades who all need the same space on the same day.
+          </p>
+          <p>
+            I take on commercial fitout tiling across the Wellington region: changing rooms and amenities, back-of-house wet areas, feature walls, and large floor areas in retail and hospitality spaces. Most of it is done around the main contractor's schedule, and often outside trading hours where the space is already operating.
+          </p>
+          <p>
+            Work is quoted off the drawings or off a site walk, whichever suits. If the programme moves, tell me early and I will work with it rather than hold the job up.
+          </p>
+        </div>
+        <div>
+          <Photo
+            src={commercialPhoto}
+            alt={`Commercial feature wall in a black and white geometric diamond pattern with a suspended ceiling above, installed by ${business.name}`}
+            ratio="4 / 3"
+            sizes="(min-width: 992px) 45vw, 100vw"
+            widths={[400, 600, 900]}
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- What we do -->
+  <section class="section section--light">
+    <div class="container">
+      <h2 class="section-title">Commercial Work We Take On</h2>
+      <p class="section-subtitle">Fitout and refurbishment tiling for Wellington businesses, main contractors and property managers.</p>
+
+      <div class="services-grid fade-in-up">
+        <div class="service-card">
+          <h3>Changing Rooms and Amenities</h3>
+          <p>Gyms, pools, clubrooms and staff facilities. Wet areas waterproofed before tiling, floors laid to fall towards the wastes, and slip-rated tile used where the floor spends its life wet.</p>
+        </div>
+        <div class="service-card">
+          <h3>Large Floor Areas</h3>
+          <p>Retail floors, foyers and circulation space in large-format porcelain. Long runs need the levels checked as the job goes rather than at the end, and movement joints put where the drawings call for them.</p>
+        </div>
+        <div class="service-card">
+          <h3>Feature and Pattern Walls</h3>
+          <p>Geometric layouts, banding and set-out patterns that have to run true across an entire elevation. The setting out is most of the work; once the first course is right the rest follows.</p>
+        </div>
+        <div class="service-card">
+          <h3>Back of House and Kitchens</h3>
+          <p>Commercial kitchens, prep areas and cool store surrounds where the tiling has to be washable, sealed at the junctions and able to take a hosing down without letting water into the structure.</p>
+        </div>
+        <div class="service-card">
+          <h3>Bathrooms and Toilet Blocks</h3>
+          <p>Office, hospitality and public amenities. Cuts set out around cubicle fixings, hand dryers and vanities so the fixings land where they are supposed to rather than through a grout line.</p>
+        </div>
+        <div class="service-card">
+          <h3>Refurbishment and Make-Good</h3>
+          <p>Re-tiling on lease turnover, patching damaged areas, and replacing failed sections without re-doing the whole floor. Existing tile matched where it can still be sourced.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Working on site -->
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">Working on a Commercial Site</h2>
+      <p class="section-subtitle">What it looks like from the main contractor's side.</p>
+
+      <div class="process-timeline fade-in-up">
+        <div class="process-step">
+          <h3>Programme first</h3>
+          <p>Tiling sits between the waterproofing and the fitout trades, so it is rarely the thing that sets the dates. Tell me the window and I will tell you honestly whether it fits, rather than agreeing to it and running over.</p>
+        </div>
+        <div class="process-step">
+          <h3>Site requirements</h3>
+          <p>Site inductions, sign-in, hot works permits and the site's own health and safety requirements are all part of the job. Happy to work outside hours or in stages where the space has to stay open.</p>
+        </div>
+        <div class="process-step">
+          <h3>Set out before anything is fixed</h3>
+          <p>On a long elevation or a large floor, a few millimetres of drift per course becomes very visible by the far wall. The set out gets marked and checked before the first tile is fixed, and it gets checked again as the work moves across the space.</p>
+        </div>
+        <div class="process-step">
+          <h3>Substrate and movement</h3>
+          <p>Large floors move, and the tile has to be allowed to move with them. Perimeter and intermediate movement joints go in as specified, and substrates get checked for level and soundness rather than assumed.</p>
+        </div>
+        <div class="process-step">
+          <h3>Clean handover</h3>
+          <p>Grout haze off, silicone in, offcuts and packaging removed, and the area left ready for the next trade rather than needing a clean before they can start.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Floors -->
+  <section class="section section--light">
+    <div class="container">
+      <div class="split-layout fade-in-up">
+        <div>
+          <Photo
+            src={floorPhoto}
+            alt={`Large-format tiled floor laid to fall towards a square waste outlet, installed by ${business.name}`}
+            ratio="4 / 3"
+            position="center 70%"
+            sizes="(min-width: 992px) 45vw, 100vw"
+            widths={[400, 600, 900]}
+          />
+        </div>
+        <div>
+          <h2 class="section-title section-title--left">Wet Areas and Falls</h2>
+          <p>
+            Commercial wet areas are the part of a fitout most likely to come back as a defect. Water has to reach the waste from every point on the floor, which means the falls are set in the screed and checked before tiling, not corrected afterwards with grout.
+          </p>
+          <p>
+            Waterproofing goes on to meet NZ Building Code E3/AS1, with reinforcing bands at the internal corners, the floor-to-wall junctions and around every penetration. Where the job needs documentation for sign-off, that gets provided.
+          </p>
+          <p>
+            More detail on how the wet areas are built up is on the <a href="/services/waterproofing">waterproofing page</a>, and the floor build-up itself is covered under <a href="/services/floor-tiling">floor tiling</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</ServiceLayout>

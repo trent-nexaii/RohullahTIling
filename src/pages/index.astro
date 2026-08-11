@@ -1,97 +1,139 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ServiceCard from '../components/ServiceCard.astro';
-import TestimonialCard from '../components/TestimonialCard.astro';
 import TrustSignal from '../components/TrustSignal.astro';
 import CTASection from '../components/CTASection.astro';
+import Photo from '../components/Photo.astro';
+import { business } from '../data/business';
 
-const reviewSchema = JSON.stringify({
-  "@context": "https://schema.org",
-  "@type": "LocalBusiness",
-  "name": "Rohullah Rassuli Tiling Services",
-  "aggregateRating": {
-    "@type": "AggregateRating",
-    "ratingValue": "5",
-    "reviewCount": "3",
-    "bestRating": "5",
-    "worstRating": "1"
+import heroPhoto from '../assets/photos/teal-vertical-tile-shower.jpg';
+import showerFloorPhoto from '../assets/photos/large-format-shower-floor.jpg';
+import showerWindowPhoto from '../assets/photos/large-format-shower-window.jpg';
+import commercialPhoto from '../assets/photos/commercial-geometric-wall.jpg';
+
+/**
+ * Gallery of finished work. Every photo here is a job Rohullah did; none are
+ * stock. The brief asked for six, and four are all the supplied photographs
+ * that survive the do-not-publish rules — see scripts/prepare-photos.mjs.
+ */
+const gallery = [
+  {
+    src: heroPhoto,
+    alt: `Teal vertical subway tile shower with terrazzo floor and wall-hung vanity, installed by ${business.name}`,
+    ratio: '3 / 4',
+    position: 'center 55%',
   },
-  "review": [
-    {
-      "@type": "Review",
-      "author": { "@type": "Person", "name": "Sarah M." },
-      "reviewRating": { "@type": "Rating", "ratingValue": "5" },
-      "reviewBody": "Rohullah did an amazing job tiling our bathroom. He was professional from start to finish, offered great advice on tile selection, and the finished result exceeded our expectations."
-    },
-    {
-      "@type": "Review",
-      "author": { "@type": "Person", "name": "James & Lisa T." },
-      "reviewRating": { "@type": "Rating", "ratingValue": "5" },
-      "reviewBody": "We had Rohullah install a new kitchen splashback and re-tile the kitchen floor. His attention to detail was outstanding. He kept the workspace tidy, finished on time, and the end result looks absolutely stunning."
-    },
-    {
-      "@type": "Review",
-      "author": { "@type": "Person", "name": "David R." },
-      "reviewRating": { "@type": "Rating", "ratingValue": "5" },
-      "reviewBody": "Called Rohullah to tile our open-plan living and dining area. He was upfront about costs, worked efficiently, and the large-format floor tiles he laid are perfectly level."
-    }
-  ]
-});
+  {
+    src: showerFloorPhoto,
+    alt: `Large-format tiled shower floor laid to fall towards a square waste, installed by ${business.name}`,
+    ratio: '3 / 4',
+    position: 'center 65%',
+  },
+  {
+    src: showerWindowPhoto,
+    alt: `Large-format wall tiles cut around a bathroom window reveal, installed by ${business.name}`,
+    ratio: '3 / 4',
+    position: 'center 40%',
+  },
+  {
+    src: commercialPhoto,
+    alt: `Commercial feature wall in a black and white geometric diamond pattern, installed by ${business.name}`,
+    ratio: '3 / 4',
+    position: 'center',
+  },
+];
+
+const steps = [
+  {
+    title: 'Get in touch',
+    text: 'Call or send the form with a rough idea of the job.',
+  },
+  {
+    title: 'Free on-site quote',
+    text: 'I come out, measure up, and give you a written price.',
+  },
+  {
+    title: 'Agreed start date',
+    text: 'You know when I start and roughly how long it takes.',
+  },
+  {
+    title: 'Job done and site left tidy',
+    text: 'Tiles laid, grout finished, and the space swept clean.',
+  },
+];
 ---
 
 <BaseLayout
-  title="Expert Wellington Tiling Services | Rohullah Rassuli Tiling"
-  description="Wellington's trusted professional tiler. Expert bathroom, kitchen & floor tiling across the Wellington region. Free quotes. Call 021 026 02044 today."
+  title="Wellington Tiler | Bathroom, Kitchen & Floor Tiling | ROH Tiling"
+  description={`Wellington tiler for bathrooms, showers, kitchens, splashbacks and floors. ${business.yearsExperience} on the tools, based in ${business.base}. Free quotes. Call ${business.phone}.`}
   canonical="/"
-  schemas={reviewSchema}
 >
 
-  <!-- Hero Section -->
-  <section class="hero tile-grid-bg">
-    <div class="container">
-      <div class="hero__content fade-in-up">
-        <h1>Trusted <span class="highlight">Wellington Tiling Experts</span> — Quality You Can Count On</h1>
-        <p class="hero__subtitle">Professional bathroom, kitchen, and floor tiling across the Wellington region. Expert craftsmanship. Lasting results. Free quotes.</p>
+  <!-- Hero -->
+  <section class="hero hero--photo tile-grid-bg">
+    <div class="container hero__grid">
+      <div class="hero__content">
+        <h1>Wellington Tiler for <span class="highlight">Bathrooms, Showers, Kitchens and Floors</span></h1>
+        <p class="hero__subtitle">Tiling done properly across Wellington, Porirua, the Hutt Valley and the Kapiti Coast. Free quotes, no obligation.</p>
         <div class="hero__cta-group">
           <a href="/contact" class="btn btn--primary">Get a Free Quote</a>
-          <a href="tel:+6402102602044" class="btn btn--secondary">
+          <a href={business.phoneLink} class="btn btn--secondary">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
               <path d="M22 16.92V19.92C22 20.48 21.56 20.93 21 20.97C20.68 21 20.35 21 20 21C10.61 21 3 13.39 3 4C3 3.65 3 3.32 3.03 3C3.07 2.44 3.52 2 4.08 2H7.08C7.56 2 7.99 2.34 8.07 2.81C8.14 3.27 8.23 3.73 8.36 4.17C8.47 4.55 8.36 4.96 8.07 5.24L6.62 6.69C8.06 9.43 10.57 11.94 13.31 13.38L14.76 11.93C15.04 11.64 15.45 11.53 15.83 11.64C16.27 11.77 16.73 11.86 17.19 11.93C17.66 12.01 18 12.44 18 12.92V15.92" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
-            Call Now: 021 026 02044
+            Call {business.phone}
           </a>
         </div>
-        <div class="hero__trust-badges">
-          <span class="hero__badge">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12 15l-2 5l9-9h-5l2-5l-9 9h5z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            10+ Years Experience
-          </span>
-          <span class="hero__badge">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M9 11l3 3L22 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            Free Quotes
-          </span>
-          <span class="hero__badge">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="10" r="3" stroke="currentColor" stroke-width="2"/></svg>
-            Wellington-Wide
-          </span>
-        </div>
       </div>
+
+      <Photo
+        class="hero__photo"
+        src={heroPhoto}
+        alt={`Teal vertical subway tile shower with terrazzo floor and wall-hung vanity, installed by ${business.name}`}
+        ratio="4 / 5"
+        position="center 55%"
+        sizes="(min-width: 992px) 40vw, 100vw"
+        widths={[400, 550, 700, 850]}
+        priority
+      />
     </div>
   </section>
 
-  <!-- Intro Section -->
+  <!-- Trust strip -->
+  <section class="trust-strip" aria-label="Why work with ROH Tiling">
+    <div class="container trust-strip__inner">
+      <span class="trust-strip__item">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        Over 10 years on the tools
+      </span>
+      <span class="trust-strip__item">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        Free quotes
+      </span>
+      <span class="trust-strip__item">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+        Waterproofing to NZ Building Code E3/AS1
+      </span>
+      <span class="trust-strip__item">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        Wellington wide
+      </span>
+    </div>
+  </section>
+
+  <!-- Intro -->
   <section class="section intro-section">
     <div class="container fade-in-up">
-      <h2>Your Local Wellington Tiling Expert</h2>
+      <h2>Your Local Wellington Tiler</h2>
       <div class="intro-section__content">
-        <p>Rohullah Rassuli is a professional tiler based in Whitby, Porirua, bringing over a decade of hands-on tiling experience to homes and businesses across the Wellington region. From precision bathroom renovations to large-scale commercial floor installations, Rohullah delivers the kind of quality craftsmanship that stands the test of time.</p>
-        <p>Specialising in bathroom tiling, kitchen splashbacks, floor tiling, waterproofing, and underfloor heating installation, Rohullah Rassuli Tiling Services is your one-stop solution for all tiling needs. Every project receives the same meticulous attention to detail, whether it is a small tile repair or a full home renovation. We use only premium materials and proven techniques to ensure a flawless finish every time.</p>
-        <p>Proudly serving residential and commercial clients throughout Wellington City, Porirua, Lower Hutt, Upper Hutt, and the Kapiti Coast, we make expert tiling accessible across the entire Wellington region. Get in touch today for a free, no-obligation quote and discover why Wellington homeowners trust Rohullah Rassuli for their tiling projects.</p>
+        <p>{business.owner} is a tiler based in {business.base}, with {business.yearsExperience} on the tools across homes and commercial sites in the Wellington region. Bathrooms and showers, kitchen floors and <a href="/services/splashback-installation">splashbacks</a>, and large-format floors laid flat and level: it is all the same job done to the same standard, whether it is one wall or a whole house.</p>
+        <p>Every wet area is waterproofed before a single tile goes on, and every shower floor is laid to fall so the water goes where it should. Tiles get cut around window reveals, power points and plumbing rather than fudged, because that is the part you notice for the next twenty years.</p>
+        <p>Serving {business.areaServed.slice(0, -1).join(', ')} and the {business.areaServed.at(-1)}. Get in touch for a free, no-obligation quote.</p>
       </div>
     </div>
   </section>
 
-  <!-- Services Grid -->
+  <!-- Services -->
   <section class="section services-section">
     <div class="container fade-in-up">
       <h2>Our Tiling Services</h2>
@@ -99,94 +141,120 @@ const reviewSchema = JSON.stringify({
         <ServiceCard
           title="Bathroom Tiling"
           href="/services/bathroom-tiling"
-          description="Transform your bathroom with expertly installed wall and floor tiles. From modern ensuites to full bathroom renovations, we deliver waterproof, beautifully tiled spaces built to last."
+          description="Full bathrooms, ensuites and showers. Waterproofed wet areas, floor-to-ceiling walls, and tiled shower floors laid to fall."
           icon='<svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 22V12M20 22V12M2 12h20M4 12V4a2 2 0 012-2h12a2 2 0 012 2v8M9 7h6M9 4v6M15 4v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>'
         />
         <ServiceCard
           title="Kitchen Tiling"
           href="/services/kitchen-tiling"
-          description="Elevate your kitchen with beautiful splashbacks and floor tiles that combine style and practicality. We help you choose the perfect tiles to complement your kitchen design."
+          description="Kitchen floors and feature walls, set out so the cuts land where they are least visible and the pattern runs true."
           icon='<svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 9h18M3 9v10a2 2 0 002 2h14a2 2 0 002-2V9M3 9l2.5-4h13L21 9M12 13v4M8 13v4M16 13v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+        />
+        <ServiceCard
+          title="Splashback Installation"
+          href="/services/splashback-installation"
+          description="Kitchen and bathroom splashbacks in subway, fluted, mosaic and large-format tile, cut neatly around power points and window reveals."
+          icon='<svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 4h18v10H3z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M3 9h18M9 4v10M15 4v10M5 18h6M5 21h14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>'
         />
         <ServiceCard
           title="Floor Tiling"
           href="/services/floor-tiling"
-          description="Durable, level, and beautifully laid floor tiles for any room in your home or business. We work with porcelain, ceramic, natural stone, and large-format tiles for stunning results."
+          description="Large-format porcelain, timber-look and stone-look floors, laid level with consistent joints from room to room."
           icon='<svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="8" height="8" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="13" y="3" width="8" height="8" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="3" y="13" width="8" height="8" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="13" y="13" width="8" height="8" rx="1" stroke="currentColor" stroke-width="1.5"/></svg>'
         />
         <ServiceCard
           title="Waterproofing"
           href="/services/waterproofing"
-          description="Protect your home from moisture damage with professional waterproofing for bathrooms, showers, and wet areas. We use industry-approved membranes and methods for total peace of mind."
+          description="Wet area waterproofing to NZ Building Code E3/AS1, done before tiling so showers and bathrooms stay dry underneath."
           icon='<svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.69l5.66 5.66a8 8 0 11-11.31 0L12 2.69z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+        />
+        <ServiceCard
+          title="Commercial Tiling"
+          href="/services/commercial-tiling"
+          description="Fitout work for Wellington businesses: changing rooms, amenities, feature walls and large floor areas, worked around your programme."
+          icon='<svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-5h6v5M9 11h.01M15 11h.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>'
         />
         <ServiceCard
           title="Underfloor Heating"
           href="/services/underfloor-heating"
-          description="Stay warm through Wellington winters with professionally installed underfloor heating beneath your tiles. Energy-efficient comfort for bathrooms, kitchens, and living areas."
+          description="Electric heating mats laid under the tiles in bathrooms, kitchens and living areas, ready for your electrician to connect."
           icon='<svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 9a4 4 0 100 8 4 4 0 000-8zM12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>'
         />
         <ServiceCard
           title="Tile Repairs"
           href="/services/tile-repairs"
-          description="Cracked, chipped, or loose tiles? Fast, reliable repair and replacement services to restore your tiled surfaces. We match existing tiles wherever possible for a seamless finish."
+          description="Cracked and loose tiles replaced, grout and silicone renewed. Existing tiles matched wherever they can still be sourced."
           icon='<svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94L14.7 6.3z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>'
         />
       </div>
     </div>
   </section>
 
-  <!-- Why Choose Us -->
-  <section class="section why-choose-section">
+  <!-- Recent work -->
+  <section class="section work-section">
     <div class="container fade-in-up">
-      <h2>Why Choose Rohullah Rassuli Tiling?</h2>
-      <div class="trust-signals-grid">
-        <TrustSignal
-          title="Years of Experience"
-          description="With over 10 years in the tiling trade, Rohullah brings deep expertise and proven techniques to every project, large or small."
-          icon='<svg width="36" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z" stroke="currentColor" stroke-width="1.5"/><path d="M12 6v6l4 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>'
-        />
-        <TrustSignal
-          title="Quality Workmanship"
-          description="We never cut corners. Every tile is precisely laid, every surface properly prepared, and every finish meticulously checked for a result you will be proud of."
-          icon='<svg width="36" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22 11.08V12a10 10 0 11-5.93-9.14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M22 4L12 14.01l-3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>'
-        />
-        <TrustSignal
-          title="Free Quotes"
-          description="Every project starts with a free, no-obligation quote. We visit your site, discuss your vision, and provide an honest, transparent price with no hidden costs."
-          icon='<svg width="36" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>'
-        />
-        <TrustSignal
-          title="Wellington-Wide Service"
-          description="Based in Whitby, we serve the entire Wellington region including Porirua, Lower Hutt, Upper Hutt, Wellington City, and the Kapiti Coast."
-          icon='<svg width="36" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="10" r="3" stroke="currentColor" stroke-width="1.5"/></svg>'
-        />
+      <h2>Recent Work</h2>
+      <p class="work-section__intro">Photographs of jobs finished across the Wellington region.</p>
+      <div class="work-grid">
+        {gallery.map((shot) => (
+          <a href="/portfolio" class="work-grid__item">
+            <Photo
+              src={shot.src}
+              alt={shot.alt}
+              ratio={shot.ratio}
+              position={shot.position}
+              sizes="(min-width: 992px) 25vw, (min-width: 600px) 50vw, 100vw"
+              widths={[300, 500, 700]}
+            />
+          </a>
+        ))}
+      </div>
+      <div class="work-section__cta">
+        <a href="/portfolio" class="btn btn--outline">View the Full Portfolio</a>
       </div>
     </div>
   </section>
 
-  <!-- Testimonials -->
-  <section class="section testimonials-section">
+  <!-- How it works -->
+  <section class="section how-section">
     <div class="container fade-in-up">
-      <h2>What Our Clients Say</h2>
-      <div class="testimonials-grid">
-        <TestimonialCard
-          quote="Rohullah did an amazing job tiling our bathroom. He was professional from start to finish, offered great advice on tile selection, and the finished result exceeded our expectations. The waterproofing was done thoroughly and we could not be happier with the quality."
-          author="Sarah M."
-          location="Whitby, Porirua"
-          rating={5}
+      <h2>How It Works</h2>
+      <ol class="how-grid">
+        {steps.map((step, index) => (
+          <li class="how-step">
+            <span class="how-step__number" aria-hidden="true">{index + 1}</span>
+            <h3 class="how-step__title">{step.title}</h3>
+            <p class="how-step__text">{step.text}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- Why Choose Us -->
+  <section class="section why-choose-section">
+    <div class="container fade-in-up">
+      <h2>Why Choose ROH Tiling?</h2>
+      <div class="trust-signals-grid">
+        <TrustSignal
+          title="Over 10 Years on the Tools"
+          description="Rohullah has been tiling for more than a decade across residential and commercial work, and he is the one who turns up and does the job."
+          icon='<svg width="36" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z" stroke="currentColor" stroke-width="1.5"/><path d="M12 6v6l4 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>'
         />
-        <TestimonialCard
-          quote="We had Rohullah install a new kitchen splashback and re-tile the kitchen floor. His attention to detail was outstanding. He kept the workspace tidy, finished on time, and the end result looks absolutely stunning. Highly recommend his services to anyone in Wellington."
-          author="James & Lisa T."
-          location="Johnsonville"
-          rating={5}
+        <TrustSignal
+          title="Prepared Properly"
+          description="Surfaces levelled, wet areas waterproofed, falls set before tiling starts. The preparation is what decides whether the finish lasts."
+          icon='<svg width="36" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22 11.08V12a10 10 0 11-5.93-9.14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M22 4L12 14.01l-3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>'
         />
-        <TestimonialCard
-          quote="Called Rohullah to tile our open-plan living and dining area. He was upfront about costs, worked efficiently, and the large-format floor tiles he laid are perfectly level. Great communication throughout the project. Will definitely use him again for our bathroom renovation."
-          author="David R."
-          location="Lower Hutt"
-          rating={5}
+        <TrustSignal
+          title="Free Quotes"
+          description="Every job starts with a free on-site visit and a written price, so you know the cost before anything is committed."
+          icon='<svg width="36" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+        />
+        <TrustSignal
+          title="Wellington Wide"
+          description="Based in Whitby and working across Wellington City, Porirua, Lower Hutt, Upper Hutt and the Kapiti Coast."
+          icon='<svg width="36" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="10" r="3" stroke="currentColor" stroke-width="1.5"/></svg>'
         />
       </div>
     </div>
@@ -198,7 +266,7 @@ const reviewSchema = JSON.stringify({
       <h2>Areas We Serve Across Wellington</h2>
       <div class="service-areas-grid">
         <div class="service-area-group">
-          <h3>Porirua & Northern</h3>
+          <h3>Porirua &amp; Northern</h3>
           <ul>
             <li><strong>Whitby</strong> <span class="badge">Home Base</span></li>
             <li>Papakowhai</li>
@@ -222,7 +290,7 @@ const reviewSchema = JSON.stringify({
           </ul>
         </div>
         <div class="service-area-group">
-          <h3>Hutt Valley & Beyond</h3>
+          <h3>Hutt Valley &amp; Beyond</h3>
           <ul>
             <li>Lower Hutt</li>
             <li>Upper Hutt</li>
@@ -238,10 +306,187 @@ const reviewSchema = JSON.stringify({
     </div>
   </section>
 
-  <!-- CTA Section -->
   <CTASection
-    heading="Ready to Transform Your Space?"
-    text="Get in touch today for a free, no-obligation quote. Whether you are planning a bathroom renovation, kitchen upgrade, or any tiling project across the Wellington region, Rohullah Rassuli Tiling Services is here to help."
+    heading="Ready to Get Your Tiling Sorted?"
+    text="Get in touch for a free, no-obligation quote anywhere across the Wellington region."
   />
 
 </BaseLayout>
+
+<style>
+  /* Hero laid out as text beside the photo. The frame carries its own aspect
+     ratio so the space is reserved before the image loads. */
+  .hero--photo {
+    text-align: left;
+    padding-top: 4.5rem;
+    padding-bottom: 3rem;
+    min-height: 0;
+  }
+
+  .hero__grid {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    gap: 2rem;
+    align-items: center;
+  }
+
+  .hero--photo :global(.hero__content) {
+    max-width: 620px;
+    margin: 0;
+  }
+
+  /* A shade smaller than the site-wide hero heading so the photo still gets
+     into the first screen on a phone. */
+  .hero--photo :global(h1) {
+    font-size: clamp(1.95rem, 5.5vw, 3.6rem);
+  }
+
+  .hero--photo :global(.hero__subtitle) {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .hero--photo :global(.hero__cta-group) {
+    justify-content: flex-start;
+    margin-bottom: 0;
+  }
+
+  .hero--photo :global(.hero__photo img) {
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+  }
+
+  @media (min-width: 992px) {
+    .hero--photo {
+      padding-top: 6rem;
+      padding-bottom: 5rem;
+    }
+
+    .hero__grid {
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 3.5rem;
+    }
+  }
+
+  /* Trust strip */
+  .trust-strip {
+    background: var(--color-dark-text, #1f1a12);
+    color: #fff;
+    padding: 1rem var(--container-padding-x, 1rem);
+    border-top: 3px solid var(--color-primary, #d4a017);
+  }
+
+  .trust-strip__inner {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem 2rem;
+  }
+
+  .trust-strip__item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    line-height: 1.4;
+  }
+
+  .trust-strip__item svg {
+    flex-shrink: 0;
+    color: var(--color-primary, #d4a017);
+  }
+
+  /* Recent work */
+  .work-section__intro {
+    max-width: 640px;
+    margin-top: 0.75rem;
+    color: var(--color-muted, #6b6b6b);
+  }
+
+  .work-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+
+  @media (min-width: 992px) {
+    .work-grid {
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+    }
+  }
+
+  .work-grid__item {
+    display: block;
+    border-radius: 8px;
+    transition: transform 0.25s ease;
+  }
+
+  .work-grid__item:hover,
+  .work-grid__item:focus-visible {
+    transform: translateY(-4px);
+  }
+
+  .work-section__cta {
+    margin-top: 2rem;
+    text-align: center;
+  }
+
+  /* How it works */
+  .how-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    margin: 2rem 0 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: none;
+  }
+
+  @media (min-width: 600px) {
+    .how-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 992px) {
+    .how-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .how-step {
+    padding: 1.5rem;
+    background: var(--color-white, #fff);
+    border-radius: 8px;
+    box-shadow: var(--shadow-card, 0 2px 12px rgba(0, 0, 0, 0.08));
+  }
+
+  .how-step__number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 50%;
+    background: var(--color-primary, #d4a017);
+    color: #fff;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+  }
+
+  .how-step__title {
+    font-size: 1.05rem;
+    margin: 0 0 0.4rem;
+    color: var(--color-dark-text, #1f1a12);
+  }
+
+  .how-step__text {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--color-body-text, #555);
+  }
+</style>

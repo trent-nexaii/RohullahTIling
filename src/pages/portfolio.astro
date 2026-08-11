@@ -2,47 +2,61 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHeader from '../components/PageHeader.astro';
 import CTASection from '../components/CTASection.astro';
+import Photo from '../components/Photo.astro';
+import { business } from '../data/business';
 
-const title = "Tiling Portfolio Wellington | Rohullah Rassuli Projects";
-const description = "View our portfolio of completed tiling projects across Wellington. Bathroom renovations, shower tiling, commercial work & more. See the quality for yourself.";
-const canonical = "/portfolio";
-const breadcrumbs = [{ name: "Home", url: "/" }, { name: "Portfolio" }];
+import tealShower from '../assets/photos/teal-vertical-tile-shower.jpg';
+import showerFloor from '../assets/photos/large-format-shower-floor.jpg';
+import showerWindow from '../assets/photos/large-format-shower-window.jpg';
+import commercialWall from '../assets/photos/commercial-geometric-wall.jpg';
 
+const title = 'Tiling Portfolio Wellington | ROH Tiling';
+const description =
+  'Photographs of completed tiling work across Wellington: bathrooms, showers, tiled floors and commercial fitouts. See the finish before you commit.';
+const canonical = '/portfolio';
+const breadcrumbs = [{ name: 'Home', url: '/' }, { name: 'Portfolio' }];
+
+/**
+ * Every project here is work Rohullah did. No stock photography, and no
+ * suburb named unless it is known to be true, which is why these entries
+ * describe the work rather than claiming a location.
+ */
 const projects = [
   {
-    title: "Residential Bathroom — Large-Format Porcelain Tiles",
-    image: "/images/portfolio/bathroom-porcelain-shower.jpg",
-    alt: "Walk-in shower with large-format beige porcelain tiles — floor-to-ceiling installation in a Wellington home",
-    description: "A full bathroom tiling project featuring large-format beige porcelain tiles installed floor-to-ceiling. The walk-in shower includes precisely cut tiles around plumbing penetrations, a stainless steel floor waste with correct falls, and consistent grout lines throughout. This neutral palette creates a warm, spacious feel that works with any bathroom fittings.",
-    tags: ["Bathroom Tiling", "Large-Format Tiles", "Walk-in Shower", "Porcelain", "Wellington"],
+    title: 'Designer Bathroom — Teal Vertical Tile',
+    src: tealShower,
+    alt: `Teal vertical subway tile shower with terrazzo floor and wall-hung vanity, installed by ${business.name}`,
+    position: 'center 55%',
+    description:
+      'A floor-to-ceiling run of teal vertical subway tile, kept dead plumb across the wall and through the internal corner so the ribbing reads as one surface. Terrazzo-look floor tiles run out from under the wall-hung vanity with no break at the threshold, and the skylight above throws raking light across the glaze, which is unforgiving of any tile sitting proud of its neighbour.',
+    tags: ['Bathroom Tiling', 'Vertical Subway', 'Terrazzo Floor', 'Wall-hung Vanity'],
   },
   {
-    title: "Bathroom Renovation — Marble-Look Porcelain",
-    image: "/images/portfolio/bathroom-marble-look.jpg",
-    alt: "Bathroom renovation with white marble-look porcelain tiles and recessed niche — Wellington tiling project",
-    description: "A stunning bathroom renovation using high-gloss white marble-look porcelain tiles. The floor-to-ceiling installation features a recessed niche for storage, carefully cut around plumbing connections, and a seamless transition from wall to floor tiles. The calacatta-style veining adds luxury to this modern Wellington bathroom.",
-    tags: ["Bathroom Renovation", "Marble-Look Tiles", "Recessed Niche", "Floor-to-Ceiling"],
+    title: 'Shower Floor — Large-Format Porcelain Laid to Fall',
+    src: showerFloor,
+    alt: `Large-format tiled shower floor laid to fall towards a square waste outlet, installed by ${business.name}`,
+    position: 'center 65%',
+    description:
+      'Large-format porcelain taken across the walls and down onto the shower floor, with the falls set so water runs to the square waste from every point in the enclosure rather than pooling at the low corner. The mixer and outlet penetrations are cut cleanly rather than packed with grout, and the wall-to-floor junction is sealed as a movement joint.',
+    tags: ['Shower Tiling', 'Large-Format', 'Falls to Waste', 'Porcelain'],
   },
   {
-    title: "Walk-in Shower — Natural Stone Look",
-    image: "/images/portfolio/shower-natural-stone.jpg",
-    alt: "Walk-in shower with natural stone-look tiles and frosted privacy window — Wellington home",
-    description: "Another angle of a beautifully tiled bathroom featuring natural stone-look porcelain tiles. The large-format tiles minimise grout lines for a clean, modern aesthetic. Tiles are precisely cut around the frosted privacy window frame and plumbing penetrations, demonstrating the attention to detail that goes into every Rohullah Rassuli tiling project.",
-    tags: ["Shower Tiling", "Natural Stone Look", "Large-Format", "Porcelain"],
+    title: 'Bathroom Walls — Cut Around a Window Reveal',
+    src: showerWindow,
+    alt: `Large-format wall tiles cut around a bathroom window reveal, installed by ${business.name}`,
+    position: 'center 40%',
+    description:
+      'The same large-format tile carried around a window opening, with the cuts sized so the tile returns into the reveal and lands square against the frame on all four sides. Large tiles leave very few grout lines to hide behind, so the set-out has to be right before the first sheet is fixed rather than corrected as the wall goes up.',
+    tags: ['Wall Tiling', 'Window Reveal', 'Large-Format', 'Precision Cuts'],
   },
   {
-    title: "Designer Bathroom — Green Subway Feature Wall",
-    image: "/images/portfolio/bathroom-green-subway.jpg",
-    alt: "Modern designer bathroom with green subway tile feature wall, terrazzo floor, and skylight — Wellington bathroom renovation",
-    description: "A striking designer bathroom featuring a floor-to-ceiling green glazed subway tile feature wall paired with terrazzo-look floor tiles. The skylight floods the space with natural light, highlighting the hand-glazed finish of the subway tiles. A floating timber vanity with vessel basin completes this contemporary Wellington bathroom renovation. This project showcases our ability to work with multiple tile types and finishes in a single space.",
-    tags: ["Subway Tiles", "Feature Wall", "Terrazzo", "Designer Bathroom", "Green Tiles"],
-  },
-  {
-    title: "Commercial Tiling — Geometric Diamond Pattern",
-    image: "/images/portfolio/commercial-geometric-pattern.jpg",
-    alt: "Commercial tiling project with black and white geometric diamond pattern wall tiles — Wellington commercial space",
-    description: "A large-scale commercial tiling installation featuring a bold black and white geometric diamond pattern. This eye-catching design required precise tile alignment across a long wall, with clean white subway tiles above creating a crisp border. Commercial tiling projects like this demand expertise in layout planning, consistent spacing, and working to tight tolerances — all hallmarks of Rohullah Rassuli Tiling Services.",
-    tags: ["Commercial Tiling", "Geometric Pattern", "Mosaic", "Black & White", "Feature Wall"],
+    title: 'Commercial Fitout — Geometric Feature Wall',
+    src: commercialWall,
+    alt: `Commercial feature wall in a black and white geometric diamond pattern with a suspended ceiling above, installed by ${business.name}`,
+    position: 'center',
+    description:
+      'A geometric diamond pattern set out across a long commercial elevation, with a banded white field above it. On a run this length a small error in the first course compounds into a visible drift by the far end, so the pattern was set out and checked against the datum as the work moved along the wall.',
+    tags: ['Commercial Tiling', 'Geometric Pattern', 'Feature Wall', 'Fitout'],
   },
 ];
 ---
@@ -54,7 +68,7 @@ const projects = [
   <section class="section section--light">
     <div class="container">
       <div class="portfolio-intro fade-in-up">
-        <p>Explore a selection of our recent tiling projects across the Wellington region. From residential bathrooms to commercial spaces, every project reflects our commitment to precision, quality materials, and lasting craftsmanship.</p>
+        <p>A selection of recent tiling work across the Wellington region, from residential bathrooms through to commercial fitouts. These are photographs of jobs as they were handed over.</p>
       </div>
     </div>
   </section>
@@ -65,15 +79,17 @@ const projects = [
       <div class="portfolio-grid">
         {projects.map((project) => (
           <article class="portfolio-item fade-in-up">
-            <img
-              src={project.image}
+            <Photo
+              src={project.src}
               alt={project.alt}
-              width="800"
-              height="600"
-              loading="lazy"
+              ratio="4 / 3"
+              position={project.position}
+              sizes="(min-width: 768px) 50vw, 100vw"
+              widths={[400, 600, 900]}
+              class="portfolio-item__photo"
             />
             <div class="portfolio-item-content">
-              <h3>{project.title}</h3>
+              <h2>{project.title}</h2>
               <p>{project.description}</p>
               <div class="portfolio-tags">
                 {project.tags.map((tag) => (
@@ -92,16 +108,15 @@ const projects = [
     <div class="container">
       <div class="portfolio-seo fade-in-up">
         <h2 class="section-title">Wellington Tiling You Can Trust</h2>
-        <p>Every project in our portfolio was completed by Rohullah Rassuli personally, right here in the Wellington region. From Whitby and Porirua through to Lower Hutt, Upper Hutt, and Wellington CBD, our work speaks for itself. We use only quality porcelain, ceramic, and natural stone tiles sourced from trusted New Zealand suppliers, paired with premium adhesives and grouts that ensure a lasting finish.</p>
-        <p>Whether you are planning a simple bathroom refresh or a full-scale commercial fit-out, the same level of care and craftsmanship goes into every job. Precise cuts, consistent grout lines, correct waterproofing, and a clean, tidy workspace are standard on every Rohullah Rassuli tiling project. We invite you to browse these completed projects and see the quality for yourself — then get in touch for a free, no-obligation quote on your own tiling project.</p>
+        <p>Every project on this page was tiled by {business.owner} personally, here in the Wellington region. From Whitby and Porirua through to Lower Hutt, Upper Hutt and Wellington City, the work is the reference rather than the sales pitch.</p>
+        <p>Whether it is a single bathroom or a full commercial fitout, the same things decide whether it lasts: the substrate prepared properly, wet areas waterproofed before tiling, falls set so water goes where it should, and cuts made rather than fudged. Have a look through these projects, then get in touch for a free, no-obligation quote on your own job.</p>
       </div>
     </div>
   </section>
 
-  <!-- CTA Section -->
   <CTASection
-    heading="Ready to Start Your Tiling Project?"
-    text="Get in touch today for a free, no-obligation quote. We would love to add your project to our portfolio."
+    heading="Want Work Like This in Your Place?"
+    text="Get in touch for a free, no-obligation quote anywhere across the Wellington region."
   />
 </BaseLayout>
 
@@ -115,7 +130,7 @@ const projects = [
   .portfolio-intro p {
     font-size: 1.125rem;
     line-height: 1.75;
-    color: var(--color-text, #333);
+    color: var(--color-body-text, #333);
   }
 
   .portfolio-grid {
@@ -143,29 +158,25 @@ const projects = [
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
   }
 
-  .portfolio-item img {
-    width: 100%;
-    height: auto;
-    object-fit: cover;
-    aspect-ratio: 4 / 3;
-    display: block;
+  .portfolio-item :global(.portfolio-item__photo img) {
+    border-radius: 8px 8px 0 0;
   }
 
   .portfolio-item-content {
     padding: 1.5rem;
   }
 
-  .portfolio-item-content h3 {
+  .portfolio-item-content h2 {
     margin: 0 0 0.75rem;
     font-size: 1.2rem;
-    color: var(--color-heading, #1a1a2e);
+    color: var(--color-dark-text, #1a1a1a);
   }
 
   .portfolio-item-content p {
     margin: 0 0 1rem;
     font-size: 0.95rem;
     line-height: 1.65;
-    color: var(--color-text, #555);
+    color: var(--color-body-text, #555);
   }
 
   .portfolio-tags {
@@ -192,7 +203,7 @@ const projects = [
   .portfolio-seo p {
     font-size: 1rem;
     line-height: 1.75;
-    color: var(--color-text, #555);
+    color: var(--color-body-text, #555);
     margin-bottom: 1rem;
   }
 </style>

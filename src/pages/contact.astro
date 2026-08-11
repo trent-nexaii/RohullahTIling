@@ -2,20 +2,34 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHeader from '../components/PageHeader.astro';
 import CTASection from '../components/CTASection.astro';
+import { business } from '../data/business';
+import { FORM_ENDPOINT, FORM_REDIRECT_FIELD } from '../data/forms';
 
-const title = "Contact Us | Rohullah Rassuli Tiling Services Wellington";
-const description = "Contact Rohullah Rassuli Tiling Services for a free tiling quote in Wellington. Call 021 026 02044 or fill in our online form. Whitby-based, Wellington-wide.";
+const title = "Contact Us | ROH Tiling Wellington";
+const description = "Contact ROH Tiling for a free tiling quote in Wellington. Call 0210 260 2044 or fill in our online form. Whitby-based, Wellington-wide.";
 const canonical = "/contact";
 const breadcrumbs = [{ name: "Home", url: "/" }, { name: "Contact" }];
+
+const siteUrl = Astro.site?.toString().replace(/\/$/, '') ?? business.url;
+
+/**
+ * Both forms are plain HTML posts, so they work with JavaScript disabled.
+ * With a handler configured they post to it and the handler redirects to the
+ * success page; without one they fall back to a mailto: submission.
+ */
+const hasEndpoint = FORM_ENDPOINT.length > 0;
+const formAction = hasEndpoint ? FORM_ENDPOINT : `mailto:${business.email}`;
+const formEnctype = hasEndpoint ? undefined : 'text/plain';
+const successUrl = `${siteUrl}/quote-sent`;
 ---
 
 <BaseLayout title={title} description={description} canonical={canonical} breadcrumbs={breadcrumbs} showMobileCTA={false}>
-  <PageHeader title="Contact Rohullah Rassuli Tiling Services" breadcrumbs={breadcrumbs} />
+  <PageHeader title="Contact ROH Tiling" breadcrumbs={breadcrumbs} />
 
   <!-- Contact Intro -->
   <section class="section section--light" style="padding-bottom: 0;">
     <div class="container" style="max-width: 720px; text-align: center;">
-      <p style="font-size: 1.1rem; line-height: 1.75; color: var(--color-text, #555);">Contact Rohullah Rassuli Tiling Services for professional <a href="/services/bathroom-tiling">bathroom</a>, <a href="/services/kitchen-tiling">kitchen</a>, and <a href="/services/floor-tiling">floor tiling</a> across Wellington. Based in Whitby, we serve Porirua, Lower Hutt, Upper Hutt, and the wider Wellington region. Call us or fill in the form below for a free, no-obligation quote.</p>
+      <p style="font-size: 1.1rem; line-height: 1.75; color: var(--color-text, #555);">Contact ROH Tiling for professional <a href="/services/bathroom-tiling">bathroom</a>, <a href="/services/kitchen-tiling">kitchen</a>, and <a href="/services/floor-tiling">floor tiling</a> across Wellington. Based in Whitby, we serve Porirua, Lower Hutt, Upper Hutt, and the wider Wellington region. Call us or fill in the form below for a free, no-obligation quote.</p>
     </div>
   </section>
 
@@ -36,7 +50,7 @@ const breadcrumbs = [{ name: "Home", url: "/" }, { name: "Contact" }];
               </svg>
               <div>
                 <strong>Address</strong>
-                <p>Whitby, Wellington, New Zealand</p>
+                <p>Whitby, Porirua, New Zealand</p>
               </div>
             </div>
 
@@ -46,7 +60,7 @@ const breadcrumbs = [{ name: "Home", url: "/" }, { name: "Contact" }];
               </svg>
               <div>
                 <strong>Phone</strong>
-                <p><a href="tel:+6402102602044">021 026 02044</a></p>
+                <p><a href="tel:+642102602044">0210 260 2044</a></p>
               </div>
             </div>
 
@@ -57,7 +71,7 @@ const breadcrumbs = [{ name: "Home", url: "/" }, { name: "Contact" }];
               </svg>
               <div>
                 <strong>Email</strong>
-                <p><a href="mailto:Rohullah.rassuli@gmail.com">Rohullah.rassuli@gmail.com</a></p>
+                <p><a href="mailto:rohullah@rohullahtiling.co.nz">rohullah@rohullahtiling.co.nz</a></p>
               </div>
             </div>
 
@@ -68,8 +82,10 @@ const breadcrumbs = [{ name: "Home", url: "/" }, { name: "Contact" }];
               </svg>
               <div>
                 <strong>Hours</strong>
-                <p>Monday &ndash; Friday: 8:00 AM &ndash; 5:00 PM</p>
-                <p>Saturday &amp; Sunday: Closed</p>
+                {business.hours.display.map((slot) => (
+                  <p>{slot.days}: {slot.time}</p>
+                ))}
+                <p>Sunday: Closed</p>
               </div>
             </div>
           </address>
@@ -83,11 +99,13 @@ const breadcrumbs = [{ name: "Home", url: "/" }, { name: "Contact" }];
         <div class="contact-forms">
 
           <!-- Quote Request Form -->
-          <div class="contact-form quote-form-card fade-in-up">
+          <div class="contact-form quote-form-card fade-in-up" id="quote">
             <h2>Request a Free Quote</h2>
             <p class="form-intro">Tell us about your project and we will provide a detailed, no-obligation quote. The more detail you can share, the more accurate your quote will be.</p>
 
-            <form action="#" method="POST" class="form">
+            <form action={formAction} method="post" enctype={formEnctype} class="form">
+              <input type="hidden" name={FORM_REDIRECT_FIELD} value={successUrl} />
+              <input type="hidden" name="_subject" value="Quote request from rohullahtiling.co.nz" />
               <div class="form-row">
                 <div class="form-group">
                   <label for="quote-name">Full Name <span class="required">*</span></label>
@@ -116,8 +134,10 @@ const breadcrumbs = [{ name: "Home", url: "/" }, { name: "Contact" }];
                   <option value="">Select a service...</option>
                   <option value="bathroom-tiling">Bathroom Tiling</option>
                   <option value="kitchen-tiling">Kitchen Tiling</option>
+                  <option value="splashback-installation">Splashback Installation</option>
                   <option value="floor-tiling">Floor Tiling</option>
                   <option value="waterproofing">Waterproofing</option>
+                  <option value="commercial-tiling">Commercial Tiling</option>
                   <option value="underfloor-heating">Underfloor Heating</option>
                   <option value="tile-repairs">Tile Repairs</option>
                   <option value="other">Other</option>
@@ -152,7 +172,9 @@ const breadcrumbs = [{ name: "Home", url: "/" }, { name: "Contact" }];
             <h2>Quick Contact</h2>
             <p class="form-intro">Have a quick question? Send us a message and we will be in touch.</p>
 
-            <form action="#" method="POST" class="form">
+            <form action={formAction} method="post" enctype={formEnctype} class="form">
+              <input type="hidden" name={FORM_REDIRECT_FIELD} value={successUrl} />
+              <input type="hidden" name="_subject" value="Message from rohullahtiling.co.nz" />
               <div class="form-row">
                 <div class="form-group">
                   <label for="contact-name">Name <span class="required">*</span></label>
@@ -191,13 +213,13 @@ const breadcrumbs = [{ name: "Home", url: "/" }, { name: "Contact" }];
       <div class="map-container fade-in-up">
         <iframe
           src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d12345!2d174.8717!3d-41.1308!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2sWhitby%2C+Wellington!5e0!3m2!1sen!2snz"
-          width="100%"
-          height="450"
           style="border:0;"
           allowfullscreen=""
           loading="lazy"
           referrerpolicy="no-referrer-when-downgrade"
-          title="Rohullah Rassuli Tiling Services location — Whitby, Wellington"
+          title="ROH Tiling location — Whitby, Porirua"
+          width="600"
+          height="450"
         ></iframe>
       </div>
     </div>
@@ -262,7 +284,7 @@ const breadcrumbs = [{ name: "Home", url: "/" }, { name: "Contact" }];
     color: var(--color-dark-text);
   }
   .contact-nap__item a {
-    color: var(--color-primary-dark);
+    color: var(--color-primary-deep);
     text-decoration: none;
     font-weight: 600;
   }
@@ -370,12 +392,16 @@ const breadcrumbs = [{ name: "Home", url: "/" }, { name: "Contact" }];
   .radio-label {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.6rem;
+    min-height: 44px;
     font-weight: 400;
     cursor: pointer;
   }
   .radio-label input[type="radio"] {
-    width: auto;
+    /* 44px minimum tap target on the label, with a control large enough to
+       hit on a phone rather than the 13px browser default. */
+    width: 22px;
+    height: 22px;
     accent-color: var(--color-primary);
   }
 

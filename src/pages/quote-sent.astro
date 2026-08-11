@@ -1,0 +1,86 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import { business } from '../data/business';
+
+const breadcrumbs = [{ name: 'Home', url: '/' }, { name: 'Message Sent' }];
+---
+
+<BaseLayout
+  title="Message Sent | ROH Tiling"
+  description="Your message has been sent to ROH Tiling. We will get back to you shortly."
+  canonical="/quote-sent"
+  breadcrumbs={breadcrumbs}
+>
+  <PageHeader title="Message Sent" breadcrumbs={breadcrumbs} />
+
+  <section class="section">
+    <div class="container sent">
+      <div class="sent__icon" aria-hidden="true">
+        <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10" />
+          <path d="M8 12l3 3 5-6" />
+        </svg>
+      </div>
+
+      <h2 class="sent__heading">Thanks, your message is on its way</h2>
+
+      <p class="sent__lead">
+        Rohullah will get back to you shortly. If it is urgent, or you would rather talk it through, give him a call.
+      </p>
+
+      <div class="sent__actions">
+        <a href={business.phoneLink} class="btn btn--primary">Call {business.phone}</a>
+        <a href="/portfolio" class="btn btn--outline">See Recent Work</a>
+      </div>
+
+      <p class="sent__hours">
+        {business.hours.display.map((slot) => (
+          <span class="sent__hours-line">{slot.days}: {slot.time}</span>
+        ))}
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .sent {
+    max-width: 640px;
+    text-align: center;
+  }
+
+  .sent__icon {
+    color: var(--color-primary, #d4a017);
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1.25rem;
+  }
+
+  .sent__heading {
+    margin-bottom: 1rem;
+  }
+
+  .sent__lead {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: var(--color-body-text, #555);
+    margin-bottom: 2rem;
+  }
+
+  .sent__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+    margin-bottom: 2rem;
+  }
+
+  .sent__hours {
+    font-size: 0.95rem;
+    color: var(--color-muted, #888);
+  }
+
+  .sent__hours-line {
+    display: block;
+  }
+</style>
