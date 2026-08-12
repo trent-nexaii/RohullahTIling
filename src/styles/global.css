@@ -794,6 +794,8 @@ strong {
 
 .section--light {
   background-color: var(--color-light-bg);
+  border-top: 1px solid var(--color-border-warm);
+  border-bottom: 1px solid var(--color-border-warm);
 }
 
 /* Dark section with subtle gold grain texture */
@@ -1493,16 +1495,49 @@ strong {
    -------------------------------------------------------------------------- */
 .page-header {
   position: relative;
-  min-height: 200px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 5rem var(--container-padding-x) 2.5rem;
+  padding: 7.5rem var(--container-padding-x) 4rem;
   background-color: var(--color-dark-section);
   background-image: var(--tile-grid-pattern);
   overflow: hidden;
+}
+
+/* Depth behind the title so it does not read as a flat black strip */
+.page-header::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 120% at 50% 0%, rgba(212, 160, 23, 0.16) 0%, transparent 60%),
+    linear-gradient(180deg, rgba(26, 26, 26, 0.2) 0%, rgba(26, 26, 26, 0.75) 100%);
+  pointer-events: none;
+}
+
+.page-header__inner {
+  position: relative;
+  z-index: 2;
+  max-width: 760px;
+}
+
+/* Short gold rule above the title, replacing the breadcrumb trail */
+.page-header__rule {
+  display: block;
+  width: 56px;
+  height: 3px;
+  margin: 0 auto 1.5rem;
+  border-radius: 2px;
+  background: var(--color-primary);
+}
+
+.page-header__subtitle {
+  margin-top: 1.1rem;
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.72);
 }
 
 /* Gold gradient bottom border */
@@ -1528,9 +1563,6 @@ strong {
   margin-bottom: 0.5rem;
 }
 
-.page-header .breadcrumb {
-  margin-top: 0.5rem;
-}
 
 
 /* --------------------------------------------------------------------------
@@ -1926,8 +1958,7 @@ strong {
 
 /* Page Header BEM aliases */
 .page-header__inner { position: relative; z-index: 2; }
-.page-header__title { font-size: clamp(2rem, 5vw, 3rem); color: var(--color-white); margin-top: 1rem; }
-.page-header__breadcrumbs { display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; }
+.page-header__title { font-size: clamp(2rem, 5vw, 3.15rem); color: var(--color-white); margin-top: 0; line-height: 1.15; }
 
 /* About page */
 .about-intro__text { }

@@ -154,7 +154,7 @@ const recentWork = [
   </section>
 
   <!-- Services Grid -->
-  <section class="section services-section">
+  <section class="section section--light services-section">
     <div class="container fade-in-up">
       <h2>Our Tiling Services</h2>
       <div class="services-grid">
@@ -239,9 +239,9 @@ const recentWork = [
     aggregateRating schema until the reviews are live and verifiable.
     ===================================================================
   -->
-  <section class="section recent-work-section">
+  <section class="section section--light recent-work-section">
     <div class="container fade-in-up">
-      <h2>Recent Tiling Work Across Wellington</h2>
+      <h2 class="section-title">Recent Tiling Work Across Wellington</h2>
       <p class="section-subtitle">Real jobs, photographed on site. Several are mid-installation — that is what quality tiling looks like before the trades finish behind it.</p>
       <div class="work-grid">
         {recentWork.map((item) => (
@@ -443,7 +443,7 @@ const recentWork = [
   .work-card:hover .work-card__link { text-decoration: underline; }
 
   /* Meet Rohullah band */
-  .meet-section { background: var(--color-light-bg); }
+  .meet-section { background: var(--color-white); border-top: 1px solid var(--color-border-warm); }
   .meet-band {
     display: grid;
     grid-template-columns: 1fr;

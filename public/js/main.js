@@ -148,14 +148,46 @@ document.addEventListener('DOMContentLoaded', () => {
     const fields = form.querySelectorAll('input, textarea, select');
     fields.forEach((f) => f.addEventListener('blur', () => validate(f)));
 
+    // Readable labels for the email body, keyed by field name.
+    const LABELS = {
+      full_name: 'Name',
+      name: 'Name',
+      phone: 'Phone',
+      email: 'Email',
+      suburb: 'Suburb',
+      service: 'Service',
+      description: 'Project details',
+      message: 'Message',
+      preferred_contact: 'Preferred contact method',
+    };
+
+    /**
+     * The site is statically hosted with no form backend, so the enquiry is
+     * handed to the visitor's email client addressed to the business. This
+     * previously showed a success message and sent nothing at all, which meant
+     * every enquiry submitted through the form was silently lost.
+     */
     form.addEventListener('submit', (e) => {
       e.preventDefault();
       let ok = true;
       fields.forEach((f) => { if (!validate(f)) ok = false; });
-      if (!ok) return;
+      if (!ok) {
+        const bad = form.querySelector('.field-error');
+        if (bad) bad.focus();
+        return;
+      }
 
-      form.reset();
-      fields.forEach((f) => clearError(f));
+      const data = new FormData(form);
+      const lines = [];
+      for (const [key, raw] of data.entries()) {
+        const value = String(raw).trim();
+        if (!value) continue;
+        lines.push(`${LABELS[key] || key}: ${value}`);
+      }
+
+      const to = form.dataset.mailto;
+      const subject = form.dataset.subject || 'Website enquiry';
+      const body = lines.join('\n') + '\n\n— Sent from rohullahtiling.co.nz';
 
       let msg = form.querySelector('.form-success');
       if (!msg) {
@@ -164,8 +196,15 @@ document.addEventListener('DOMContentLoaded', () => {
         msg.setAttribute('role', 'status');
         form.appendChild(msg);
       }
-      msg.textContent = 'Thank you! Your message has been sent successfully.';
-      setTimeout(() => { if (msg) msg.textContent = ''; }, 5000);
+      msg.innerHTML =
+        'Opening your email app with this enquiry ready to send &mdash; please press send to deliver it. ' +
+        'If nothing opens, email <a href="mailto:' + to + '">' + to + '</a> ' +
+        'or call <a href="tel:+642102602044">021 026 02044</a>.';
+
+      window.location.href =
+        'mailto:' + to +
+        '?subject=' + encodeURIComponent(subject) +
+        '&body=' + encodeURIComponent(body);
     });
   });
 });
