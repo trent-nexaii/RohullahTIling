@@ -13,6 +13,7 @@ import {
   ADDRESS_REGION,
   POSTAL_CODE,
   HOURS,
+  OPENING_HOURS_SPECIFICATION,
   GBP_URL,
   INSTAGRAM_URL,
   OG_IMAGE,
@@ -73,12 +74,8 @@ const localBusinessSchema = JSON.stringify({
     { "@type": "City", "name": "Upper Hutt" },
     { "@type": "Place", "name": "Kapiti Coast" }
   ],
-  "openingHoursSpecification": [{
-    "@type": "OpeningHoursSpecification",
-    "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-    "opens": "08:00",
-    "closes": "17:00"
-  }],
+  // Derived from HOURS so the schema can never drift from the visible hours.
+  "openingHoursSpecification": OPENING_HOURS_SPECIFICATION,
   "sameAs": [GBP_URL, INSTAGRAM_URL]
 });
 

@@ -87,8 +87,9 @@ const breadcrumbs = [{ name: "Home", url: "/" }, { name: "Contact" }];
               </svg>
               <div>
                 <strong>Hours</strong>
-                <!-- Saturday is "By appointment", not Closed: homeowners research
-                     bathroom renovations on Saturday mornings. -->
+                <!-- Mirrors the Google Business Profile exactly. Edit HOURS in
+                     src/data/business.ts; this list and the LocalBusiness
+                     openingHoursSpecification both derive from it. -->
                 {HOURS.map((h) => (
                   <p>{h.label}: {h.value}</p>
                 ))}
