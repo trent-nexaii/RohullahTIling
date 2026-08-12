@@ -1,9 +1,11 @@
 ---
 import ServiceLayout from '../../layouts/ServiceLayout.astro';
+import { Image } from 'astro:assets';
+import walkInShowerImg from '../../assets/images/walk-in-shower-tiling-linear-drain-wellington.webp';
 ---
 
 <ServiceLayout
-  title="Waterproofing Wellington | Rohullah Rassuli Tiling Services"
+  title="Waterproofing Wellington | ROH Tiling"
   description="Professional waterproofing in Wellington. NZS 4858 compliant bathroom & wet area waterproofing. Protect your home. Free quotes — call 021 026 02044."
   canonical="/services/waterproofing"
   serviceName="Waterproofing"
@@ -20,16 +22,25 @@ import ServiceLayout from '../../layouts/ServiceLayout.astro';
             Waterproofing is the invisible layer that protects your home from one of the most destructive forces in building — water. In Wellington, where wet winters, driving rain, and high humidity are the norm, proper waterproofing beneath tiles is not just good practice; it is a legal requirement under the New Zealand Building Code.
           </p>
           <p>
-            Rohullah Rassuli Tiling Services provides professional waterproofing for bathrooms, showers, wet areas, laundries, and balconies across the Wellington region. All of our waterproofing work is completed to the NZS 4858 standard, and we provide PS3 producer statements when required for building consent documentation.
+            ROH Tiling provides professional waterproofing for bathrooms, showers, wet areas, laundries, and balconies across the Wellington region. All of our waterproofing work is completed to the NZS 4858 standard, and we provide PS3 producer statements when required for building consent documentation.
           </p>
           <p>
             Waterproofing failures are one of the leading causes of building defects in New Zealand. When a membrane fails, water penetrates the substrate, causes timber framing to rot, and can lead to tens of thousands of dollars in remedial work. Getting it right the first time is essential — and that is exactly what we do.
           </p>
         </div>
         <div>
-          <div class="image-placeholder image-placeholder--portrait">
-            <span>Waterproofing membrane application</span>
-          </div>
+          <Image
+            src={walkInShowerImg}
+            alt="Walk-in shower with grey large-format tiles, tiled hob and linear drain set to fall"
+            width={640}
+            widths={[320, 480, 640]}
+            sizes="(min-width: 768px) 380px, 92vw"
+            quality={70}
+            format="webp"
+            loading="lazy"
+            decoding="async"
+            class="service-photo service-photo--portrait"
+          />
         </div>
       </div>
     </div>
@@ -78,7 +89,7 @@ import ServiceLayout from '../../layouts/ServiceLayout.astro';
         The New Zealand Standard NZS 4858 (2018) specifies the requirements for the installation of wet area membrane systems. It covers substrate preparation, membrane application, band reinforcement, minimum upturn heights, penetration sealing, and curing times.
       </p>
       <p>
-        All waterproofing by Rohullah Rassuli Tiling Services is completed in strict compliance with NZS 4858. This means:
+        All waterproofing by ROH Tiling is completed in strict compliance with NZS 4858. This means:
       </p>
       <ul style="color: rgba(255,255,255,0.85); margin: 1.5rem 0; padding-left: 1.5rem;">
         <li style="margin-bottom: 0.75rem;">Substrates are inspected, cleaned, and prepared before membrane application</li>
@@ -108,7 +119,7 @@ import ServiceLayout from '../../layouts/ServiceLayout.astro';
         Even in modern homes and new builds, waterproofing must be installed by someone who understands the specific requirements of the New Zealand Building Code. A membrane that is too thin, improperly lapped, or not adequately reinforced at corners will eventually fail — and the damage is often hidden until it becomes severe.
       </p>
       <p>
-        By choosing Rohullah Rassuli Tiling Services for your waterproofing, you are investing in the long-term protection of your Wellington home.
+        By choosing ROH Tiling for your waterproofing, you are investing in the long-term protection of your Wellington home.
       </p>
     </div>
   </section>
@@ -121,27 +132,27 @@ import ServiceLayout from '../../layouts/ServiceLayout.astro';
 
       <div class="process-timeline fade-in-up">
         <div class="process-step">
-          <h4>1. Assessment &amp; Planning</h4>
+          <h3>1. Assessment &amp; Planning</h3>
           <p>We inspect the substrate, identify any defects or damage, and plan the waterproofing approach. We confirm the membrane system to be used and ensure compatibility with the chosen tiles and adhesive.</p>
         </div>
         <div class="process-step">
-          <h4>2. Substrate Preparation</h4>
+          <h3>2. Substrate Preparation</h3>
           <p>The surface is cleaned, repaired, and primed. Any cracks, holes, or uneven areas are addressed. The substrate must be structurally sound, dry, and free of contaminants before membrane application.</p>
         </div>
         <div class="process-step">
-          <h4>3. Band Reinforcement</h4>
+          <h3>3. Band Reinforcement</h3>
           <p>Reinforcing tape is embedded in wet membrane at all internal corners, floor-to-wall junctions, and around penetrations. This prevents cracking and movement at these critical stress points.</p>
         </div>
         <div class="process-step">
-          <h4>4. Membrane Application</h4>
+          <h3>4. Membrane Application</h3>
           <p>A minimum of two coats of liquid-applied membrane is rolled or brushed onto all surfaces. Each coat must dry before the next is applied. We ensure full, even coverage with no pinholes or thin spots.</p>
         </div>
         <div class="process-step">
-          <h4>5. Curing &amp; Inspection</h4>
+          <h3>5. Curing &amp; Inspection</h3>
           <p>The membrane is allowed to fully cure before any tiling begins. We inspect the completed membrane for coverage, thickness, and integrity, and photograph the installation for documentation.</p>
         </div>
         <div class="process-step">
-          <h4>6. Documentation</h4>
+          <h3>6. Documentation</h3>
           <p>PS3 producer statements and photographic records are prepared for building consent documentation. These records confirm that waterproofing has been installed to NZS 4858 and the manufacturer's specifications.</p>
         </div>
       </div>
@@ -151,17 +162,24 @@ import ServiceLayout from '../../layouts/ServiceLayout.astro';
   <!-- Gallery Placeholder -->
   <section class="section">
     <div class="container">
-      <h2 class="section-title">Waterproofing Gallery</h2>
-      <div class="services-grid fade-in-up">
-        <div class="image-placeholder image-placeholder--landscape">
-          <span>Shower waterproofing with band reinforcement</span>
-        </div>
-        <div class="image-placeholder image-placeholder--landscape">
-          <span>Bathroom floor membrane application</span>
-        </div>
-        <div class="image-placeholder image-placeholder--landscape">
-          <span>Balcony waterproofing — Porirua project</span>
-        </div>
+      <h2 class="section-title">Waterproofing in Practice</h2>
+      <p class="section-subtitle">The membrane is buried under the tile by the time a bathroom is photographed &mdash; so here is the finished result it makes possible.</p>
+      <div class="service-gallery service-gallery--single fade-in-up">
+        <a href="/portfolio#walk-in-shower-linear-drain" class="service-gallery__item">
+          <Image
+            src={walkInShowerImg}
+            alt="Walk-in shower with grey large-format tiles, tiled hob and linear drain set to fall"
+            width={640}
+            widths={[320, 480, 640]}
+            sizes="(min-width: 768px) 420px, 92vw"
+            quality={70}
+            format="webp"
+            loading="lazy"
+            decoding="async"
+            class="service-photo"
+          />
+          <span class="service-gallery__caption">Walk-in shower over a membrane laid to NZS 4858, falls set to a linear drain — Wellington <em>(work in progress)</em></span>
+        </a>
       </div>
     </div>
   </section>
@@ -174,7 +192,10 @@ import ServiceLayout from '../../layouts/ServiceLayout.astro';
         Waterproofing is a critical component of every <a href="/services/bathroom-tiling">bathroom tiling</a> project we undertake. It is also required for wet area floors in <a href="/services/kitchen-tiling">kitchens</a> and laundries, and beneath <a href="/services/floor-tiling">floor tiles</a> in areas with floor wastes.
       </p>
       <p>
-        If you suspect your existing waterproofing has failed — signs include musty smells, discoloured skirting boards, soft or bouncy floors, and visible mould — <a href="/contact">contact us immediately</a> for an assessment. Early intervention can prevent major structural damage.
+        Waterproofing also sits beneath <a href="/services/underfloor-heating">underfloor heating</a> in wet areas, and failed membranes are one of the most common findings behind <a href="/services/tile-repairs">tile repair work</a>. You can see a membrane-and-falls job under tile in our <a href="/portfolio#walk-in-shower-linear-drain">Wellington tiling portfolio</a>.
+      </p>
+      <p>
+        If you suspect your existing waterproofing has failed — signs include musty smells, discoloured skirting boards, soft or bouncy floors, and visible mould — <a href="/contact">contact us immediately</a> for an assessment. Early intervention can prevent major structural damage. We waterproof wet areas throughout <a href="/service-areas">Wellington, Porirua, the Hutt Valley and the Kapiti Coast</a>.
       </p>
     </div>
   </section>

@@ -2,15 +2,32 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHeader from '../components/PageHeader.astro';
 import CTASection from '../components/CTASection.astro';
+import { Image } from 'astro:assets';
+import { OWNER_NAME } from '../data/business';
 
-const title = "About Us | Rohullah Rassuli Tiling Services Wellington";
+import rohullahImg from '../assets/images/rohullah-rassuli-tiler-wellington.webp';
+import ensuiteImg from '../assets/images/ensuite-large-format-porcelain-tiling-wellington.webp';
+import showerTealImg from '../assets/images/shower-tiling-vertical-stack-teal-tile-wellington.webp';
+import splashbackFlutedImg from '../assets/images/kitchen-splashback-fluted-terracotta-tile-wellington.webp';
+import walkInShowerImg from '../assets/images/walk-in-shower-tiling-linear-drain-wellington.webp';
+import whiteGlossImg from '../assets/images/shower-tiling-white-gloss-wall-tile-wellington.webp';
+
+const gallery = [
+  { img: ensuiteImg, alt: 'Finished ensuite with large-format grey porcelain wall tiles, frameless glass shower and wall-hung basin, tiled by ROH Tiling in Wellington', href: '/portfolio#ensuite-large-format-porcelain' },
+  { img: showerTealImg, alt: 'Walk-in shower with teal vertical stack-bond wall tiles, dark large-format floor tiles and a linear drain, under a skylight', href: '/portfolio#teal-stack-bond-shower' },
+  { img: walkInShowerImg, alt: 'Walk-in shower with grey large-format tiles, tiled hob and linear drain set to fall', href: '/portfolio#walk-in-shower-linear-drain' },
+  { img: splashbackFlutedImg, alt: 'Terracotta fluted tile kitchen splashback wrapping a corner return, with ribs aligned across the join', href: '/portfolio#fluted-terracotta-splashback' },
+  { img: whiteGlossImg, alt: 'Shower with white gloss wall tiles, dark floor tiles and a stainless linear drain', href: '/portfolio#white-gloss-shower' },
+];
+
+const title = "About Us | ROH Tiling Wellington";
 const description = "Meet Rohullah Rassuli — Whitby-based professional tiler with 10+ years experience serving Wellington. Quality craftsmanship, honest pricing, and free quotes.";
 const canonical = "/about";
 const breadcrumbs = [{ name: "Home", url: "/" }, { name: "About" }];
 ---
 
 <BaseLayout title={title} description={description} canonical={canonical} breadcrumbs={breadcrumbs}>
-  <PageHeader title="About Rohullah Rassuli Tiling Services" breadcrumbs={breadcrumbs} />
+  <PageHeader title="About ROH Tiling" breadcrumbs={breadcrumbs} />
 
   <!-- Intro Section -->
   <section class="section section--light">
@@ -18,15 +35,24 @@ const breadcrumbs = [{ name: "Home", url: "/" }, { name: "About" }];
       <div class="about-intro">
         <div class="about-intro__text fade-in-up">
           <h2 class="section-title section-title--left">Experienced Tiling, Honest Service</h2>
-          <p>Rohullah Rassuli Tiling Services is a dedicated, owner-operated tiling business based in Whitby and proudly serving the greater Wellington region. With years of hands-on experience across residential and commercial projects, Rohullah brings a level of care and craftsmanship that larger companies simply cannot match.</p>
+          <p>ROH Tiling is a dedicated, owner-operated tiling business based in Whitby and proudly serving the greater Wellington region. With years of hands-on experience across residential and commercial projects, Rohullah brings a level of care and craftsmanship that larger companies simply cannot match.</p>
           <p>Every project — whether a compact <a href="/services/bathroom-tiling">ensuite renovation</a> in Porirua or a large-format <a href="/services/floor-tiling">floor installation</a> in a Wellington CBD apartment — receives the same meticulous attention to detail. Rohullah personally oversees each job from start to finish, ensuring precise tile placement, clean grout lines, and a flawless result that stands the test of time.</p>
           <p>What sets Rohullah apart is a genuine commitment to doing things right. That means arriving on time, keeping your home clean and tidy throughout the work, providing upfront and honest pricing with no hidden extras, and communicating clearly at every stage. It is a straightforward approach built on respect — for your home, your budget, and your time.</p>
           <p><strong>Free quotes are always available.</strong> Whether you have a clear plan or need guidance on tile selection and layout, Rohullah is happy to visit your property, discuss your ideas, and provide a detailed, no-obligation quote.</p>
         </div>
         <div class="about-intro__image fade-in-up">
-          <div class="image-placeholder">
-            <span>Photo of Rohullah at work</span>
-          </div>
+          <Image
+            src={rohullahImg}
+            alt={`${OWNER_NAME}, tiler and owner of ROH Tiling, on site in Wellington`}
+            width={520}
+            widths={[280, 400, 520]}
+            sizes="(min-width: 768px) 360px, 80vw"
+            quality={72}
+            format="webp"
+            loading="lazy"
+            decoding="async"
+            class="about-portrait"
+          />
         </div>
       </div>
     </div>
@@ -133,11 +159,22 @@ const breadcrumbs = [{ name: "Home", url: "/" }, { name: "About" }];
       <h2 class="section-title fade-in-up">Our Work</h2>
       <p class="section-subtitle fade-in-up">A selection of completed tiling projects across the Wellington region</p>
       <div class="gallery-grid fade-in-up">
-        <img src="/images/portfolio/bathroom-porcelain-shower.jpg" alt="Large-format porcelain bathroom tiling project in Wellington" width="400" height="300" loading="lazy" style="border-radius: 8px; object-fit: cover; width: 100%; aspect-ratio: 4/3;" />
-        <img src="/images/portfolio/bathroom-marble-look.jpg" alt="Marble-look porcelain bathroom renovation in Wellington" width="400" height="300" loading="lazy" style="border-radius: 8px; object-fit: cover; width: 100%; aspect-ratio: 4/3;" />
-        <img src="/images/portfolio/shower-natural-stone.jpg" alt="Natural stone-look walk-in shower tiling in Wellington" width="400" height="300" loading="lazy" style="border-radius: 8px; object-fit: cover; width: 100%; aspect-ratio: 4/3;" />
-        <img src="/images/portfolio/bathroom-green-subway.jpg" alt="Designer green subway tile bathroom with terrazzo floor" width="400" height="300" loading="lazy" style="border-radius: 8px; object-fit: cover; width: 100%; aspect-ratio: 4/3;" />
-        <img src="/images/portfolio/commercial-geometric-pattern.jpg" alt="Commercial geometric diamond pattern tiling installation" width="400" height="300" loading="lazy" style="border-radius: 8px; object-fit: cover; width: 100%; aspect-ratio: 4/3;" />
+        {gallery.map((item) => (
+          <a href={item.href} class="gallery-link">
+            <Image
+              src={item.img}
+              alt={item.alt}
+              width={520}
+              widths={[280, 400, 520]}
+              sizes="(min-width: 768px) 300px, 90vw"
+              quality={70}
+              format="webp"
+              loading="lazy"
+              decoding="async"
+              class="gallery-img"
+            />
+          </a>
+        ))}
       </div>
       <div style="text-align: center; margin-top: 2rem;">
         <a href="/portfolio" class="btn btn--outline">View Full Portfolio</a>
@@ -147,7 +184,7 @@ const breadcrumbs = [{ name: "Home", url: "/" }, { name: "About" }];
 
   <CTASection
     heading="Ready to Start Your Tiling Project?"
-    text="Get in touch with Rohullah Rassuli Tiling Services for a free, no-obligation quote. We'd love to help bring your vision to life."
+    text="Get in touch with ROH Tiling for a free, no-obligation quote. We'd love to help bring your vision to life."
     variant="gold"
   />
 </BaseLayout>
@@ -178,18 +215,14 @@ const breadcrumbs = [{ name: "Home", url: "/" }, { name: "About" }];
     position: sticky;
     top: 6rem;
   }
-  .image-placeholder {
+  .about-portrait {
+    display: block;
     width: 100%;
-    aspect-ratio: 4 / 5;
-    background-color: var(--color-placeholder-bg);
+    height: auto;
+    aspect-ratio: 3 / 4;
+    object-fit: cover;
     border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--color-muted);
-    font-family: var(--font-body);
-    font-size: 0.9rem;
-    border: 2px dashed var(--color-border-warm);
+    box-shadow: var(--shadow-card);
   }
 
   /* Values Grid */
@@ -282,17 +315,24 @@ const breadcrumbs = [{ name: "Home", url: "/" }, { name: "About" }];
     gap: 1.5rem;
     margin-top: 2.5rem;
   }
-  .gallery-placeholder {
-    aspect-ratio: 4 / 3;
-    background-color: var(--color-placeholder-bg);
+  .gallery-link {
+    display: block;
     border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--color-muted);
-    font-family: var(--font-body);
-    font-size: 0.9rem;
-    border: 2px dashed var(--color-border-warm);
+    overflow: hidden;
+    box-shadow: var(--shadow-card);
+    transition: transform var(--transition-fast), box-shadow var(--transition-smooth);
+  }
+  .gallery-link:hover,
+  .gallery-link:focus-visible {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-card-hover);
+  }
+  .gallery-img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
   }
 </style>
 

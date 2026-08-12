@@ -1,9 +1,12 @@
 ---
 import ServiceLayout from '../../layouts/ServiceLayout.astro';
+import { Image } from 'astro:assets';
+import subwayImg from '../../assets/images/kitchen-splashback-subway-tile-wellington.webp';
+import flutedImg from '../../assets/images/kitchen-splashback-fluted-terracotta-tile-wellington.webp';
 ---
 
 <ServiceLayout
-  title="Kitchen Tiling & Splashbacks Wellington | Rohullah Rassuli"
+  title="Kitchen Tiling & Splashbacks Wellington | ROH Tiling"
   description="Professional kitchen tiling and splashbacks in Wellington. Subway, mosaic, glass and large-format tiles. Transform your kitchen. Free quotes — call 021 026 02044."
   canonical="/services/kitchen-tiling"
   serviceName="Kitchen Tiling"
@@ -17,16 +20,25 @@ import ServiceLayout from '../../layouts/ServiceLayout.astro';
       <div class="split-layout fade-in-up">
         <div>
           <p class="lead">
-            The kitchen is the heart of every Wellington home, and the right tiles can transform it from functional to stunning. Whether you need a striking splashback behind the hob, durable floor tiles that handle heavy foot traffic, or a feature wall that ties the whole room together, Rohullah Rassuli Tiling Services delivers kitchen tiling that looks exceptional and performs brilliantly.
+            The kitchen is the heart of every Wellington home, and the right tiles can transform it from functional to stunning. Whether you need a striking splashback behind the hob, durable floor tiles that handle heavy foot traffic, or a feature wall that ties the whole room together, ROH Tiling delivers kitchen tiling that looks exceptional and performs brilliantly.
           </p>
           <p>
             We work with homeowners, kitchen designers, and builders across the Wellington region to install tiles that complement cabinetry, benchtops, and appliances. From classic subway tiles in a Thorndon villa to bold geometric patterns in a modern Petone apartment, we bring precision and care to every kitchen tiling project.
           </p>
         </div>
         <div>
-          <div class="image-placeholder image-placeholder--landscape">
-            <span>Kitchen splashback tiling project</span>
-          </div>
+          <Image
+            src={subwayImg}
+            alt="Kitchen with white subway tile splashback running full height around the window and benchtop"
+            width={640}
+            widths={[320, 480, 640]}
+            sizes="(min-width: 768px) 46vw, 92vw"
+            quality={70}
+            format="webp"
+            loading="lazy"
+            decoding="async"
+            class="service-photo"
+          />
         </div>
       </div>
     </div>
@@ -139,16 +151,37 @@ import ServiceLayout from '../../layouts/ServiceLayout.astro';
   <section class="section section--light">
     <div class="container">
       <h2 class="section-title">Kitchen Tiling Gallery</h2>
-      <div class="services-grid fade-in-up">
-        <div class="image-placeholder image-placeholder--landscape">
-          <span>Subway tile splashback — Kelburn kitchen</span>
-        </div>
-        <div class="image-placeholder image-placeholder--landscape">
-          <span>Large-format floor tiles — Petone open-plan</span>
-        </div>
-        <div class="image-placeholder image-placeholder--landscape">
-          <span>Mosaic feature wall — Island Bay renovation</span>
-        </div>
+      <div class="service-gallery service-gallery--two fade-in-up">
+        <a href="/portfolio#fluted-terracotta-splashback" class="service-gallery__item">
+          <Image
+            src={flutedImg}
+            alt="Terracotta fluted tile kitchen splashback wrapping a corner return, with ribs aligned across the join"
+            width={640}
+            widths={[320, 480, 640]}
+            sizes="(min-width: 768px) 45vw, 92vw"
+            quality={70}
+            format="webp"
+            loading="lazy"
+            decoding="async"
+            class="service-photo"
+          />
+          <span class="service-gallery__caption">Fluted terracotta splashback, corner return — Wellington <em>(work in progress)</em></span>
+        </a>
+        <a href="/portfolio" class="service-gallery__item">
+          <Image
+            src={subwayImg}
+            alt="Kitchen with white subway tile splashback running full height around the window and benchtop"
+            width={640}
+            widths={[320, 480, 640]}
+            sizes="(min-width: 768px) 45vw, 92vw"
+            quality={70}
+            format="webp"
+            loading="lazy"
+            decoding="async"
+            class="service-photo"
+          />
+          <span class="service-gallery__caption">Full-height subway splashback — Wellington <em>(work in progress)</em></span>
+        </a>
       </div>
     </div>
   </section>
@@ -164,7 +197,10 @@ import ServiceLayout from '../../layouts/ServiceLayout.astro';
         Need to repair or update existing kitchen tiles? Our <a href="/services/tile-repairs">tile repair service</a> can replace cracked tiles, re-grout discoloured joints, and refresh your kitchen without a full renovation.
       </p>
       <p>
-        <a href="/contact">Contact us today</a> for a free kitchen tiling quote.
+        Kitchen floors and wet areas with a floor waste also need <a href="/services/waterproofing">wet-area waterproofing</a> before tiling. You can see the fluted terracotta splashback and other recent jobs in our <a href="/portfolio#fluted-terracotta-splashback">Wellington tiling portfolio</a>.
+      </p>
+      <p>
+        We tile kitchens throughout <a href="/service-areas">Wellington, Porirua, the Hutt Valley and the Kapiti Coast</a>. <a href="/contact">Request a free kitchen tiling quote</a>.
       </p>
     </div>
   </section>

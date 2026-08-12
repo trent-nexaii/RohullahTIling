@@ -1,5 +1,23 @@
 ---
 import '../styles/global.css';
+import { Image } from 'astro:assets';
+import iconMark from '../assets/images/roh-tiling-icon.webp';
+import {
+  BUSINESS_NAME,
+  OWNER_NAME,
+  PHONE_DISPLAY,
+  PHONE_E164,
+  EMAIL,
+  LOCALITY,
+  ADDRESS_LOCALITY,
+  ADDRESS_REGION,
+  POSTAL_CODE,
+  HOURS,
+  GBP_URL,
+  INSTAGRAM_URL,
+  OG_IMAGE,
+  OG_IMAGE_ALT,
+} from '../data/business';
 
 interface Props {
   title: string;
@@ -25,31 +43,43 @@ const siteUrl = Astro.site?.toString().replace(/\/$/, '') ?? 'https://www.rohull
 const canonicalUrl = `${siteUrl}${canonical}`;
 const currentPath = Astro.url.pathname;
 
+// No aggregateRating or review markup: there are no verified reviews to back it
+// and unverifiable review markup risks a manual action.
 const localBusinessSchema = JSON.stringify({
   "@context": "https://schema.org",
   "@type": "LocalBusiness",
-  "name": "Rohullah Rassuli Tiling Services",
-  "description": "Professional tiling services across the Wellington region.",
-  "url": "https://www.rohullahtiling.co.nz",
-  "telephone": "+6402102602044",
-  "email": "Rohullah.rassuli@gmail.com",
+  "@id": `${siteUrl}/#business`,
+  "name": BUSINESS_NAME,
+  "alternateName": "ROH Tiling Wellington",
+  "description": "Wellington tiler specialising in bathroom and shower tiling, kitchen splashbacks, floor tiling, waterproofing to NZ Standard, underfloor heating and tile repairs.",
+  "url": `${siteUrl}/`,
+  "telephone": PHONE_E164,
+  "email": EMAIL,
+  "image": OG_IMAGE,
+  "logo": `${siteUrl}/images/roh-tiling-logo.webp`,
+  "priceRange": "$$",
+  "founder": { "@type": "Person", "name": OWNER_NAME },
   "address": {
     "@type": "PostalAddress",
-    "addressLocality": "Whitby",
-    "addressRegion": "Wellington",
+    "addressLocality": ADDRESS_LOCALITY,
+    "addressRegion": ADDRESS_REGION,
+    "postalCode": POSTAL_CODE,
     "addressCountry": "NZ"
   },
-  "geo": {
-    "@type": "GeoCoordinates",
-    "latitude": -41.1308,
-    "longitude": 174.8717
-  },
-  "openingHours": "Mo-Fr 08:00-17:00",
-  "areaServed": {
-    "@type": "Place",
-    "name": "Wellington Region"
-  },
-  "priceRange": "$$"
+  "areaServed": [
+    { "@type": "City", "name": "Wellington" },
+    { "@type": "City", "name": "Porirua" },
+    { "@type": "City", "name": "Lower Hutt" },
+    { "@type": "City", "name": "Upper Hutt" },
+    { "@type": "Place", "name": "Kapiti Coast" }
+  ],
+  "openingHoursSpecification": [{
+    "@type": "OpeningHoursSpecification",
+    "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+    "opens": "08:00",
+    "closes": "17:00"
+  }],
+  "sameAs": [GBP_URL, INSTAGRAM_URL]
 });
 
 let breadcrumbSchema = '';
@@ -96,7 +126,10 @@ const navLinks = [
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="icon" href="/favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="512x512" href="/images/icon-512.png" />
   <title>{title}</title>
   <meta name="description" content={description} />
   <link rel="canonical" href={canonicalUrl} />
@@ -107,17 +140,20 @@ const navLinks = [
   <meta property="og:type" content={ogType} />
   <meta property="og:url" content={canonicalUrl} />
   <meta property="og:locale" content="en_NZ" />
-  <meta property="og:site_name" content="Rohullah Rassuli Tiling Services" />
-  <meta property="og:image" content={`${siteUrl}/images/og-image.svg`} />
+  <meta property="og:site_name" content={BUSINESS_NAME} />
+  <!-- JPG, not SVG: Facebook, LinkedIn, X, WhatsApp and Messenger do not render SVG in link previews. -->
+  <meta property="og:image" content={OG_IMAGE} />
+  <meta property="og:image:type" content="image/jpeg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="Rohullah Rassuli Tiling Services — Professional Tiling Across Wellington" />
+  <meta property="og:image:alt" content={OG_IMAGE_ALT} />
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content={title} />
   <meta name="twitter:description" content={description} />
-  <meta name="twitter:image" content={`${siteUrl}/images/og-image.svg`} />
+  <meta name="twitter:image" content={OG_IMAGE} />
+  <meta name="twitter:image:alt" content={OG_IMAGE_ALT} />
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -137,15 +173,34 @@ const navLinks = [
   {schemas && (
     <script type="application/ld+json" set:html={schemas} />
   )}
+
+  <!-- Per-page head additions (e.g. the homepage hero preload) -->
+  <slot name="head" />
 </head>
 <body>
 
   <!-- ========== NAVIGATION ========== -->
   <header class="site-header" id="site-header">
     <div class="nav-container">
-      <a href="/" class="logo" aria-label="Rohullah Rassuli Tiling Services — Home">
-        <span class="logo-name">ROHULLAH RASSULI</span>
-        <span class="logo-tagline">TILING SERVICES</span>
+      <!--
+        Text wordmark, not the supplied logo raster: that file is gold lettering on a
+        solid brushed-gold plate with no transparency, so it reads as a gold rectangle
+        on a light header and the lettering loses contrast at header size. The circular
+        tile mark is high-contrast on dark and works at any size, so it leads instead.
+      -->
+      <a href="/" class="logo" aria-label={`${BUSINESS_NAME} — Home`}>
+        <Image
+          src={iconMark}
+          alt=""
+          width={40}
+          height={40}
+          densities={[1, 2]}
+          loading="eager"
+          decoding="sync"
+          class="logo-mark"
+          aria-hidden="true"
+        />
+        <span class="logo-wordmark">ROH TILING</span>
       </a>
 
       <!-- Desktop Navigation -->
@@ -181,11 +236,11 @@ const navLinks = [
       </nav>
 
       <!-- Phone Link -->
-      <a href="tel:+6402102602044" class="nav-phone" aria-label="Call us at 021 026 02044">
+      <a href={`tel:${PHONE_E164}`} class="nav-phone" aria-label={`Call ${BUSINESS_NAME} on ${PHONE_DISPLAY}`}>
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
         </svg>
-        <span>021 026 02044</span>
+        <span>{PHONE_DISPLAY}</span>
       </a>
 
       <!-- Hamburger Button -->
@@ -204,7 +259,7 @@ const navLinks = [
       {serviceLinks.map((link) => (
         <a href={link.href} style="font-size: 1.1rem; opacity: 0.8;">{link.name}</a>
       ))}
-      <a href="tel:+6402102602044" style="color: var(--color-primary);">021 026 02044</a>
+      <a href={`tel:${PHONE_E164}`} style="color: var(--color-primary);">{PHONE_DISPLAY}</a>
     </nav>
   </header>
 
@@ -217,36 +272,64 @@ const navLinks = [
   <footer class="site-footer">
     <div class="container footer-grid">
       <div class="footer-col">
-        <a href="/" class="footer-logo" aria-label="Home">
-          <span class="logo-name">ROHULLAH RASSULI</span>
-          <span class="logo-tagline">TILING SERVICES</span>
+        <a href="/" class="footer-logo" aria-label={`${BUSINESS_NAME} — Home`}>
+          <!-- The gold-on-gold logo plate only works on a dark ground. This is that ground. -->
+          <!-- 440px = 2x the 220px display width. The full-resolution original
+               stays at /images/roh-tiling-logo.webp for the schema logo field. -->
+          <img
+            src="/images/roh-tiling-logo-440.webp"
+            alt={`${BUSINESS_NAME} — Wellington Region`}
+            width="220"
+            height="103"
+            loading="lazy"
+            decoding="async"
+            class="footer-logo-img"
+          />
         </a>
         <p class="footer-desc">
-          Professional tiling services across the Wellington region. Quality craftsmanship, attention to detail, and a commitment to excellence on every project.
+          Owner-operated tiling across the Wellington region. Every job is done by {OWNER_NAME} personally — bathrooms, kitchen splashbacks, floors, waterproofing and repairs.
         </p>
+        <ul class="footer-social">
+          <li>
+            <a href={GBP_URL} rel="noopener" target="_blank" aria-label={`${BUSINESS_NAME} on Google Business Profile`}>
+              <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M12.24 10.29v3.62h5.05a4.33 4.33 0 0 1-1.88 2.84l3.03 2.35c1.77-1.63 2.79-4.04 2.79-6.9 0-.67-.06-1.31-.17-1.91h-8.82z"/><path d="M5.28 14.28l-.68.52-2.42 1.88A9.98 9.98 0 0 0 12 22c2.7 0 4.96-.89 6.61-2.42l-3.23-2.5c-.89.6-2.02.96-3.38.96-2.6 0-4.81-1.75-5.6-4.11z"/><path d="M2.18 7.32A9.94 9.94 0 0 0 2 12c0 1.69.41 3.28 1.12 4.68l3.1-2.4a5.99 5.99 0 0 1 0-3.83l-4.04-3.13z"/><path d="M12 5.98c1.47 0 2.79.51 3.83 1.5l2.86-2.86C16.95 2.99 14.7 2 12 2 8.09 2 4.71 4.24 3.07 7.51l3.1 2.4C6.96 7.55 9.17 5.98 12 5.98z"/></svg>
+              <span>Google Business Profile</span>
+            </a>
+          </li>
+          <li>
+            <a href={INSTAGRAM_URL} rel="noopener" target="_blank" aria-label={`${BUSINESS_NAME} on Instagram`}>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/></svg>
+              <span>Instagram</span>
+            </a>
+          </li>
+        </ul>
       </div>
 
       <div class="footer-col">
         <h3 class="footer-heading">Contact Us</h3>
+        <!-- NAP block — crawlable text, never an image. Must match the Google Business Profile exactly. -->
         <address class="footer-contact">
+          <p class="footer-nap-name"><strong>{BUSINESS_NAME}</strong></p>
           <p>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-            Whitby, Wellington, New Zealand
+            {LOCALITY}
           </p>
           <p>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-            <a href="tel:+6402102602044">021 026 02044</a>
+            <a href={`tel:${PHONE_E164}`}>{PHONE_DISPLAY}</a>
           </p>
           <p>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-            <a href="mailto:Rohullah.rassuli@gmail.com">Rohullah.rassuli@gmail.com</a>
-            <!-- PLACEHOLDER EMAIL — replace with actual email -->
-          </p>
-          <p>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-            Mon&ndash;Fri: 8:00 AM &ndash; 5:00 PM
+            <a href={`mailto:${EMAIL}`}>{EMAIL}</a>
           </p>
         </address>
+
+        <h3 class="footer-heading footer-heading--hours">Hours</h3>
+        <ul class="footer-hours">
+          {HOURS.map((h) => (
+            <li><span class="footer-hours__day">{h.label}</span><span class="footer-hours__time">{h.value}</span></li>
+          ))}
+        </ul>
       </div>
 
       <div class="footer-col">
@@ -273,7 +356,7 @@ const navLinks = [
     <div class="footer-bottom">
       <div class="container footer-bottom-inner">
         <div class="footer-bottom-left">
-          <span>&copy; {year} Rohullah Rassuli Tiling Services. All rights reserved.</span>
+          <span>&copy; {year} {BUSINESS_NAME}. All rights reserved.</span>
           <span class="footer-bottom-sep">|</span>
           <a href="/privacy">Privacy Policy</a>
           <span class="footer-bottom-sep">|</span>
@@ -289,7 +372,9 @@ const navLinks = [
   <!-- ========== MOBILE STICKY CTA BAR ========== -->
   {showMobileCTA && (
     <div class="mobile-cta-bar" id="mobile-cta-bar">
-      <a href="tel:+6402102602044" class="mobile-cta-btn mobile-cta-phone" aria-label="Call us">
+      <!-- Accessible name must contain the visible text ("Call Now") to satisfy
+           label-content-name-mismatch. -->
+      <a href={`tel:${PHONE_E164}`} class="mobile-cta-btn mobile-cta-phone" aria-label={`Call Now — ${BUSINESS_NAME} on ${PHONE_DISPLAY}`}>
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
         </svg>

@@ -1,60 +1,101 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ServiceCard from '../components/ServiceCard.astro';
-import TestimonialCard from '../components/TestimonialCard.astro';
 import TrustSignal from '../components/TrustSignal.astro';
 import CTASection from '../components/CTASection.astro';
+import { Image, getImage } from 'astro:assets';
+import { PHONE_DISPLAY, PHONE_E164, OWNER_NAME } from '../data/business';
 
-const reviewSchema = JSON.stringify({
-  "@context": "https://schema.org",
-  "@type": "LocalBusiness",
-  "name": "Rohullah Rassuli Tiling Services",
-  "aggregateRating": {
-    "@type": "AggregateRating",
-    "ratingValue": "5",
-    "reviewCount": "3",
-    "bestRating": "5",
-    "worstRating": "1"
-  },
-  "review": [
-    {
-      "@type": "Review",
-      "author": { "@type": "Person", "name": "Sarah M." },
-      "reviewRating": { "@type": "Rating", "ratingValue": "5" },
-      "reviewBody": "Rohullah did an amazing job tiling our bathroom. He was professional from start to finish, offered great advice on tile selection, and the finished result exceeded our expectations."
-    },
-    {
-      "@type": "Review",
-      "author": { "@type": "Person", "name": "James & Lisa T." },
-      "reviewRating": { "@type": "Rating", "ratingValue": "5" },
-      "reviewBody": "We had Rohullah install a new kitchen splashback and re-tile the kitchen floor. His attention to detail was outstanding. He kept the workspace tidy, finished on time, and the end result looks absolutely stunning."
-    },
-    {
-      "@type": "Review",
-      "author": { "@type": "Person", "name": "David R." },
-      "reviewRating": { "@type": "Rating", "ratingValue": "5" },
-      "reviewBody": "Called Rohullah to tile our open-plan living and dining area. He was upfront about costs, worked efficiently, and the large-format floor tiles he laid are perfectly level."
-    }
-  ]
+import heroImg from '../assets/images/ensuite-large-format-porcelain-tiling-wellington.webp';
+import rohullahImg from '../assets/images/rohullah-rassuli-tiler-wellington.webp';
+import showerTealImg from '../assets/images/shower-tiling-vertical-stack-teal-tile-wellington.webp';
+import splashbackFlutedImg from '../assets/images/kitchen-splashback-fluted-terracotta-tile-wellington.webp';
+import walkInShowerImg from '../assets/images/walk-in-shower-tiling-linear-drain-wellington.webp';
+import floorFeatureImg from '../assets/images/bathroom-floor-tiling-feature-strip-wellington.webp';
+import windowSeatImg from '../assets/images/patterned-tile-window-seat-wellington.webp';
+
+// LCP element — resolve the exact generated asset so it can be preloaded.
+const HERO_WIDTHS = [360, 520, 640, 760];
+const hero = await getImage({
+  src: heroImg,
+  width: 760,
+  height: 1013,
+  widths: HERO_WIDTHS,
+  sizes: '(min-width: 768px) 380px, 82vw',
+  format: 'webp',
+  quality: 72,
 });
+
+// Completed work, replacing the unverifiable testimonials that were here.
+// Suburbs are placeholders until confirmed — see the note in the handover.
+const recentWork = [
+  {
+    img: showerTealImg,
+    alt: 'Walk-in shower with teal vertical stack-bond wall tiles, dark large-format floor tiles and a linear drain, under a skylight',
+    caption: 'Shower tiling — Wellington',
+    href: '/services/bathroom-tiling',
+    linkText: 'Bathroom & shower tiling',
+    wip: true,
+  },
+  {
+    img: splashbackFlutedImg,
+    alt: 'Terracotta fluted tile kitchen splashback wrapping a corner return, with ribs aligned across the join',
+    caption: 'Fluted tile splashback — Wellington',
+    href: '/services/kitchen-tiling',
+    linkText: 'Kitchen tiling & splashbacks',
+    wip: true,
+  },
+  {
+    img: walkInShowerImg,
+    alt: 'Walk-in shower with grey large-format tiles, tiled hob and linear drain set to fall',
+    caption: 'Walk-in shower, linear drain — Wellington',
+    href: '/services/waterproofing',
+    linkText: 'Wet-area waterproofing',
+    wip: true,
+  },
+  {
+    img: floorFeatureImg,
+    alt: 'Bathroom floor tiling in beige stone-look porcelain with a patterned feature strip inset at wall height',
+    caption: 'Bathroom floor tiling — Wellington',
+    href: '/services/floor-tiling',
+    linkText: 'Floor tiling',
+    wip: true,
+  },
+  {
+    img: windowSeatImg,
+    alt: 'Window seat finished in monochrome patterned tiles, laid to a bush outlook',
+    caption: 'Patterned tile window seat — Wellington',
+    href: '/portfolio',
+    linkText: 'See the full portfolio',
+    wip: false,
+  },
+];
 ---
 
 <BaseLayout
-  title="Expert Wellington Tiling Services | Rohullah Rassuli Tiling"
+  title="Wellington Tiler | Bathroom, Kitchen & Floor Tiling | ROH Tiling"
   description="Wellington's trusted professional tiler. Expert bathroom, kitchen & floor tiling across the Wellington region. Free quotes. Call 021 026 02044 today."
   canonical="/"
-  schemas={reviewSchema}
 >
+  <link
+    slot="head"
+    rel="preload"
+    as="image"
+    href={hero.src}
+    imagesrcset={hero.srcSet.attribute}
+    imagesizes="(min-width: 768px) 380px, 82vw"
+    fetchpriority="high"
+  />
 
   <!-- Hero Section -->
   <section class="hero tile-grid-bg">
-    <div class="container">
+    <div class="container hero__layout">
       <div class="hero__content fade-in-up">
         <h1>Trusted <span class="highlight">Wellington Tiling Experts</span> — Quality You Can Count On</h1>
         <p class="hero__subtitle">Professional bathroom, kitchen, and floor tiling across the Wellington region. Expert craftsmanship. Lasting results. Free quotes.</p>
         <div class="hero__cta-group">
           <a href="/contact" class="btn btn--primary">Get a Free Quote</a>
-          <a href="tel:+6402102602044" class="btn btn--secondary">
+          <a href="tel:+642102602044" class="btn btn--secondary">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
               <path d="M22 16.92V19.92C22 20.48 21.56 20.93 21 20.97C20.68 21 20.35 21 20 21C10.61 21 3 13.39 3 4C3 3.65 3 3.32 3.03 3C3.07 2.44 3.52 2 4.08 2H7.08C7.56 2 7.99 2.34 8.07 2.81C8.14 3.27 8.23 3.73 8.36 4.17C8.47 4.55 8.36 4.96 8.07 5.24L6.62 6.69C8.06 9.43 10.57 11.94 13.31 13.38L14.76 11.93C15.04 11.64 15.45 11.53 15.83 11.64C16.27 11.77 16.73 11.86 17.19 11.93C17.66 12.01 18 12.44 18 12.92V15.92" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
@@ -76,6 +117,27 @@ const reviewSchema = JSON.stringify({
           </span>
         </div>
       </div>
+
+      <!--
+        The only fully finished, styled shot in the set — the one photo that
+        earns a place above the fold. Eager + preloaded; this is the LCP element.
+      -->
+      <div class="hero__figure">
+        <Image
+          src={heroImg}
+          width={760}
+          height={1013}
+          alt="Finished ensuite with large-format grey porcelain wall tiles, frameless glass shower and wall-hung basin, tiled by ROH Tiling in Wellington"
+          widths={HERO_WIDTHS}
+          sizes="(min-width: 768px) 380px, 82vw"
+          quality={72}
+          format="webp"
+          loading="eager"
+          decoding="sync"
+          fetchpriority="high"
+          class="hero__img"
+        />
+      </div>
     </div>
   </section>
 
@@ -85,7 +147,7 @@ const reviewSchema = JSON.stringify({
       <h2>Your Local Wellington Tiling Expert</h2>
       <div class="intro-section__content">
         <p>Rohullah Rassuli is a professional tiler based in Whitby, Porirua, bringing over a decade of hands-on tiling experience to homes and businesses across the Wellington region. From precision bathroom renovations to large-scale commercial floor installations, Rohullah delivers the kind of quality craftsmanship that stands the test of time.</p>
-        <p>Specialising in bathroom tiling, kitchen splashbacks, floor tiling, waterproofing, and underfloor heating installation, Rohullah Rassuli Tiling Services is your one-stop solution for all tiling needs. Every project receives the same meticulous attention to detail, whether it is a small tile repair or a full home renovation. We use only premium materials and proven techniques to ensure a flawless finish every time.</p>
+        <p>Specialising in bathroom tiling, kitchen splashbacks, floor tiling, waterproofing, and underfloor heating installation, ROH Tiling is your one-stop solution for all tiling needs. Every project receives the same meticulous attention to detail, whether it is a small tile repair or a full home renovation. We use only premium materials and proven techniques to ensure a flawless finish every time.</p>
         <p>Proudly serving residential and commercial clients throughout Wellington City, Porirua, Lower Hutt, Upper Hutt, and the Kapiti Coast, we make expert tiling accessible across the entire Wellington region. Get in touch today for a free, no-obligation quote and discover why Wellington homeowners trust Rohullah Rassuli for their tiling projects.</p>
       </div>
     </div>
@@ -139,7 +201,7 @@ const reviewSchema = JSON.stringify({
   <!-- Why Choose Us -->
   <section class="section why-choose-section">
     <div class="container fade-in-up">
-      <h2>Why Choose Rohullah Rassuli Tiling?</h2>
+      <h2>Why Choose ROH Tiling?</h2>
       <div class="trust-signals-grid">
         <TrustSignal
           title="Years of Experience"
@@ -165,29 +227,45 @@ const reviewSchema = JSON.stringify({
     </div>
   </section>
 
-  <!-- Testimonials -->
-  <section class="section testimonials-section">
+  <!--
+    Recent Work — replaced the three named testimonials that stood here.
+    They were unverifiable (no corroborating reviews on the Google profile) and
+    unverifiable testimonials are a Fair Trading Act risk. Photos of real jobs do
+    the same job honestly.
+
+    ===================================================================
+    REVIEWS PLACEHOLDER — when real Google reviews exist, the reviews
+    section goes HERE, directly below this grid. Do not add review or
+    aggregateRating schema until the reviews are live and verifiable.
+    ===================================================================
+  -->
+  <section class="section recent-work-section">
     <div class="container fade-in-up">
-      <h2>What Our Clients Say</h2>
-      <div class="testimonials-grid">
-        <TestimonialCard
-          quote="Rohullah did an amazing job tiling our bathroom. He was professional from start to finish, offered great advice on tile selection, and the finished result exceeded our expectations. The waterproofing was done thoroughly and we could not be happier with the quality."
-          author="Sarah M."
-          location="Whitby, Porirua"
-          rating={5}
-        />
-        <TestimonialCard
-          quote="We had Rohullah install a new kitchen splashback and re-tile the kitchen floor. His attention to detail was outstanding. He kept the workspace tidy, finished on time, and the end result looks absolutely stunning. Highly recommend his services to anyone in Wellington."
-          author="James & Lisa T."
-          location="Johnsonville"
-          rating={5}
-        />
-        <TestimonialCard
-          quote="Called Rohullah to tile our open-plan living and dining area. He was upfront about costs, worked efficiently, and the large-format floor tiles he laid are perfectly level. Great communication throughout the project. Will definitely use him again for our bathroom renovation."
-          author="David R."
-          location="Lower Hutt"
-          rating={5}
-        />
+      <h2>Recent Tiling Work Across Wellington</h2>
+      <p class="section-subtitle">Real jobs, photographed on site. Several are mid-installation — that is what quality tiling looks like before the trades finish behind it.</p>
+      <div class="work-grid">
+        {recentWork.map((item) => (
+          <a href={item.href} class="work-card">
+            <Image
+              src={item.img}
+              alt={item.alt}
+              widths={[300, 420, 600]}
+              sizes="(min-width: 992px) 300px, (min-width: 600px) 45vw, 92vw"
+              quality={70}
+              format="webp"
+              loading="lazy"
+              decoding="async"
+              class="work-card__img"
+            />
+            <div class="work-card__body">
+              <span class="work-card__caption">
+                {item.caption}
+                {item.wip && <span class="work-card__wip">Work in progress</span>}
+              </span>
+              <span class="work-card__link">{item.linkText} <span aria-hidden="true">&rarr;</span></span>
+            </div>
+          </a>
+        ))}
       </div>
     </div>
   </section>
@@ -238,10 +316,164 @@ const reviewSchema = JSON.stringify({
     </div>
   </section>
 
+  <!-- Meet Rohullah -->
+  <section class="section meet-section">
+    <div class="container meet-band fade-in-up">
+      <div class="meet-band__figure">
+        <Image
+          src={rohullahImg}
+          alt={`${OWNER_NAME}, tiler and owner of ROH Tiling, on site in Wellington`}
+          widths={[260, 360, 520]}
+          sizes="(min-width: 768px) 300px, 70vw"
+          quality={72}
+          format="webp"
+          loading="lazy"
+          decoding="async"
+          class="meet-band__img"
+        />
+      </div>
+      <div class="meet-band__text">
+        <h2 class="section-title section-title--left">Meet {OWNER_NAME}</h2>
+        <p>I have been on the tools for over ten years, and I still lay every tile myself. When you call ROH Tiling you get me on the phone, me doing the quote, and me on site — not a crew I have subcontracted the job to.</p>
+        <p>That is deliberate. Tiling is a trade where the difference between a good job and a bad one is hidden behind the tile: the substrate prep, the falls to the drain, the waterproofing. I would rather take on fewer jobs and know every one of them was done properly.</p>
+        <p>I am based in Whitby and work right across the Wellington region. If you want to talk through a project, <a href="/contact">get in touch for a free quote</a> or call me on <a href={`tel:${PHONE_E164}`}>{PHONE_DISPLAY}</a>.</p>
+      </div>
+    </div>
+  </section>
+
   <!-- CTA Section -->
   <CTASection
     heading="Ready to Transform Your Space?"
-    text="Get in touch today for a free, no-obligation quote. Whether you are planning a bathroom renovation, kitchen upgrade, or any tiling project across the Wellington region, Rohullah Rassuli Tiling Services is here to help."
+    text="Get in touch today for a free, no-obligation quote. Whether you are planning a bathroom renovation, kitchen upgrade, or any tiling project across the Wellington region, ROH Tiling is here to help."
   />
 
 </BaseLayout>
+
+<style>
+  /* Hero — text first, photo second. Explicit intrinsic sizing keeps CLS at 0. */
+  .hero__layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+    align-items: center;
+  }
+  @media (min-width: 768px) {
+    .hero__layout {
+      grid-template-columns: 1fr auto;
+      gap: 3.5rem;
+    }
+  }
+  /* Sit above .hero::before / ::after, which are z-index 1 —
+     otherwise the gold gradient washes the photo out. */
+  .hero__figure {
+    position: relative;
+    z-index: 2;
+    justify-self: center;
+    width: 100%;
+    max-width: 380px;
+  }
+  .hero__img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 3 / 4;
+    object-fit: cover;
+    border-radius: 10px;
+    box-shadow: 0 18px 48px rgba(0, 0, 0, 0.32);
+  }
+
+  /* Recent work grid */
+  .work-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2.5rem;
+  }
+  .work-card {
+    display: block;
+    background: var(--color-white);
+    border-radius: 8px;
+    overflow: hidden;
+    text-decoration: none;
+    box-shadow: var(--shadow-card);
+    transition: box-shadow var(--transition-smooth), transform var(--transition-fast);
+  }
+  .work-card:hover,
+  .work-card:focus-visible {
+    box-shadow: var(--shadow-card-hover);
+    transform: translateY(-4px);
+  }
+  .work-card__img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+  }
+  .work-card__body {
+    padding: 1.1rem 1.25rem 1.35rem;
+  }
+  .work-card__caption {
+    display: block;
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--color-dark-text);
+    margin-bottom: 0.5rem;
+  }
+  .work-card__wip {
+    display: inline-block;
+    margin-left: 0.5rem;
+    padding: 0.1rem 0.5rem;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    border-radius: 999px;
+    background: var(--color-light-bg);
+    color: var(--color-link-gold);
+    vertical-align: middle;
+  }
+  .work-card__link {
+    display: inline-block;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--color-link-gold);
+  }
+  .work-card:hover .work-card__link { text-decoration: underline; }
+
+  /* Meet Rohullah band */
+  .meet-section { background: var(--color-light-bg); }
+  .meet-band {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    align-items: center;
+  }
+  @media (min-width: 768px) {
+    .meet-band {
+      grid-template-columns: 300px 1fr;
+      gap: 3rem;
+    }
+  }
+  .meet-band__figure {
+    width: 100%;
+    max-width: 300px;
+    justify-self: center;
+  }
+  .meet-band__img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 3 / 4;
+    object-fit: cover;
+    border-radius: 10px;
+    box-shadow: var(--shadow-card);
+  }
+  .meet-band__text p {
+    margin-bottom: 1.1rem;
+    line-height: 1.8;
+    color: var(--color-body-text);
+  }
+  .meet-band__text p:last-child { margin-bottom: 0; }
+</style>

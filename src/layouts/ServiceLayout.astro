@@ -32,18 +32,20 @@ const breadcrumbs = [
 const serviceSchema = JSON.stringify({
   "@context": "https://schema.org",
   "@type": "Service",
+  "@id": `${siteUrl}${canonical}#service`,
   "serviceType": serviceType,
   "name": serviceName,
   "description": serviceDescription,
-  "provider": {
-    "@type": "LocalBusiness",
-    "name": "Rohullah Rassuli Tiling Services",
-    "url": siteUrl
-  },
-  "areaServed": {
-    "@type": "Place",
-    "name": "Wellington Region"
-  }
+  "url": `${siteUrl}${canonical}`,
+  // Points at the single LocalBusiness node defined in BaseLayout.
+  "provider": { "@id": `${siteUrl}/#business` },
+  "areaServed": [
+    { "@type": "City", "name": "Wellington" },
+    { "@type": "City", "name": "Porirua" },
+    { "@type": "City", "name": "Lower Hutt" },
+    { "@type": "City", "name": "Upper Hutt" },
+    { "@type": "Place", "name": "Kapiti Coast" }
+  ]
 });
 ---
 
@@ -60,7 +62,7 @@ const serviceSchema = JSON.stringify({
 
   <CTASection
     heading="Ready to Start Your Tiling Project?"
-    text="Get in touch with Rohullah Rassuli Tiling Services for a free, no-obligation quote. We'd love to help bring your vision to life."
+    text="Get in touch with ROH Tiling for a free, no-obligation quote. We'd love to help bring your vision to life."
     variant="gold"
   />
 </BaseLayout>

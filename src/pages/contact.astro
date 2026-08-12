@@ -2,20 +2,38 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHeader from '../components/PageHeader.astro';
 import CTASection from '../components/CTASection.astro';
+import {
+  BUSINESS_NAME,
+  PHONE_DISPLAY,
+  PHONE_E164,
+  EMAIL,
+  LOCALITY,
+  HOURS,
+  GBP_URL,
+  INSTAGRAM_URL,
+} from '../data/business';
 
-const title = "Contact Us | Rohullah Rassuli Tiling Services Wellington";
-const description = "Contact Rohullah Rassuli Tiling Services for a free tiling quote in Wellington. Call 021 026 02044 or fill in our online form. Whitby-based, Wellington-wide.";
+const title = "Contact Us | ROH Tiling Wellington";
+const description = "Contact ROH Tiling for a free tiling quote in Wellington. Call 021 026 02044 or fill in our online form. Whitby-based, Wellington-wide.";
 const canonical = "/contact";
 const breadcrumbs = [{ name: "Home", url: "/" }, { name: "Contact" }];
 ---
 
 <BaseLayout title={title} description={description} canonical={canonical} breadcrumbs={breadcrumbs} showMobileCTA={false}>
-  <PageHeader title="Contact Rohullah Rassuli Tiling Services" breadcrumbs={breadcrumbs} />
+  <PageHeader title="Contact ROH Tiling" breadcrumbs={breadcrumbs} />
 
   <!-- Contact Intro -->
   <section class="section section--light" style="padding-bottom: 0;">
     <div class="container" style="max-width: 720px; text-align: center;">
-      <p style="font-size: 1.1rem; line-height: 1.75; color: var(--color-text, #555);">Contact Rohullah Rassuli Tiling Services for professional <a href="/services/bathroom-tiling">bathroom</a>, <a href="/services/kitchen-tiling">kitchen</a>, and <a href="/services/floor-tiling">floor tiling</a> across Wellington. Based in Whitby, we serve Porirua, Lower Hutt, Upper Hutt, and the wider Wellington region. Call us or fill in the form below for a free, no-obligation quote.</p>
+      <p style="font-size: 1.1rem; line-height: 1.75; color: var(--color-text, #555);">Contact ROH Tiling for professional <a href="/services/bathroom-tiling">bathroom</a>, <a href="/services/kitchen-tiling">kitchen</a>, and <a href="/services/floor-tiling">floor tiling</a> across Wellington. Based in Whitby, we serve Porirua, Lower Hutt, Upper Hutt, and the wider Wellington region. Call us or fill in the form below for a free, no-obligation quote.</p>
+
+      <!-- NAP block above the form. Matches the Google Business Profile exactly. -->
+      <address class="nap-block">
+        <span class="nap-block__name">{BUSINESS_NAME}</span>
+        <span class="nap-block__line">{LOCALITY}</span>
+        <span class="nap-block__line"><a href={`tel:${PHONE_E164}`}>{PHONE_DISPLAY}</a></span>
+        <span class="nap-block__line"><a href={`mailto:${EMAIL}`}>{EMAIL}</a></span>
+      </address>
     </div>
   </section>
 
@@ -35,8 +53,9 @@ const breadcrumbs = [{ name: "Home", url: "/" }, { name: "Contact" }];
                 <circle cx="12" cy="10" r="3" stroke="currentColor" stroke-width="1.5"/>
               </svg>
               <div>
-                <strong>Address</strong>
-                <p>Whitby, Wellington, New Zealand</p>
+                <strong>Service Area</strong>
+                <p>{LOCALITY}</p>
+                <p class="contact-nap__note">Service-area business &mdash; we come to you.</p>
               </div>
             </div>
 
@@ -46,7 +65,7 @@ const breadcrumbs = [{ name: "Home", url: "/" }, { name: "Contact" }];
               </svg>
               <div>
                 <strong>Phone</strong>
-                <p><a href="tel:+6402102602044">021 026 02044</a></p>
+                <p><a href={`tel:${PHONE_E164}`}>{PHONE_DISPLAY}</a></p>
               </div>
             </div>
 
@@ -57,7 +76,7 @@ const breadcrumbs = [{ name: "Home", url: "/" }, { name: "Contact" }];
               </svg>
               <div>
                 <strong>Email</strong>
-                <p><a href="mailto:Rohullah.rassuli@gmail.com">Rohullah.rassuli@gmail.com</a></p>
+                <p><a href={`mailto:${EMAIL}`}>{EMAIL}</a></p>
               </div>
             </div>
 
@@ -68,8 +87,23 @@ const breadcrumbs = [{ name: "Home", url: "/" }, { name: "Contact" }];
               </svg>
               <div>
                 <strong>Hours</strong>
-                <p>Monday &ndash; Friday: 8:00 AM &ndash; 5:00 PM</p>
-                <p>Saturday &amp; Sunday: Closed</p>
+                <!-- Saturday is "By appointment", not Closed: homeowners research
+                     bathroom renovations on Saturday mornings. -->
+                {HOURS.map((h) => (
+                  <p>{h.label}: {h.value}</p>
+                ))}
+              </div>
+            </div>
+
+            <div class="contact-nap__item">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5"/>
+                <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" stroke="currentColor" stroke-width="1.5"/>
+              </svg>
+              <div>
+                <strong>Find Us Online</strong>
+                <p><a href={GBP_URL} rel="noopener" target="_blank">Google Business Profile</a></p>
+                <p><a href={INSTAGRAM_URL} rel="noopener" target="_blank">Instagram &mdash; @rohtiling</a></p>
               </div>
             </div>
           </address>
@@ -188,16 +222,21 @@ const breadcrumbs = [{ name: "Home", url: "/" }, { name: "Contact" }];
     <div class="container">
       <h2 class="section-title fade-in-up">Find Us</h2>
       <p class="section-subtitle fade-in-up">Based in Whitby, serving the entire Wellington region</p>
+      <!--
+        Lazy-loaded, explicit height, never render-blocking.
+        NOTE: this is the generic Maps place embed, not the Google Business Profile
+        embed — the GBP embed iframe was not supplied. Swap the src for the GBP
+        "Share > Embed a map" iframe src when it is available; nothing else changes.
+      -->
       <div class="map-container fade-in-up">
         <iframe
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d12345!2d174.8717!3d-41.1308!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2sWhitby%2C+Wellington!5e0!3m2!1sen!2snz"
+          src="https://maps.google.com/maps?q=Whitby%2C%20Porirua%2C%20Wellington%2C%20New%20Zealand&z=12&output=embed"
           width="100%"
           height="450"
           style="border:0;"
-          allowfullscreen=""
           loading="lazy"
           referrerpolicy="no-referrer-when-downgrade"
-          title="Rohullah Rassuli Tiling Services location — Whitby, Wellington"
+          title="ROH Tiling service area map"
         ></iframe>
       </div>
     </div>
@@ -205,6 +244,43 @@ const breadcrumbs = [{ name: "Home", url: "/" }, { name: "Contact" }];
 </BaseLayout>
 
 <style>
+  /* NAP block above the form — crawlable text, never an image */
+  .nap-block {
+    display: grid;
+    gap: 0.2rem;
+    font-style: normal;
+    margin-top: 1.75rem;
+    padding: 1.25rem 1.5rem;
+    background: var(--color-white);
+    border-left: 4px solid var(--color-primary);
+    border-radius: 6px;
+    box-shadow: var(--shadow-card);
+    text-align: left;
+  }
+  .nap-block__name {
+    font-family: var(--font-heading);
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--color-dark-text);
+    margin-bottom: 0.15rem;
+  }
+  .nap-block__line {
+    font-size: 0.98rem;
+    color: var(--color-body-text);
+  }
+  .nap-block a {
+    color: var(--color-link-gold);
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .nap-block a:hover { text-decoration: underline; }
+
+  .contact-nap__note {
+    font-size: 0.83rem !important;
+    color: var(--color-muted) !important;
+    font-style: italic;
+  }
+
   /* Contact Layout */
   .contact-layout {
     display: grid;
@@ -262,7 +338,7 @@ const breadcrumbs = [{ name: "Home", url: "/" }, { name: "Contact" }];
     color: var(--color-dark-text);
   }
   .contact-nap__item a {
-    color: var(--color-primary-dark);
+    color: var(--color-link-gold);
     text-decoration: none;
     font-weight: 600;
   }
