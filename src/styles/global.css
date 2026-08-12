@@ -161,11 +161,69 @@ h1, h2, h3, h4, h5, h6 {
    2. TYPOGRAPHY
    -------------------------------------------------------------------------- */
 h1 { font-size: clamp(2rem, 5vw, 3.5rem); }
-h2 { font-size: clamp(1.75rem, 4vw, 2.75rem); }
+/* 2.25rem, down from 2.75rem: at 44px the H2 was 2.75x the 16px body, and
+   capping prose at 68ch made the mismatch worse — the heading spanned the full
+   column while the body wrapped well short of it. 36px is 2.25x body. */
+h2 { font-size: clamp(1.6rem, 2.2vw + 0.85rem, 2.25rem); }
 h3 { font-size: clamp(1.35rem, 3vw, 1.85rem); }
 h4 { font-size: clamp(1.15rem, 2.5vw, 1.4rem); }
 h5 { font-size: 1.1rem; }
 h6 { font-size: 1rem; }
+
+/* --------------------------------------------------------------------------
+   2a. VERTICAL RHYTHM
+   A heading belongs to the text below it, not the text above it, so the space
+   above every heading is 2.5–3x the space below it. Without that ratio the eye
+   cannot tell where one section ends and the next begins.
+
+   The values are clamped rather than fixed so the gaps tighten at 390px, where
+   fixed rem margins leave sections stranded. The above > below relationship
+   holds at every width: the ratio never drops below 2.5x.
+   -------------------------------------------------------------------------- */
+h1 {
+  margin-bottom: clamp(1.15rem, 2vw, 1.5rem);
+}
+
+/* 1.8rem below, not the 1.25rem first tried. Paragraphs are set at
+   line-height 1.7, so half-leading adds ~10px to every gap and dilutes the
+   difference: at 1.25rem the measured heading-to-paragraph gap was 29px
+   against a paragraph-to-paragraph gap of 26px — indistinguishable. At 1.8rem
+   it measures 36px, clearly the larger of the two. */
+h2 {
+  margin-top: clamp(3.5rem, 6.5vw, 4.5rem);
+  margin-bottom: clamp(1.5rem, 2.6vw, 1.8rem);
+}
+
+h3 {
+  margin-top: clamp(2.4rem, 4.6vw, 3rem);
+  margin-bottom: clamp(0.8rem, 1.4vw, 1rem);
+}
+
+h4 {
+  margin-top: clamp(1.7rem, 3vw, 2rem);
+  margin-bottom: 0.65rem;
+}
+
+/* The first heading in a container is spaced by that container's own padding —
+   adding a top margin on top of it doubles the section gap. */
+h1:first-child,
+h2:first-child,
+h3:first-child,
+h4:first-child,
+h5:first-child,
+h6:first-child {
+  margin-top: 0;
+}
+
+/* Cards and trust signals stack an icon above the heading. The icon's own
+   bottom margin sets that gap, so these headings must not add to it. */
+.service-card__title,
+.service-card h3,
+.value-card__title,
+.trust-signal__title,
+.trust-item h4 {
+  margin-top: 0;
+}
 
 p {
   margin-bottom: 1rem;
@@ -175,6 +233,22 @@ p {
 
 p:last-child {
   margin-bottom: 0;
+}
+
+/* --------------------------------------------------------------------------
+   2b. PROSE MEASURE
+   Running text is capped at 68ch (~75 characters in DM Sans). Past that the eye
+   loses the start of the next line on the return sweep. Applied to prose
+   containers only — grids (service cards, work strip, service-area columns)
+   keep their own widths.
+   -------------------------------------------------------------------------- */
+/* The other prose containers (.intro-section__content, .legal, .area-intro)
+   are capped where they are already defined, further down this file. */
+.prose,
+.about-intro__text p,
+.meet-band__text p,
+.split-layout > div > p {
+  max-width: 68ch;
 }
 
 strong {
@@ -413,6 +487,38 @@ strong {
   z-index: var(--z-nav);
   background: transparent;
   transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* The header is transparent over the hero, so on the homepage the nav sits
+   directly on the photo. A scrim across the full bar gives every nav item —
+   above all the phone number, the highest-value link on the page — the same
+   dark backing no matter what the crop, the image or the viewport puts behind
+   it. It sits under the nav content and is removed once .scrolled paints the
+   bar white. */
+.site-header::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 132px;
+  pointer-events: none;
+  /* Held near-opaque across the 72px bar itself, then released quickly. The
+     photo puts near-white tile highlights (248,242,225) behind the phone
+     number, and nothing lighter than ~0.8 alpha gets cream to 4.5:1 there. */
+  background: linear-gradient(
+    180deg,
+    rgba(20, 14, 4, 0.86) 0%,
+    rgba(20, 14, 4, 0.8) 42%,
+    rgba(20, 14, 4, 0.34) 76%,
+    transparent 100%
+  );
+  transition: opacity 0.3s ease;
+  /* Behind the nav content. .site-header is a stacking context (fixed + z-index),
+     so this stays above the page and below the links. */
+  z-index: -1;
+}
+
+.site-header.scrolled::before {
+  opacity: 0;
 }
 
 .site-header.scrolled {
@@ -1990,7 +2096,7 @@ strong {
 .contact-response-note { text-align: center; padding: 1.5rem; background: var(--color-light-bg); border-radius: 8px; font-size: 0.95rem; color: var(--color-body-text); }
 
 /* Service Areas page */
-.area-intro { max-width: 700px; }
+.area-intro { max-width: 68ch; }
 .area-section { margin-bottom: 3rem; }
 .area-section h3 { font-size: 1.3rem; margin-bottom: 0.75rem; }
 .area-section__description { color: var(--color-body-text); margin-bottom: 1rem; }
@@ -2012,7 +2118,7 @@ strong {
 .lead, .lead-text { font-size: 1.15rem; line-height: 1.7; color: var(--color-body-text); }
 
 /* Intro section */
-.intro-section__content { max-width: 800px; }
+.intro-section__content { max-width: 68ch; }
 .intro-section__content p { margin-bottom: 1rem; line-height: 1.7; }
 
 /* Form intro */
@@ -2276,7 +2382,7 @@ strong {
    25. LEGAL PAGES (Privacy, Terms)
    -------------------------------------------------------------------------- */
 .legal {
-  max-width: 760px;
+  max-width: 68ch;
 }
 .legal__updated {
   font-size: 0.85rem;
