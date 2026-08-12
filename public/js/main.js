@@ -1,5 +1,5 @@
 /**
- * Rohullah Rassuli Tiling Services — Client-Side JavaScript
+ * ROH Tiling — Client-Side JavaScript
  * Vanilla JS only. No frameworks.
  */
 document.addEventListener('DOMContentLoaded', () => {
