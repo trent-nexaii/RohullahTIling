@@ -109,8 +109,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }, { passive: true });
   }
 
-  // ─── 6. Form Validation ───
-  document.querySelectorAll('.contact-form').forEach((form) => {
+  // ─── 6. Contact Forms ───
+  // Select the <form> itself, not the .contact-form card wrapping it — the
+  // wrapper is a <div>, so FormData() and reset() both throw on it.
+  document.querySelectorAll('.contact-form form').forEach((form) => {
     function showError(field, msg) {
       clearError(field);
       field.classList.add('field-error');
@@ -161,13 +163,43 @@ document.addEventListener('DOMContentLoaded', () => {
       preferred_contact: 'Preferred contact method',
     };
 
+    function statusBox() {
+      let msg = form.querySelector('.form-success');
+      if (!msg) {
+        msg = document.createElement('div');
+        msg.className = 'form-success';
+        msg.setAttribute('role', 'status');
+        form.appendChild(msg);
+      }
+      return msg;
+    }
+
     /**
-     * The site is statically hosted with no form backend, so the enquiry is
-     * handed to the visitor's email client addressed to the business. This
-     * previously showed a success message and sent nothing at all, which meant
-     * every enquiry submitted through the form was silently lost.
+     * Fallback for when the serverless endpoint is unavailable — before
+     * RESEND_API_KEY is configured, or if the function is not deployed. Hands
+     * the enquiry to the visitor's email client rather than losing it.
      */
-    form.addEventListener('submit', (e) => {
+    function mailtoFallback(rows, msg) {
+      const to = form.dataset.mailto;
+      const subject = form.dataset.subject || 'Website enquiry';
+      const body = rows.map(([k, v]) => k + ': ' + v).join('\n') +
+        '\n\n— Sent from rohullahtiling.co.nz';
+      msg.className = 'form-success';
+      msg.innerHTML =
+        'Opening your email app with this enquiry ready to send &mdash; please press send to deliver it. ' +
+        'If nothing opens, email <a href="mailto:' + to + '">' + to + '</a> ' +
+        'or call <a href="tel:+642102602044">021 026 02044</a>.';
+      window.location.href = 'mailto:' + to +
+        '?subject=' + encodeURIComponent(subject) +
+        '&body=' + encodeURIComponent(body);
+    }
+
+    /**
+     * Posts the enquiry to /api/enquiry, which emails it to the business.
+     * Falls back to a mailto: handoff if that endpoint is missing or not yet
+     * configured, so an enquiry is never silently discarded.
+     */
+    form.addEventListener('submit', async (e) => {
       e.preventDefault();
       let ok = true;
       fields.forEach((f) => { if (!validate(f)) ok = false; });
@@ -178,33 +210,44 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       const data = new FormData(form);
-      const lines = [];
+      const payload = {};
+      const rows = [];
       for (const [key, raw] of data.entries()) {
         const value = String(raw).trim();
         if (!value) continue;
-        lines.push(`${LABELS[key] || key}: ${value}`);
+        payload[key] = value;
+        if (key !== 'company') rows.push([LABELS[key] || key, value]);
       }
 
-      const to = form.dataset.mailto;
-      const subject = form.dataset.subject || 'Website enquiry';
-      const body = lines.join('\n') + '\n\n— Sent from rohullahtiling.co.nz';
+      const msg = statusBox();
+      const submit = form.querySelector('[type="submit"]');
+      const original = submit ? submit.textContent : '';
+      if (submit) { submit.disabled = true; submit.textContent = 'Sending…'; }
+      msg.className = 'form-success';
+      msg.textContent = 'Sending your enquiry…';
 
-      let msg = form.querySelector('.form-success');
-      if (!msg) {
-        msg = document.createElement('div');
-        msg.className = 'form-success';
-        msg.setAttribute('role', 'status');
-        form.appendChild(msg);
+      try {
+        const res = await fetch('/api/enquiry', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+
+        if (res.ok) {
+          form.reset();
+          fields.forEach((f) => clearError(f));
+          msg.innerHTML =
+            'Thanks &mdash; your enquiry has been sent. Rohullah will get back to you within 24 hours. ' +
+            'If it is urgent, call <a href="tel:+642102602044">021 026 02044</a>.';
+        } else {
+          // 503 not_configured, 404 not deployed, 502 delivery failure.
+          mailtoFallback(rows, msg);
+        }
+      } catch (err) {
+        mailtoFallback(rows, msg);
+      } finally {
+        if (submit) { submit.disabled = false; submit.textContent = original; }
       }
-      msg.innerHTML =
-        'Opening your email app with this enquiry ready to send &mdash; please press send to deliver it. ' +
-        'If nothing opens, email <a href="mailto:' + to + '">' + to + '</a> ' +
-        'or call <a href="tel:+642102602044">021 026 02044</a>.';
-
-      window.location.href =
-        'mailto:' + to +
-        '?subject=' + encodeURIComponent(subject) +
-        '&body=' + encodeURIComponent(body);
     });
   });
 });

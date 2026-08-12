@@ -1,0 +1,139 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import {
+  BUSINESS_NAME,
+  OWNER_NAME,
+  PHONE_DISPLAY,
+  PHONE_E164,
+  EMAIL,
+  LOCALITY,
+} from '../data/business';
+
+const title = "Privacy Policy | ROH Tiling Wellington";
+const description = "How ROH Tiling collects, uses and protects your personal information under the New Zealand Privacy Act 2020.";
+const canonical = "/privacy";
+const breadcrumbs = [{ name: "Home", url: "/" }, { name: "Privacy Policy" }];
+
+const updated = "12 August 2026";
+---
+
+<BaseLayout title={title} description={description} canonical={canonical} breadcrumbs={breadcrumbs}>
+  <PageHeader
+    title="Privacy Policy"
+    subtitle="What we collect, why we collect it, and what we do with it."
+  />
+
+  <section class="section">
+    <div class="container legal">
+      <p class="legal__updated">Last updated: {updated}</p>
+
+      <p class="legal__lead">
+        {BUSINESS_NAME} ({OWNER_NAME}) operates <strong>rohullahtiling.co.nz</strong>. We handle personal
+        information in accordance with the New Zealand <strong>Privacy Act 2020</strong>. This policy
+        explains what we collect and what we do with it. It is short because we collect very little.
+      </p>
+
+      <h2>1. What we collect</h2>
+      <p>Only what you give us, and only when you choose to contact us:</p>
+      <ul>
+        <li><strong>Your name</strong></li>
+        <li><strong>Phone number and email address</strong></li>
+        <li><strong>Suburb or job location</strong></li>
+        <li><strong>Details of the work you are enquiring about</strong>, including anything you tell us about your property</li>
+      </ul>
+      <p>
+        We collect this when you submit the form on our <a href="/contact">contact page</a>, call us,
+        email us, message us on social media, or when we visit your property to quote.
+      </p>
+      <p>
+        We do <strong>not</strong> run analytics, advertising or tracking scripts on this website, and we
+        do not set our own cookies. We do not collect payment card details through this website.
+      </p>
+
+      <h2>2. Why we collect it</h2>
+      <ul>
+        <li>To respond to your enquiry and prepare a quote</li>
+        <li>To arrange access, schedule work and carry out the job</li>
+        <li>To invoice you and keep records required by New Zealand tax law</li>
+        <li>To deal with any warranty or defect claim afterwards</li>
+      </ul>
+      <p>
+        We will not add you to a marketing list or send you promotional email unless you have asked us to.
+      </p>
+
+      <h2>3. Who we share it with</h2>
+      <p>
+        We do not sell or trade your information. We share it only where it is necessary to do the job or
+        run the business:
+      </p>
+      <ul>
+        <li><strong>Suppliers and other trades</strong> — for example a plumber or electrician working on the same job, or a tile supplier arranging delivery to your address</li>
+        <li><strong>Our email and hosting providers</strong> — enquiries submitted through the contact form are transmitted by our email delivery provider and stored in our email account</li>
+        <li><strong>Our accountant and the Inland Revenue Department</strong> — for invoicing and tax records</li>
+        <li><strong>Where the law requires it</strong></li>
+      </ul>
+
+      <h2>4. Third-party services on this website</h2>
+      <p>
+        Two third-party services load when you view this site. Both are provided by Google, and both
+        receive your IP address and browser information as a normal part of serving content:
+      </p>
+      <ul>
+        <li><strong>Google Fonts</strong> — supplies the typefaces used across the site</li>
+        <li><strong>Google Maps</strong> — the service-area map embedded on the contact page. This loads only on that page, and Google may set its own cookies through it</li>
+      </ul>
+      <p>
+        Their handling of that data is governed by Google's own privacy policy, not ours. Our website also
+        links to our Google Business Profile and Instagram; once you follow those links you are on their
+        platforms and their privacy policies apply.
+      </p>
+
+      <h2>5. How long we keep it</h2>
+      <p>
+        Enquiries that do not lead to work are kept for up to <strong>2 years</strong>. Records relating to
+        completed jobs — quotes, invoices and job notes — are kept for at least <strong>7 years</strong>, as
+        required for tax purposes, and because they may be needed if a workmanship question arises later.
+      </p>
+
+      <h2>6. Storage and security</h2>
+      <p>
+        Your information is held in our email account and business records, protected by passwords and
+        two-factor authentication where available. Some of these services store data on servers outside New
+        Zealand. No system is perfectly secure, but we take reasonable steps to protect your information
+        against loss, misuse and unauthorised access.
+      </p>
+
+      <h2>7. Your rights</h2>
+      <p>
+        Under the Privacy Act 2020 you have the right to <strong>ask what personal information we hold about
+        you</strong>, and to <strong>ask us to correct it</strong> if it is wrong. Email
+        <a href={`mailto:${EMAIL}`}>{EMAIL}</a> or call <a href={`tel:${PHONE_E164}`}>{PHONE_DISPLAY}</a> and we
+        will respond within 20 working days, as the Act requires.
+      </p>
+      <p>
+        If you are not satisfied with how we have handled your information, you can complain to the Office of
+        the Privacy Commissioner at <a href="https://www.privacy.org.nz" rel="noopener" target="_blank">privacy.org.nz</a>.
+      </p>
+
+      <h2>8. Children</h2>
+      <p>
+        This website and our services are directed at property owners and trade clients. We do not knowingly
+        collect personal information from children.
+      </p>
+
+      <h2>9. Changes to this policy</h2>
+      <p>
+        If we change how we handle personal information we will update this page and the date at the top.
+      </p>
+
+      <h2>10. Contact</h2>
+      <address class="legal__contact">
+        <strong>{BUSINESS_NAME}</strong><br />
+        {LOCALITY}<br />
+        <a href={`tel:${PHONE_E164}`}>{PHONE_DISPLAY}</a><br />
+        <a href={`mailto:${EMAIL}`}>{EMAIL}</a>
+      </address>
+    </div>
+  </section>
+</BaseLayout>

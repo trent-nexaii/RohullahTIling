@@ -188,6 +188,13 @@ const breadcrumbs = [{ name: "Home", url: "/" }, { name: "Contact" }];
                 </div>
               </fieldset>
 
+
+              <!-- Honeypot: hidden from humans, filled in by bots. Server accepts
+                   silently and sends nothing when this has a value. -->
+              <div class="hp-field" aria-hidden="true">
+                <label for="quote-company">Company (leave blank)</label>
+                <input type="text" id="quote-company" name="company" tabindex="-1" autocomplete="off" />
+              </div>
               <button type="submit" class="btn btn-primary">Request Your Free Quote</button>
             </form>
           </div>
@@ -226,6 +233,13 @@ const breadcrumbs = [{ name: "Home", url: "/" }, { name: "Contact" }];
                 <textarea id="contact-message" name="message" rows="4" required placeholder="How can we help?"></textarea>
               </div>
 
+
+              <!-- Honeypot: hidden from humans, filled in by bots. Server accepts
+                   silently and sends nothing when this has a value. -->
+              <div class="hp-field" aria-hidden="true">
+                <label for="contact-company">Company (leave blank)</label>
+                <input type="text" id="contact-company" name="company" tabindex="-1" autocomplete="off" />
+              </div>
               <button type="submit" class="btn btn-outline">Send Message</button>
             </form>
           </div>
