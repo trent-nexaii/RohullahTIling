@@ -15,13 +15,18 @@ import floorFeatureImg from '../assets/images/bathroom-floor-tiling-feature-stri
 import windowSeatImg from '../assets/images/patterned-tile-window-seat-wellington.webp';
 
 // LCP element — resolve the exact generated asset so it can be preloaded.
-const HERO_WIDTHS = [360, 520, 640, 760];
+// The image bleeds to the right edge from 1024px up, so it is rendered far
+// wider than the old 380px box and needs the larger candidates to match.
+// HERO_SIZES is shared with the <Image> below and the preload <link> in the
+// head, so the three can never drift apart.
+const HERO_WIDTHS = [400, 560, 760, 1040, 1400];
+const HERO_SIZES = '(min-width: 1024px) 42vw, (min-width: 768px) 380px, 82vw';
 const hero = await getImage({
   src: heroImg,
-  width: 760,
-  height: 1013,
+  width: 1040,
+  height: 1387,
   widths: HERO_WIDTHS,
-  sizes: '(min-width: 768px) 380px, 82vw',
+  sizes: HERO_SIZES,
   format: 'webp',
   quality: 72,
 });
@@ -83,16 +88,20 @@ const recentWork = [
     as="image"
     href={hero.src}
     imagesrcset={hero.srcSet.attribute}
-    imagesizes="(min-width: 768px) 380px, 82vw"
+    imagesizes={HERO_SIZES}
     fetchpriority="high"
   />
 
   <!-- Hero Section -->
   <section class="hero tile-grid-bg">
     <div class="container hero__layout">
-      <div class="hero__content fade-in-up">
-        <h1>Trusted <span class="highlight">Wellington Tiling Experts</span> — Quality You Can Count On</h1>
-        <p class="hero__subtitle">Professional bathroom, kitchen, and floor tiling across the Wellington region. Expert craftsmanship. Lasting results. Free quotes.</p>
+      <!--
+        No fade-in on this block: it holds the H1, which is the first thing a
+        visitor reads and part of the LCP. It paints immediately.
+      -->
+      <div class="hero__content">
+        <h1>Wellington Tiler — Bathrooms, Splashbacks and Floors</h1>
+        <p class="hero__subtitle">Ten years on the tools, based in Whitby. Every tile laid by me, not a subcontracted crew. Free quotes across the Wellington region.</p>
         <div class="hero__cta-group">
           <a href="/contact" class="btn btn--primary">Get a Free Quote</a>
           <a href="tel:+642102602044" class="btn btn--secondary">
@@ -125,11 +134,11 @@ const recentWork = [
       <div class="hero__figure">
         <Image
           src={heroImg}
-          width={760}
-          height={1013}
+          width={1040}
+          height={1387}
           alt="Finished ensuite with large-format grey porcelain wall tiles, frameless glass shower and wall-hung basin, tiled by ROH Tiling in Wellington"
           widths={HERO_WIDTHS}
-          sizes="(min-width: 768px) 380px, 82vw"
+          sizes={HERO_SIZES}
           quality={72}
           format="webp"
           loading="eager"
@@ -357,14 +366,15 @@ const recentWork = [
     gap: 2.5rem;
     align-items: center;
   }
-  @media (min-width: 768px) {
-    .hero__layout {
-      grid-template-columns: 1fr auto;
-      gap: 3.5rem;
-    }
-  }
-  /* Sit above .hero::before / ::after, which are z-index 1 —
-     otherwise the gold gradient washes the photo out. */
+  /*
+    Stacked all the way to 1024px — there was a two-column split from 768px, but
+    it left the text about 320px wide on a tablet, which broke the headline onto
+    five lines and wrapped the phone button. The split now starts at 1024px,
+    where the photo has room to bleed and the desktop nav appears.
+
+    Sit above .hero::before / ::after, which are z-index 1 — otherwise the gold
+    gradient washes the photo out.
+  */
   .hero__figure {
     position: relative;
     z-index: 2;
@@ -380,6 +390,100 @@ const recentWork = [
     object-fit: cover;
     border-radius: 10px;
     box-shadow: 0 18px 48px rgba(0, 0, 0, 0.32);
+  }
+
+  /*
+    White, not the muted cream this used to be. The gold-brown gradient is the
+    client's brand colour and cannot change, so the text has to carry the
+    contrast: white clears 4.5:1 against both the darkest and the lightest
+    point of the gradient behind this column.
+  */
+  .hero__subtitle {
+    color: var(--color-white);
+    max-width: 34rem;
+  }
+  .hero__trust-badges {
+    color: var(--color-white);
+  }
+
+  /*
+    From 1024px the photo bleeds to the right edge of the viewport and runs the
+    full height of the hero — no right margin, no right-hand radius, no floating
+    rounded box leaving a gold void above the headline.
+  */
+  @media (min-width: 1024px) {
+    .hero {
+      align-items: stretch;
+      min-height: 0;
+      padding: 0;
+    }
+    .hero__layout {
+      max-width: none;
+      padding: 0;
+      gap: 0;
+      align-items: stretch;
+      grid-template-columns: minmax(0, 1fr) clamp(340px, 42%, 820px);
+      min-height: 38rem;
+    }
+    /*
+      .hero__layout no longer carries the container padding, so the text column
+      re-creates it: this left padding puts the H1 on exactly the same vertical
+      line as every section below, at any viewport width.
+      Top padding is deliberately short — enough to clear the 72px fixed header
+      and no more — so the H1 lands in the upper third rather than the middle.
+    */
+    .hero__content {
+      align-self: start;
+      /* The grid column governs the measure now, not a fixed 700px box. */
+      max-width: none;
+      padding: 6.5rem 3rem 4rem
+               max(5vw, calc((100vw - var(--container-max)) / 2 + 60px));
+    }
+    /* Three lines at every desktop width, not four. */
+    .hero h1 {
+      font-size: clamp(2rem, 4.2vw, 3.4rem);
+    }
+    .hero__figure {
+      max-width: none;
+      justify-self: stretch;
+    }
+    /*
+      The fixed header is transparent over the hero, so once the photo runs to
+      the top edge the nav links and the phone number sit on light grey tile and
+      lose their contrast. This scrim covers the header band only — it fades out
+      well above the shower and basin, so the tiling itself is never veiled.
+    */
+    .hero__figure::before {
+      content: "";
+      position: absolute;
+      inset: 0 0 auto 0;
+      height: 150px;
+      z-index: 1;
+      pointer-events: none;
+      background: linear-gradient(
+        180deg,
+        rgba(26, 18, 6, 0.78) 0%,
+        rgba(26, 18, 6, 0.62) 48%,
+        transparent 100%
+      );
+    }
+    /*
+      Absolutely positioned so the photo fills the column instead of dictating
+      its height — left in flow, its 3:4 intrinsic ratio stretched the hero to
+      880px and reintroduced the dead space this change exists to remove.
+    */
+    .hero__img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      aspect-ratio: auto;
+      border-radius: 0;
+      /* Holds the basin and the shower in frame as the crop height changes. */
+      object-position: 50% 62%;
+      /* Casts left onto the gradient, so the bled edge still reads as an edge. */
+      box-shadow: -28px 0 52px rgba(0, 0, 0, 0.3);
+    }
   }
 
   /* Recent work grid */
