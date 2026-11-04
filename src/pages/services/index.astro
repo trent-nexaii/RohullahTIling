@@ -1,12 +1,17 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PageHeader from '../../components/PageHeader.astro';
-import ServiceCard from '../../components/ServiceCard.astro';
-import CTASection from '../../components/CTASection.astro';
+import { Image } from 'astro:assets';
+import splashbackImg from '../../assets/images/kitchen-splashback-fluted-terracotta-tile-wellington.webp';
 
-const breadcrumbs = [
-  { name: 'Home', url: '/' },
-  { name: 'Services' },
+const breadcrumbs = [{ name: 'Home', url: '/' }, { name: 'Services' }];
+const services = [
+  { name: 'Bathroom Tiling', href: '/services/bathroom-tiling', description: 'Shower walls, bathroom floors and floor-to-ceiling tiling. Explore layouts, tile options and preparation.' },
+  { name: 'Kitchen Tiling', href: '/services/kitchen-tiling', description: 'Kitchen splashbacks, feature walls and floors, from subway tiles to fluted corner returns.' },
+  { name: 'Floor Tiling', href: '/services/floor-tiling', description: 'Porcelain, ceramic and natural stone floors for homes and commercial spaces.' },
+  { name: 'Waterproofing', href: '/services/waterproofing', description: 'Membrane preparation and installation beneath tiles in showers, bathrooms and other wet areas.' },
+  { name: 'Underfloor Heating', href: '/services/underfloor-heating', description: 'Electric heating beneath tiled floors, planned alongside the tiling work.' },
+  { name: 'Tile Repairs', href: '/services/tile-repairs', description: 'Cracked tile replacement, re-grouting and re-siliconing for existing tiled surfaces.' },
 ];
 ---
 
@@ -18,104 +23,76 @@ const breadcrumbs = [
 >
   <PageHeader
     title="Professional Tiling Services in Wellington"
-    subtitle="Bathroom and shower tiling, kitchen splashbacks, floor tiling, waterproofing to NZ Standard, underfloor heating and repairs — across the Wellington region."
+    subtitle="Bathrooms, kitchen splashbacks, floors and repairs — choose the work you need, then talk it through with Rohullah."
   />
 
-  <!-- Intro Section -->
   <section class="section">
-    <div class="container">
-      <div class="fade-in-up">
-        <p>
-          ROH Tiling provides the full range of professional tiling solutions across the Wellington region — from Porirua and the Hutt Valley through to Wellington CBD and the Kāpiti Coast. Whether you are renovating a family bathroom, upgrading your kitchen splashback, or laying hard-wearing floor tiles in a commercial space, we deliver quality workmanship that stands the test of time.
-        </p>
-        <p>
-          Every project begins with a free, no-obligation consultation and detailed quote. We work closely with homeowners, builders, and property managers to ensure the right materials, layout, and finish for each space. Our commitment to New Zealand building standards — including NZS 4858 waterproofing compliance — means your tiling investment is protected for years to come.
-        </p>
+    <div class="container service-directory">
+      <div>
+        <h2 class="directory-heading">Choose your service</h2>
+        <ul class="service-list">
+          {services.map((service) => (
+            <li>
+              <h3><a href={service.href}>{service.name}<span aria-hidden="true"> ↗</span></a></h3>
+              <p>{service.description}</p>
+            </li>
+          ))}
+        </ul>
       </div>
+      <figure class="work-detail">
+        <a href="/portfolio#fluted-terracotta-splashback">
+          <Image
+            src={splashbackImg}
+            alt="Fluted terracotta kitchen tiles with the ribs aligned across an internal corner, photographed during work"
+            width={520}
+            widths={[360, 520, 780]}
+            sizes="(min-width: 900px) 38vw, 90vw"
+            loading="lazy"
+            decoding="async"
+            format="webp"
+            quality={75}
+          />
+        </a>
+        <figcaption>
+          <h2>The detail at the corner</h2>
+          <p>Ribs aligned across the return on this fluted-tile splashback. Photographed on site, work in progress.</p>
+          <a class="text-link" href="/portfolio#fluted-terracotta-splashback">See Rohullah’s workmanship notes →</a>
+        </figcaption>
+      </figure>
     </div>
   </section>
 
-  <!-- Services Grid -->
   <section class="section section--light">
-    <div class="container">
-      <h2 class="section-title">Our Tiling Services</h2>
-      <p class="section-subtitle">From bathrooms and kitchens to floors and repairs — we handle every aspect of professional tiling in Wellington.</p>
-
-      <div class="services-grid">
-        <ServiceCard
-          title="Bathroom Tiling"
-          description="Full bathroom renovations, shower tiling, waterproofing, and floor-to-ceiling tile installations. NZS 4858 compliant workmanship for lasting results."
-          href="/services/bathroom-tiling"
-          icon='<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16a1 1 0 0 1 1 1v3a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4v-3a1 1 0 0 1 1-1z"/><path d="M6 12V4a2 2 0 0 1 2-2h3v2.25"/><path d="M4 21h16"/></svg>'
-        />
-        <ServiceCard
-          title="Kitchen Tiling"
-          description="Stylish kitchen splashbacks, floor tiles, and feature walls. Subway, mosaic, glass, and large-format options to suit every kitchen design."
-          href="/services/kitchen-tiling"
-          icon='<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9h18v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9z"/><path d="M3 9V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4"/><line x1="12" y1="9" x2="12" y2="21"/><line x1="3" y1="15" x2="21" y2="15"/></svg>'
-        />
-        <ServiceCard
-          title="Floor Tiling"
-          description="Residential and commercial floor tiling. Large-format porcelain, timber-look, concrete-look, and natural stone tiles for any room or business."
-          href="/services/floor-tiling"
-          icon='<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="12" y1="3" x2="12" y2="21"/></svg>'
-        />
-        <ServiceCard
-          title="Waterproofing"
-          description="NZS 4858 compliant waterproofing for bathrooms, showers, wet areas, and balconies. Essential protection for Wellington's wet climate."
-          href="/services/waterproofing"
-          icon='<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>'
-        />
-        <ServiceCard
-          title="Underfloor Heating"
-          description="Electric underfloor heating installation beneath tiles. Stay warm through Wellington's cold, damp winters with efficient heating mats."
-          href="/services/underfloor-heating"
-          icon='<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/></svg>'
-        />
-        <ServiceCard
-          title="Tile Repairs"
-          description="Cracked tile replacement, re-grouting, re-siliconing, and chip repairs. Fast, reliable service for homes and businesses across Wellington."
-          href="/services/tile-repairs"
-          icon='<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>'
-        />
+    <div class="container service-next">
+      <div>
+        <h2 class="directory-heading">Talk through your tiling job</h2>
+        <p>Tell Rohullah what you want tiled and where the property is. Include room measurements or tile choices if you have them.</p>
+        <p>Based in Whitby. Check the <a class="text-link" href="/service-areas">service areas</a> for coverage.</p>
       </div>
+      <a href="/contact" class="btn btn-primary">Request a Free Quote</a>
     </div>
   </section>
-
-  <!-- SEO Content Section -->
-  <section class="section">
-    <div class="container fade-in-up">
-      <h2 class="section-title section-title--left">Why Choose a Professional Tiler in Wellington?</h2>
-      <p>
-        Tiling is one of the most visible and hardest-working finishes in any home or commercial property. Poorly installed tiles crack, lift, and let moisture into substrates — leading to expensive remedial work down the track. In Wellington, where driving rain, high humidity, and seismic activity are part of everyday life, professional installation is not optional; it is essential.
-      </p>
-      <p>
-        Rohullah Rassuli brings years of hands-on tiling experience to every job. We understand the unique demands of Wellington's building environment, from the importance of flexible adhesives in earthquake-prone zones to the critical need for code-compliant waterproofing in wet areas. Every project is completed to New Zealand Building Code standards, and we provide PS3 producer statements for waterproofing work when required by your building consent.
-      </p>
-      <p>
-        From a single splashback in a Thorndon villa to a full bathroom fit-out in a new-build in Whitby, no job is too small or too large. We service the entire Wellington region including Lower Hutt, Upper Hutt, Porirua, Kāpiti Coast, and Wairarapa. <a href="/contact">Get in touch today</a> for a free quote and find out why Wellington homeowners and builders trust ROH Tiling.
-      </p>
-    </div>
-  </section>
-
-  <CTASection
-    heading="Ready to Start Your Tiling Project?"
-    text="Get in touch with ROH Tiling for a free, no-obligation quote. We'd love to help bring your vision to life."
-    variant="gold"
-  />
 </BaseLayout>
 
-<script>
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-        }
-      });
-    },
-    { threshold: 0.1 }
-  );
-
-  document.querySelectorAll('.fade-in-up').forEach((el) => observer.observe(el));
-</script>
+<style>
+  .service-directory { display: grid; gap: 3rem; align-items: start; }
+  .directory-heading { font-size: clamp(1.5rem, 3vw, 2rem); margin-bottom: 1.5rem; }
+  .service-list { display: grid; gap: 1.75rem; }
+  .service-list h3 { font-size: 1.25rem; margin-bottom: 0.35rem; }
+  .service-list a { text-decoration: underline; text-underline-offset: 0.25em; }
+  .service-list a:hover { color: var(--color-link-gold); }
+  .service-list a span { color: var(--color-link-gold); }
+  .service-list p { max-width: 58ch; }
+  .work-detail { background: var(--color-light-bg); }
+  .work-detail img { width: 100%; height: auto; }
+  .work-detail figcaption { padding: 1.5rem; }
+  .work-detail h2 { font-size: 1.5rem; margin-bottom: 0.75rem; }
+  .work-detail p { margin-bottom: 1rem; }
+  .text-link { color: var(--color-link-gold); text-decoration: underline; text-underline-offset: 0.2em; }
+  .service-next { display: flex; gap: 2rem; align-items: center; justify-content: space-between; flex-wrap: wrap; }
+  .service-next p { max-width: 60ch; margin-bottom: 0.75rem; }
+  .service-next .btn { flex-shrink: 0; }
+  @media (min-width: 900px) {
+    .service-directory { grid-template-columns: 1.3fr 1fr; gap: 4rem; }
+  }
+</style>

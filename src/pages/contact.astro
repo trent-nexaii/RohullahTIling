@@ -1,9 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHeader from '../components/PageHeader.astro';
-import CTASection from '../components/CTASection.astro';
 import {
-  BUSINESS_NAME,
   PHONE_DISPLAY,
   PHONE_E164,
   EMAIL,
@@ -25,25 +23,64 @@ const breadcrumbs = [{ name: "Home", url: "/" }, { name: "Contact" }];
     subtitle="Free, no-obligation quotes across Wellington. Call 021 026 02044, or send a message and Rohullah will get back to you."
   />
 
-  <!-- Contact Intro -->
-  <section class="section section--light" style="padding-bottom: 0;">
-    <div class="container" style="max-width: 720px; text-align: center;">
-      <p style="font-size: 1.1rem; line-height: 1.75; color: var(--color-text, #555);">Contact ROH Tiling for professional <a href="/services/bathroom-tiling">bathroom</a>, <a href="/services/kitchen-tiling">kitchen</a>, and <a href="/services/floor-tiling">floor tiling</a> across Wellington. Based in Whitby, we serve Porirua, Lower Hutt, Upper Hutt, and the wider Wellington region. Call us or fill in the form below for a free, no-obligation quote.</p>
-
-      <!-- NAP block above the form. Matches the Google Business Profile exactly. -->
-      <address class="nap-block">
-        <span class="nap-block__name">{BUSINESS_NAME}</span>
-        <span class="nap-block__line">{LOCALITY}</span>
-        <span class="nap-block__line"><a href={`tel:${PHONE_E164}`}>{PHONE_DISPLAY}</a></span>
-        <span class="nap-block__line"><a href={`mailto:${EMAIL}`}>{EMAIL}</a></span>
-      </address>
-    </div>
-  </section>
-
-  <!-- Contact Info & Forms -->
+  <!-- Contact details and one quote/enquiry form -->
   <section class="section">
     <div class="container">
       <div class="contact-layout">
+
+        <!-- Enquiry form -->
+        <div class="contact-forms">
+
+          <!-- Quote Request Form -->
+          <div class="contact-form quote-form-card fade-in-up">
+            <h2>Request a Free Quote</h2>
+            <p class="form-intro">For a quote or a question, tell Rohullah what you need and where the property is. Name, email and a short message are all you need to get started.</p>
+
+            <form
+              action={`mailto:${EMAIL}`}
+              method="post"
+              enctype="text/plain"
+              data-mailto={EMAIL}
+              data-subject="Quote request from the ROH Tiling website"
+              class="form"
+            >
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="quote-name">Full Name <span class="required">*</span></label>
+                  <input type="text" id="quote-name" name="full_name" required autocomplete="name" />
+                </div>
+                <div class="form-group">
+                  <label for="quote-phone">Phone Number (optional)</label>
+                  <input type="tel" id="quote-phone" name="phone" autocomplete="tel" />
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="quote-email">Email <span class="required">*</span></label>
+                  <input type="email" id="quote-email" name="email" required autocomplete="email" />
+                </div>
+                <div class="form-group">
+                  <label for="quote-suburb">Suburb / Location</label>
+                  <input type="text" id="quote-suburb" name="suburb" autocomplete="address-level2" placeholder="e.g. Whitby, Porirua, Lower Hutt" />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="quote-description">Project or Question <span class="required">*</span></label>
+                <textarea id="quote-description" name="description" rows="4" required placeholder="Tell us about your project — room size, tile type, any specific requirements..."></textarea>
+              </div>
+
+              <!-- Honeypot: hidden from humans, filled in by bots. Server accepts
+                   silently and sends nothing when this has a value. -->
+              <div class="hp-field" aria-hidden="true">
+                <label for="quote-company">Company (leave blank)</label>
+                <input type="text" id="quote-company" name="company" tabindex="-1" autocomplete="off" />
+              </div>
+              <button type="submit" class="btn btn-primary">Request Your Free Quote</button>
+            </form>
+          </div>
+        </div>
 
         <!-- NAP Details Sidebar -->
         <aside class="contact-details fade-in-up">
@@ -117,134 +154,6 @@ const breadcrumbs = [{ name: "Home", url: "/" }, { name: "Contact" }];
           </div>
         </aside>
 
-        <!-- Forms Column -->
-        <div class="contact-forms">
-
-          <!-- Quote Request Form -->
-          <div class="contact-form quote-form-card fade-in-up">
-            <h2>Request a Free Quote</h2>
-            <p class="form-intro">Tell us about your project and we will provide a detailed, no-obligation quote. The more detail you can share, the more accurate your quote will be.</p>
-
-            <form
-              action={`mailto:${EMAIL}`}
-              method="post"
-              enctype="text/plain"
-              data-mailto={EMAIL}
-              data-subject="Quote request from the ROH Tiling website"
-              class="form"
-            >
-              <div class="form-row">
-                <div class="form-group">
-                  <label for="quote-name">Full Name <span class="required">*</span></label>
-                  <input type="text" id="quote-name" name="full_name" required autocomplete="name" />
-                </div>
-                <div class="form-group">
-                  <label for="quote-phone">Phone Number <span class="required">*</span></label>
-                  <input type="tel" id="quote-phone" name="phone" required autocomplete="tel" />
-                </div>
-              </div>
-
-              <div class="form-row">
-                <div class="form-group">
-                  <label for="quote-email">Email <span class="required">*</span></label>
-                  <input type="email" id="quote-email" name="email" required autocomplete="email" />
-                </div>
-                <div class="form-group">
-                  <label for="quote-suburb">Suburb / Location</label>
-                  <input type="text" id="quote-suburb" name="suburb" placeholder="e.g. Whitby, Porirua, Lower Hutt" />
-                </div>
-              </div>
-
-              <div class="form-group">
-                <label for="quote-service">Service Interested In</label>
-                <select id="quote-service" name="service">
-                  <option value="">Select a service...</option>
-                  <option value="bathroom-tiling">Bathroom Tiling</option>
-                  <option value="kitchen-tiling">Kitchen Tiling</option>
-                  <option value="floor-tiling">Floor Tiling</option>
-                  <option value="waterproofing">Waterproofing</option>
-                  <option value="underfloor-heating">Underfloor Heating</option>
-                  <option value="tile-repairs">Tile Repairs</option>
-                  <option value="other">Other</option>
-                </select>
-              </div>
-
-              <div class="form-group">
-                <label for="quote-description">Project Description</label>
-                <textarea id="quote-description" name="description" rows="5" placeholder="Tell us about your project — room size, tile type, any specific requirements..."></textarea>
-              </div>
-
-              <fieldset class="form-group form-group--radio">
-                <legend>Preferred Contact Method</legend>
-                <div class="radio-group">
-                  <label class="radio-label">
-                    <input type="radio" name="preferred_contact" value="phone" checked />
-                    <span>Phone</span>
-                  </label>
-                  <label class="radio-label">
-                    <input type="radio" name="preferred_contact" value="email" />
-                    <span>Email</span>
-                  </label>
-                </div>
-              </fieldset>
-
-
-              <!-- Honeypot: hidden from humans, filled in by bots. Server accepts
-                   silently and sends nothing when this has a value. -->
-              <div class="hp-field" aria-hidden="true">
-                <label for="quote-company">Company (leave blank)</label>
-                <input type="text" id="quote-company" name="company" tabindex="-1" autocomplete="off" />
-              </div>
-              <button type="submit" class="btn btn-primary">Request Your Free Quote</button>
-            </form>
-          </div>
-
-          <!-- Quick Contact Form -->
-          <div class="contact-form fade-in-up">
-            <h2>Quick Contact</h2>
-            <p class="form-intro">Have a quick question? Send us a message and we will be in touch.</p>
-
-            <form
-              action={`mailto:${EMAIL}`}
-              method="post"
-              enctype="text/plain"
-              data-mailto={EMAIL}
-              data-subject="Enquiry from the ROH Tiling website"
-              class="form"
-            >
-              <div class="form-row">
-                <div class="form-group">
-                  <label for="contact-name">Name <span class="required">*</span></label>
-                  <input type="text" id="contact-name" name="name" required autocomplete="name" />
-                </div>
-                <div class="form-group">
-                  <label for="contact-phone">Phone Number</label>
-                  <input type="tel" id="contact-phone" name="phone" autocomplete="tel" />
-                </div>
-              </div>
-
-              <div class="form-group">
-                <label for="contact-email">Email <span class="required">*</span></label>
-                <input type="email" id="contact-email" name="email" required autocomplete="email" />
-              </div>
-
-              <div class="form-group">
-                <label for="contact-message">Message <span class="required">*</span></label>
-                <textarea id="contact-message" name="message" rows="4" required placeholder="How can we help?"></textarea>
-              </div>
-
-
-              <!-- Honeypot: hidden from humans, filled in by bots. Server accepts
-                   silently and sends nothing when this has a value. -->
-              <div class="hp-field" aria-hidden="true">
-                <label for="contact-company">Company (leave blank)</label>
-                <input type="text" id="contact-company" name="company" tabindex="-1" autocomplete="off" />
-              </div>
-              <button type="submit" class="btn btn-outline">Send Message</button>
-            </form>
-          </div>
-
-        </div>
       </div>
     </div>
   </section>
@@ -276,37 +185,6 @@ const breadcrumbs = [{ name: "Home", url: "/" }, { name: "Contact" }];
 </BaseLayout>
 
 <style>
-  /* NAP block above the form — crawlable text, never an image */
-  .nap-block {
-    display: grid;
-    gap: 0.2rem;
-    font-style: normal;
-    margin-top: 1.75rem;
-    padding: 1.25rem 1.5rem;
-    background: var(--color-white);
-    border-left: 4px solid var(--color-primary);
-    border-radius: 6px;
-    box-shadow: var(--shadow-card);
-    text-align: left;
-  }
-  .nap-block__name {
-    font-family: var(--font-heading);
-    font-size: 1.15rem;
-    font-weight: 700;
-    color: var(--color-dark-text);
-    margin-bottom: 0.15rem;
-  }
-  .nap-block__line {
-    font-size: 0.98rem;
-    color: var(--color-body-text);
-  }
-  .nap-block a {
-    color: var(--color-link-gold);
-    font-weight: 600;
-    text-decoration: none;
-  }
-  .nap-block a:hover { text-decoration: underline; }
-
   .contact-nap__note {
     font-size: 0.83rem !important;
     color: var(--color-muted) !important;
@@ -321,7 +199,7 @@ const breadcrumbs = [{ name: "Home", url: "/" }, { name: "Contact" }];
   }
   @media (min-width: 992px) {
     .contact-layout {
-      grid-template-columns: 320px 1fr;
+      grid-template-columns: minmax(0, 1fr) 320px;
       gap: 3rem;
     }
   }
@@ -388,7 +266,7 @@ const breadcrumbs = [{ name: "Home", url: "/" }, { name: "Contact" }];
     font-style: italic;
   }
 
-  /* Contact Forms */
+  /* Contact form */
   .contact-forms {
     display: grid;
     gap: 2.5rem;
@@ -464,29 +342,6 @@ const breadcrumbs = [{ name: "Home", url: "/" }, { name: "Contact" }];
   .form-group textarea {
     resize: vertical;
   }
-  .form-group--radio {
-    border: none;
-    padding: 0;
-  }
-  .form-group--radio legend {
-    margin-bottom: 0.5rem;
-  }
-  .radio-group {
-    display: flex;
-    gap: 1.5rem;
-  }
-  .radio-label {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-weight: 400;
-    cursor: pointer;
-  }
-  .radio-label input[type="radio"] {
-    width: auto;
-    accent-color: var(--color-primary);
-  }
-
   /* Map */
   .map-container {
     border-radius: 8px;

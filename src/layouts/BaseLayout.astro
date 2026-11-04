@@ -41,7 +41,8 @@ const {
 } = Astro.props;
 
 const siteUrl = Astro.site?.toString().replace(/\/$/, '') ?? 'https://www.rohullahtiling.co.nz';
-const canonicalUrl = `${siteUrl}${canonical}`;
+const canonicalPath = canonical === '/' ? '/' : canonical.replace(/\/+$/, '');
+const canonicalUrl = `${siteUrl}${canonicalPath}`;
 const currentPath = Astro.url.pathname;
 
 // No aggregateRating or review markup: there are no verified reviews to back it

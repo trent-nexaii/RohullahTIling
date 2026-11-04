@@ -1460,12 +1460,12 @@ strong {
   min-height: 54px;
 }
 
-.mobile-cta-bar .cta-call {
+.mobile-cta-bar .mobile-cta-phone {
   background: var(--color-dark-section);
   color: var(--color-white);
 }
 
-.mobile-cta-bar .cta-quote {
+.mobile-cta-bar .mobile-cta-quote {
   background: var(--color-primary);
   color: var(--color-dark-text);
 }
