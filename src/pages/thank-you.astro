@@ -1,0 +1,28 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { PHONE_E164, PHONE_DISPLAY } from "../data/business";
+---
+
+<BaseLayout
+  title="Your quote request | ROH Tiling"
+  description="Your ROH Tiling enquiry. Contact Roh directly if you have any questions."
+  canonical="/thank-you"
+  noindex
+>
+  <section class="section container thank-you">
+    <h1 id="confirmation-title">Your quote request</h1>
+    <div id="confirmation-message">
+      <p>
+        Have a tiling job to discuss? Use the quote form to send the details to
+        Roh.
+      </p>
+    </div>
+    <p>
+      For a conversation, call <a href={`tel:${PHONE_E164}`}>{PHONE_DISPLAY}</a>
+      .
+    </p>
+    <a class="btn btn-primary" href="/contact#quote-form">
+      Back to the quote form
+    </a>
+  </section>
+</BaseLayout>

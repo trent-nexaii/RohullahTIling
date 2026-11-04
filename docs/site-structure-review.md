@@ -1,3 +1,5 @@
+> Historical iteration. For the 4 November brand and SEO redesign, see [redesign-seo-review.md](redesign-seo-review.md).
+
 # Click-through structure implementation
 
 Branch: `feat/roh-tiling-site-structure`, based on the existing preview revision `beb09a9`. This is the proposed PR description and design decision, written before layout edits. Main stays unchanged.

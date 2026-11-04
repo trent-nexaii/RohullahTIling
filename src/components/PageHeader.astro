@@ -1,8 +1,36 @@
 ---
-interface Props { title: string; subtitle?: string; actionHref?: string; actionLabel?: string; compact?: boolean; }
-const { title, subtitle, actionHref = '/contact#quote-form', actionLabel = 'Request a free quote', compact = false } = Astro.props;
+import { PHONE_DISPLAY, PHONE_E164 } from "../data/business";
+interface Props {
+  title: string;
+  subtitle?: string;
+  actionHref?: string;
+  actionLabel?: string;
+  compact?: boolean;
+}
+const {
+  title,
+  subtitle,
+  actionHref = "/contact#quote-form",
+  actionLabel = "Request a quote",
+  compact = false,
+} = Astro.props;
 ---
-<section class:list={['page-header', 'container', { 'page-header--long': title.length > 32, 'page-header--service': compact }]}>
+
+<section
+  class:list={[
+    "page-header",
+    "container",
+    { "page-header--long": title.length > 32, "page-header--service": compact },
+  ]}
+>
   <h1>{title}</h1>
-  <div>{subtitle && <p>{subtitle}</p>}<a class="btn btn-primary" href={actionHref}>{actionLabel}</a></div>
+  <div>
+    {subtitle && <p>{subtitle}</p>}
+    <a class="btn btn-primary" href={actionHref}>
+      {actionLabel}
+    </a>
+    <a class="phone-text" href={`tel:${PHONE_E164}`}>
+      {PHONE_DISPLAY}
+    </a>
+  </div>
 </section>

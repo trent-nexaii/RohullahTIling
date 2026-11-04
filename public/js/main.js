@@ -1,221 +1,265 @@
-/**
- * ROH Tiling — Client-Side JavaScript
- * Vanilla JS only. No frameworks.
- */
-document.addEventListener('DOMContentLoaded', () => {
-
-  // ─── 1. Mobile Hamburger Menu ───
-  const hamburger = document.getElementById('hamburger');
-  const mobileNav = document.querySelector('.nav-mobile');
-
-  function openMenu() {
-    document.body.classList.add('nav-open');
-    if (hamburger) hamburger.setAttribute('aria-expanded', 'true');
-  }
-
-  function closeMenu() {
-    document.body.classList.remove('nav-open');
-    if (hamburger) hamburger.setAttribute('aria-expanded', 'false');
-  }
-
-  if (hamburger) {
-    hamburger.addEventListener('click', (e) => {
-      e.stopPropagation();
-      document.body.classList.contains('nav-open') ? closeMenu() : openMenu();
-    });
-  }
-
-  // Close on mobile nav link click
-  if (mobileNav) {
-    mobileNav.querySelectorAll('a').forEach((link) => {
-      link.addEventListener('click', closeMenu);
-    });
-  }
-
-  // Close on outside click
-  document.addEventListener('click', (e) => {
+/* Progressive enhancement. Successful enquiries are counted only after API acceptance. */
+document.addEventListener("DOMContentLoaded", () => {
+  const menu = document.getElementById("hamburger");
+  const navigation = document.querySelector(".nav-mobile");
+  const closeMenu = () => {
+    document.body.classList.remove("nav-open");
+    menu?.setAttribute("aria-expanded", "false");
+  };
+  menu?.addEventListener("click", () => {
+    const open = menu.getAttribute("aria-expanded") !== "true";
+    document.body.classList.toggle("nav-open", open);
+    menu.setAttribute("aria-expanded", String(open));
+  });
+  navigation
+    ?.querySelectorAll("a")
+    .forEach((link) => link.addEventListener("click", closeMenu));
+  document.addEventListener("click", (event) => {
+    if (!menu?.contains(event.target) && !navigation?.contains(event.target))
+      closeMenu();
+  });
+  document.addEventListener("keydown", (event) => {
     if (
-      document.body.classList.contains('nav-open') &&
-      hamburger &&
-      !hamburger.contains(e.target) &&
-      mobileNav &&
-      !mobileNav.contains(e.target)
+      event.key === "Escape" &&
+      menu?.getAttribute("aria-expanded") === "true"
     ) {
       closeMenu();
+      menu.focus();
     }
   });
 
-  // Close on Escape
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && document.body.classList.contains('nav-open')) {
-      closeMenu();
-      hamburger?.focus();
+  // No analytics vendor or property is added. Existing analytics can consume these
+  // non-PII events. A phone click is never labelled as a completed call or lead.
+  const track = (event, detail = {}) => {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({ event, ...detail });
+  };
+  document
+    .querySelectorAll('a[href^="tel:"]')
+    .forEach((link) =>
+      link.addEventListener("click", () => track("roh_phone_click")),
+    );
+  const confirmationKey = "roh-enquiry-confirmed";
+  if (location.pathname.replace(/\/$/, "") === "/thank-you") {
+    let confirmed;
+    try {
+      confirmed = JSON.parse(sessionStorage.getItem(confirmationKey) || "null");
+      sessionStorage.removeItem(confirmationKey);
+    } catch {
+      /* Direct visits do not imply a submission. */
     }
-  });
-
-  // ─── 3. Sticky Header ───
-  const header = document.querySelector('.site-header');
-
-  if (header) {
-    const onScroll = () => header.classList.toggle('scrolled', window.scrollY > 50);
-    window.addEventListener('scroll', onScroll, { passive: true });
-    onScroll();
+    if (
+      confirmed?.accepted === true &&
+      Date.now() - confirmed.at < 300000 &&
+      Date.now() >= confirmed.at
+    ) {
+      document.getElementById("confirmation-title").textContent =
+        "Thanks. Your enquiry has been sent.";
+      document.getElementById("confirmation-message").textContent =
+        "Roh will reply within 24 hours. If you have a photograph or another detail to add, mention your name when you get in touch.";
+      track("roh_quote_completed", {
+        service: confirmed.service,
+        contact_method: confirmed.contact_method,
+      });
+      // Preserve the readable receipt on reload, without counting it again.
+      history.replaceState({ rohReceipt: true }, "", location.href);
+    } else if (history.state?.rohReceipt) {
+      document.getElementById("confirmation-title").textContent =
+        "Thanks. Your enquiry has been sent.";
+      document.getElementById("confirmation-message").textContent =
+        "Roh will reply within 24 hours.";
+    }
   }
 
-  // ─── 5. Mobile Sticky CTA Bar ───
-  const ctaBar = document.getElementById('mobile-cta-bar');
-  if (ctaBar) {
-    let lastY = window.scrollY;
-    window.addEventListener('scroll', () => {
-      const y = window.scrollY;
-      ctaBar.classList.toggle('cta-hidden', y > lastY && y > 100);
-      lastY = y;
-    }, { passive: true });
-  }
-
-  // ─── 6. Contact Forms ───
-  // Select the <form> itself, not the .contact-form card wrapping it — the
-  // wrapper is a <div>, so FormData() and reset() both throw on it.
-  document.querySelectorAll('.contact-form form').forEach((form) => {
-    function showError(field, msg) {
-      clearError(field);
-      field.classList.add('field-error');
-      const el = document.createElement('span');
-      el.className = 'error-message';
-      el.setAttribute('role', 'alert');
-      el.textContent = msg;
-      field.parentNode.appendChild(el);
-    }
-
+  document.querySelectorAll(".contact-form form").forEach((form) => {
+    form.noValidate = true;
+    const contact = form.elements.contact_detail;
+    const photo = form.elements.photo;
+    photo.disabled = false;
+    const contactLabel = document.getElementById("contact-detail-label");
+    const status = form.querySelector(".form-status");
+    const fields = [
+      ...form.querySelectorAll("input:not([type=radio]), select, textarea"),
+    ].filter((field) => field.name !== "company");
+    const submit = form.querySelector("[type=submit]");
+    let pending = false;
+    let requestId = crypto.randomUUID();
     function clearError(field) {
-      field.classList.remove('field-error');
-      const ex = field.parentNode.querySelector('.error-message');
-      if (ex) ex.remove();
+      field.removeAttribute("aria-invalid");
+      field.classList.remove("field-error");
+      const error = document.getElementById(`${field.id}-error`);
+      error?.remove();
+      field.setAttribute(
+        "aria-describedby",
+        field === photo ? "photo-hint" : "",
+      );
     }
-
-    function validate(field) {
-      const v = field.value.trim();
-      if (field.hasAttribute('required') && !v) {
-        showError(field, 'This field is required.');
-        return false;
-      }
-      if (field.type === 'email' && v && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) {
-        showError(field, 'Please enter a valid email address.');
-        return false;
-      }
-      if (field.type === 'tel' && v && !/^\+?[\d\s\-()]{7,20}$/.test(v)) {
-        showError(field, 'Please enter a valid phone number.');
-        return false;
-      }
+    function showError(field, message) {
       clearError(field);
-      return true;
+      field.classList.add("field-error");
+      field.setAttribute("aria-invalid", "true");
+      const error = document.createElement("span");
+      error.id = `${field.id}-error`;
+      error.className = "error-message";
+      error.textContent = message;
+      field.after(error);
+      field.setAttribute(
+        "aria-describedby",
+        [field === photo ? "photo-hint" : "", error.id]
+          .filter(Boolean)
+          .join(" "),
+      );
     }
-
-    const fields = form.querySelectorAll('input, textarea, select');
-    fields.forEach((f) => {
-      f.addEventListener('blur', () => validate(f));
-      // Clear stale feedback during edits so input blur does not shift the
-      // submit button during a click.
-      f.addEventListener('input', () => clearError(f));
-    });
-
-    // Readable labels for the email body, keyed by field name.
-    const LABELS = {
-      full_name: 'Name',
-      name: 'Name',
-      phone: 'Phone',
-      email: 'Email',
-      suburb: 'Suburb',
-      service: 'Service',
-      description: 'Project details',
-      message: 'Message',
-      preferred_contact: 'Preferred contact method',
-    };
-
-    function statusBox() {
-      let msg = form.querySelector('.form-success');
-      if (!msg) {
-        msg = document.createElement('div');
-        msg.className = 'form-success';
-        msg.setAttribute('role', 'status');
-        form.appendChild(msg);
+    function updateContact() {
+      const email = form.elements.preferred_contact.value === "email";
+      contact.type = email ? "email" : "tel";
+      contact.autocomplete = email ? "email" : "tel";
+      contactLabel.textContent = email ? "Email address" : "Phone number";
+      contact.value = "";
+      clearError(contact);
+    }
+    form
+      .querySelectorAll("[name=preferred_contact]")
+      .forEach((radio) => radio.addEventListener("change", updateContact));
+    updateContact();
+    const service = new URLSearchParams(location.search).get("service");
+    if (
+      [...form.elements.service.options].some(
+        (option) => option.value === service,
+      )
+    )
+      form.elements.service.value = service;
+    function validate(field) {
+      clearError(field);
+      if (field === photo) {
+        const file = photo.files[0];
+        if (
+          file &&
+          (!["image/jpeg", "image/png", "image/webp"].includes(file.type) ||
+            file.size > 2 * 1024 * 1024 ||
+            file.size === 0)
+        ) {
+          showError(field, "Choose a JPG, PNG or WebP photo up to 2 MB.");
+          return false;
+        }
+        return true;
       }
-      return msg;
+      const value = field.value.trim();
+      let error = field.required && !value ? "Please fill in this field." : "";
+      if (!error && field === contact) {
+        if (
+          form.elements.preferred_contact.value === "email" &&
+          !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
+        )
+          error = "Enter an email address, such as name@example.com.";
+        if (
+          form.elements.preferred_contact.value === "phone" &&
+          (!/^\+?[\d\s\-()]{7,25}$/.test(value) ||
+            value.replace(/\D/g, "").length < 7)
+        )
+          error = "Enter a phone number with at least 7 digits.";
+      }
+      if (error) showError(field, error);
+      return !error;
     }
-
-    /**
-     * Fallback for when the serverless endpoint is unavailable — before
-     * RESEND_API_KEY is configured, or if the function is not deployed. Hands
-     * the enquiry to the visitor's email client rather than losing it.
-     */
-    function mailtoFallback(rows, msg) {
-      const to = form.dataset.mailto;
-      const subject = form.dataset.subject || 'Website enquiry';
-      const body = rows.map(([k, v]) => k + ': ' + v).join('\n') +
-        '\n\n— Sent from rohullahtiling.co.nz';
-      msg.className = 'form-success';
-      msg.innerHTML =
-        'Opening your email app with this enquiry ready to send &mdash; please press send to deliver it. ' +
-        'If nothing opens, email <a href="mailto:' + to + '">' + to + '</a> ' +
-        'or call <a href="tel:+642102602044">021 026 02044</a>.';
-      window.location.href = 'mailto:' + to +
-        '?subject=' + encodeURIComponent(subject) +
-        '&body=' + encodeURIComponent(body);
+    fields.forEach((field) => {
+      field.addEventListener("blur", () => validate(field));
+      field.addEventListener("input", () => clearError(field));
+    });
+    const readPhoto = (file) =>
+      new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onerror = reject;
+        reader.onload = () =>
+          resolve({
+            name: file.name,
+            type: file.type,
+            content: String(reader.result).split(",")[1],
+          });
+        reader.readAsDataURL(file);
+      });
+    function fallback(payload) {
+      status.replaceChildren(
+        document.createTextNode(
+          "Your enquiry has not been sent. Try again, or ",
+        ),
+      );
+      const email = document.createElement("a");
+      const body = `Name: ${payload.full_name}\nReply by ${payload.preferred_contact}: ${payload.contact_detail}\nSuburb: ${payload.suburb}\nService: ${form.elements.service.selectedOptions[0]?.textContent}\n\n${payload.description}`;
+      email.href = `mailto:${form.dataset.mailto}?subject=${encodeURIComponent(form.dataset.subject)}&body=${encodeURIComponent(body)}`;
+      email.textContent = "open it in your email app";
+      status.append(
+        email,
+        document.createTextNode(
+          " and press send. Attach your photo there if you have one. You can also call ",
+        ),
+      );
+      const phone = document.createElement("a");
+      phone.href = "tel:+642102602044";
+      phone.textContent = "021 026 02044";
+      status.append(phone, document.createTextNode("."));
+      status.focus();
     }
-
-    /**
-     * Posts the enquiry to /api/enquiry, which emails it to the business.
-     * Falls back to a mailto: handoff if that endpoint is missing or not yet
-     * configured, so an enquiry is never silently discarded.
-     */
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      let ok = true;
-      fields.forEach((f) => { if (!validate(f)) ok = false; });
-      if (!ok) {
-        const bad = form.querySelector('.field-error');
-        if (bad) bad.focus();
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      if (pending) return;
+      const valid = fields.map(validate).every(Boolean);
+      if (!valid) {
+        form.querySelector("[aria-invalid=true]")?.focus();
         return;
       }
-
-      const data = new FormData(form);
-      const payload = {};
-      const rows = [];
-      for (const [key, raw] of data.entries()) {
-        const value = String(raw).trim();
-        if (!value) continue;
-        payload[key] = value;
-        if (key !== 'company') rows.push([LABELS[key] || key, value]);
-      }
-
-      const msg = statusBox();
-      const submit = form.querySelector('[type="submit"]');
-      const original = submit ? submit.textContent : '';
-      if (submit) { submit.disabled = true; submit.textContent = 'Sending…'; }
-      msg.className = 'form-success';
-      msg.textContent = 'Sending your enquiry…';
-
+      pending = true;
+      submit.disabled = true;
+      submit.textContent = "Sending…";
+      status.hidden = false;
+      status.textContent = "Sending your enquiry…";
+      const payload = Object.fromEntries(
+        [...new FormData(form)].filter(([key]) => key !== "photo"),
+      );
+      payload.request_id = requestId;
       try {
-        const res = await fetch('/api/enquiry', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+        if (photo.files[0]) payload.photo = await readPhoto(photo.files[0]);
+        const response = await fetch("/api/enquiry", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload),
         });
-
-        if (res.ok) {
-          form.reset();
-          fields.forEach((f) => clearError(f));
-          msg.innerHTML =
-            'Thanks &mdash; your enquiry has been sent. Rohullah will get back to you within 24 hours. ' +
-            'If it is urgent, call <a href="tel:+642102602044">021 026 02044</a>.';
-        } else {
-          // 503 not_configured, 404 not deployed, 502 delivery failure.
-          mailtoFallback(rows, msg);
+        const result = await response.json();
+        if (!response.ok || result.ok !== true || result.accepted !== true)
+          throw new Error("Enquiry not accepted");
+        const receipt = {
+          accepted: true,
+          at: Date.now(),
+          service: payload.service,
+          contact_method: payload.preferred_contact,
+        };
+        let stored = false;
+        try {
+          sessionStorage.setItem(confirmationKey, JSON.stringify(receipt));
+          stored = true;
+        } catch {
+          /* Inline receipt works when storage is unavailable. */
         }
-      } catch (err) {
-        mailtoFallback(rows, msg);
+        if (stored) {
+          location.assign("/thank-you");
+          return;
+        }
+        form.reset();
+        updateContact();
+        requestId = crypto.randomUUID();
+        status.textContent =
+          "Thanks. Your enquiry has been sent. Roh will reply within 24 hours.";
+        status.focus();
+        track("roh_quote_completed", {
+          service: receipt.service,
+          contact_method: receipt.contact_method,
+        });
+      } catch {
+        fallback(payload);
       } finally {
-        if (submit) { submit.disabled = false; submit.textContent = original; }
+        pending = false;
+        submit.disabled = false;
+        submit.textContent = "Request a quote";
       }
     });
   });

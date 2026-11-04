@@ -1,20 +1,36 @@
 ---
-import { quoteGuides, quotePath } from '../data/services';
-import { PHONE_DISPLAY, PHONE_E164 } from '../data/business';
-interface Props { service: keyof typeof quoteGuides; }
+import { quoteGuides, quotePath } from "../data/services";
+import { PHONE_DISPLAY, PHONE_E164 } from "../data/business";
+interface Props {
+  service: keyof typeof quoteGuides;
+}
 const { service } = Astro.props;
 const guide = quoteGuides[service];
 ---
-<section class="section quote-brief" id="quote-details" aria-labelledby="quote-heading">
+
+<section
+  class="section quote-brief"
+  id="quote-details"
+  aria-labelledby="quote-heading"
+>
   <div class="container quote-brief-layout">
     <div>
       <h2 id="quote-heading">{guide.heading}</h2>
       <p>{guide.introduction}</p>
-      <a class="btn btn-primary" href={quotePath(service)}>Request a free quote</a>
-      <a class="phone-text" href={`tel:${PHONE_E164}`}>{PHONE_DISPLAY}</a>
+      <a class="btn btn-primary" href={quotePath(service)}>
+        Request a quote
+      </a>
+      <a class="phone-text" href={`tel:${PHONE_E164}`}>
+        {PHONE_DISPLAY}
+      </a>
     </div>
     <dl>
-      {guide.factors.map(([title, explanation]) => <div><dt>{title}</dt><dd>{explanation}</dd></div>)}
+      {guide.factors.map(([title, explanation]) => (
+        <div>
+          <dt>{title}</dt>
+          <dd>{explanation}</dd>
+        </div>
+      ))}
     </dl>
   </div>
 </section>

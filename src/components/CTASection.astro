@@ -1,10 +1,31 @@
 ---
-import { quotePath, services, type ServiceId } from '../data/services';
-import { PHONE_DISPLAY, PHONE_E164 } from '../data/business';
-interface Props { service?: ServiceId; }
+import { quotePath, services, type ServiceId } from "../data/services";
+import { PHONE_DISPLAY, PHONE_E164 } from "../data/business";
+interface Props {
+  service?: ServiceId;
+}
 const { service } = Astro.props;
 const label = services.find((item) => item.id === service)?.name.toLowerCase();
 ---
+
 <section class="contact-close section">
-  <div class="container contact-close-layout"><h2>Talk to Rohullah.</h2><div><p>Tell me where the property is and {label ? `what you need for your ${label} job` : 'what you need tiled'}. Free quotes, with a reply within 24 hours.</p><a class="btn btn-primary" href={service ? quotePath(service) : '/contact#quote-form'}>Request a free quote</a><a class="phone-text" href={`tel:${PHONE_E164}`}>{PHONE_DISPLAY}</a></div></div>
+  <div class="container contact-close-layout">
+    <h2>Talk to Rohullah.</h2>
+    <div>
+      <p>
+        Tell me where the property is and{" "}
+        {label ? `what you need for your ${label} job` : "what you need tiled"}.
+        Free quotes, with a reply within 24 hours.
+      </p>
+      <a
+        class="btn btn-primary"
+        href={service ? quotePath(service) : "/contact#quote-form"}
+      >
+        Request a quote
+      </a>
+      <a class="phone-text" href={`tel:${PHONE_E164}`}>
+        {PHONE_DISPLAY}
+      </a>
+    </div>
+  </div>
 </section>

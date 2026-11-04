@@ -1,69 +1,163 @@
 ---
-import BaseLayout from './BaseLayout.astro';
-import PageHeader from '../components/PageHeader.astro';
-import CTASection from '../components/CTASection.astro';
-import { services, quotePath } from '../data/services';
-
+import BaseLayout from "./BaseLayout.astro";
+import CTASection from "../components/CTASection.astro";
+import QuoteBrief from "../components/QuoteBrief.astro";
+import { Image } from "astro:assets";
+import {
+  services,
+  quotePath,
+  servicePath,
+  type ServiceId,
+} from "../data/services";
+import { serviceDetails } from "../data/service-details";
+import { PHONE_DISPLAY, PHONE_E164 } from "../data/business";
 interface Props {
-  title: string;
-  description: string;
-  canonical: string;
-  serviceName: string;
-  serviceType: string;
-  serviceDescription: string;
+  service: ServiceId;
 }
-
-const {
-  title,
-  description,
-  canonical,
-  serviceName,
-  serviceType,
-  serviceDescription,
-} = Astro.props;
-
-const siteUrl = Astro.site?.toString().replace(/\/$/, '') ?? 'https://www.rohullahtiling.co.nz';
-const service = services.find((item) => canonical === `/services/${item.id}`);
-const enquiryHref = service ? quotePath(service.id) : '/contact#quote-form';
-
-const breadcrumbs = [
-  { name: 'Home', url: '/' },
-  { name: 'Services', url: '/services' },
-  { name: serviceName },
-];
-
-const serviceSchema = JSON.stringify({
+const { service: id } = Astro.props;
+const detail = serviceDetails[id];
+const canonical = servicePath(id);
+const site = Astro.site?.toString().replace(/\/$/, "");
+const schema = JSON.stringify({
   "@context": "https://schema.org",
   "@type": "Service",
-  "@id": `${siteUrl}${canonical}#service`,
-  "serviceType": serviceType,
-  "name": serviceName,
-  "description": serviceDescription,
-  "url": `${siteUrl}${canonical}`,
-  // Points at the single LocalBusiness node defined in BaseLayout.
-  "provider": { "@id": `${siteUrl}/#business` },
-  "areaServed": [
-    { "@type": "City", "name": "Wellington" },
-    { "@type": "City", "name": "Porirua" },
-    { "@type": "City", "name": "Lower Hutt" },
-    { "@type": "City", "name": "Upper Hutt" },
-    { "@type": "Place", "name": "Kapiti Coast" }
-  ]
+  "@id": `${site}${canonical}#service`,
+  name: detail.heading,
+  serviceType: detail.heading,
+  description: detail.introduction,
+  url: `${site}${canonical}`,
+  provider: { "@id": `${site}/#business` },
+  areaServed: "Wellington region, New Zealand",
 });
+const related = services.filter((item) =>
+  (detail.related as readonly string[]).includes(item.id),
+);
 ---
 
 <BaseLayout
-  title={title}
-  description={description}
+  title={detail.title}
+  description={detail.introduction}
   canonical={canonical}
-  breadcrumbs={breadcrumbs}
-  schemas={serviceSchema}
-  quoteHref={enquiryHref}
+  breadcrumbs={[
+    { name: "Home", url: "/" },
+    { name: "Services", url: "/services" },
+    { name: detail.heading },
+  ]}
+  schemas={schema}
 >
-  <PageHeader title={serviceName} subtitle={serviceDescription} actionHref={enquiryHref} compact={service?.primary} />
-  {service?.primary && <nav class="container service-page-nav" aria-label="On this service page"><a href="#recent-work">See the work</a><a href="#service-scope">What is included</a><a href="#quote-details">Plan your quote</a></nav>}
-
-  <slot />
-
-  <CTASection service={service?.id} />
+  <section
+    class:list={[
+      "container service-opening",
+      { "service-opening--text": !detail.image },
+    ]}
+  >
+    <div>
+      <a class="back-link" href="/services">
+        All tiling services
+      </a>
+      <h1>{detail.heading}</h1>
+      <p>{detail.introduction}</p>
+      <p class="service-base">
+        Owner-operated. Based in Whitby, serving Wellington.
+      </p>
+      <div class="opening-actions">
+        <a class="btn btn-primary" href={quotePath(id)}>
+          Request a quote
+        </a>
+        <a class="phone-text" href={`tel:${PHONE_E164}`}>
+          {PHONE_DISPLAY}
+        </a>
+      </div>
+    </div>
+    {detail.image && (
+      <figure>
+        <Image
+          src={detail.image}
+          alt={detail.alt}
+          width={900}
+          widths={[420, 640, 900, 1200]}
+          sizes="(min-width: 900px) 48vw, 90vw"
+          quality={78}
+          format="webp"
+          loading="eager"
+          fetchpriority="high"
+        />
+        <figcaption>
+          {detail.caption}{" "}
+          <a href={`/portfolio#${detail.project}`}>View project notes</a>.
+        </figcaption>
+      </figure>
+    )}
+  </section>
+  <nav class="container service-page-nav" aria-label="On this service page">
+    <a href="#service-scope">Scope and preparation</a>
+    <a href="#recent-work">
+      {detail.proofProject ? "Project detail" : "What to check"}
+    </a>
+    <a href="#quote-details">Plan your quote</a>
+  </nav>
+  <section class="section section--white" id="service-scope">
+    <div class="container scope-layout">
+      <h2>{detail.scopeHeading}</h2>
+      <dl class="work-method">
+        {detail.scope.map(([heading, text]) => (
+          <div>
+            <dt>{heading}</dt>
+            <dd>{text}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  </section>
+  <section class="section container service-proof" id="recent-work">
+    {detail.proofImage && (
+      <figure>
+        <Image
+          src={detail.proofImage}
+          alt={detail.proofAlt}
+          width={750}
+          widths={[420, 640, 750]}
+          sizes="(min-width: 900px) 45vw, 90vw"
+          quality={78}
+          format="webp"
+          loading="lazy"
+        />
+      </figure>
+    )}
+    <div>
+      <h2>{detail.proofHeading}</h2>
+      <p>{detail.proofText}</p>
+      {detail.proofProject ? (
+        <a class="text-link" href={`/portfolio#${detail.proofProject}`}>
+          Read the project notes
+        </a>
+      ) : (
+        <a class="text-link" href={quotePath(id)}>
+          Discuss your project with Roh
+        </a>
+      )}
+    </div>
+  </section>
+  <QuoteBrief service={id} />
+  <section class="section container service-follow-up">
+    <div>
+      <h2>Before you enquire</h2>
+      <details class="service-question">
+        <summary>{detail.question}</summary>
+        <p>{detail.answer}</p>
+      </details>
+    </div>
+    <aside>
+      <h2>Related work</h2>
+      <ul>
+        {related.map((item) => (
+          <li>
+            <a href={servicePath(item.id)}>{item.name}</a>
+          </li>
+        ))}
+      </ul>
+      <a href="/service-areas">Check your service area</a>
+    </aside>
+  </section>
+  <CTASection service={id} />
 </BaseLayout>

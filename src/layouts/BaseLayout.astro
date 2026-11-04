@@ -1,7 +1,7 @@
 ---
-import '../styles/global.css';
-import { Image } from 'astro:assets';
-import iconMark from '../assets/images/roh-tiling-icon.webp';
+import "../styles/global.css";
+import { Image } from "astro:assets";
+import iconMark from "../assets/images/roh-tiling-icon.webp";
 import {
   BUSINESS_NAME,
   OWNER_NAME,
@@ -11,14 +11,11 @@ import {
   LOCALITY,
   ADDRESS_LOCALITY,
   ADDRESS_REGION,
-  POSTAL_CODE,
-  HOURS,
-  OPENING_HOURS_SPECIFICATION,
   GBP_URL,
   INSTAGRAM_URL,
   OG_IMAGE,
   OG_IMAGE_ALT,
-} from '../data/business';
+} from "../data/business";
 
 interface Props {
   title: string;
@@ -27,25 +24,27 @@ interface Props {
   ogType?: string;
   breadcrumbs?: { name: string; url?: string }[];
   schemas?: string;
-  showMobileCTA?: boolean;
-  quoteHref?: string;
+  noindex?: boolean;
 }
 
 const {
   title,
   description,
   canonical,
-  ogType = 'website',
+  ogType = "website",
   breadcrumbs,
   schemas,
-  showMobileCTA = true,
-  quoteHref = '/contact#quote-form',
+  noindex = false,
 } = Astro.props;
 
-const siteUrl = Astro.site?.toString().replace(/\/$/, '') ?? 'https://www.rohullahtiling.co.nz';
-const canonicalPath = canonical === '/' ? '/' : canonical.replace(/\/+$/, '');
+const siteUrl =
+  Astro.site?.toString().replace(/\/$/, "") ??
+  "https://www.rohullahtiling.co.nz";
+const canonicalPath = canonical === "/" ? "/" : canonical.replace(/\/+$/, "");
 const canonicalUrl = `${siteUrl}${canonicalPath}`;
 const currentPath = Astro.url.pathname;
+const isPreview =
+  process.env.VERCEL_ENV === "preview" || process.env.SITE_PREVIEW === "true";
 
 // No aggregateRating or review markup: there are no verified reviews to back it
 // and unverifiable review markup risks a manual action.
@@ -53,155 +52,246 @@ const localBusinessSchema = JSON.stringify({
   "@context": "https://schema.org",
   "@type": "LocalBusiness",
   "@id": `${siteUrl}/#business`,
-  "name": BUSINESS_NAME,
-  "alternateName": "ROH Tiling Wellington",
-  "description": "Wellington tiler specialising in bathroom and shower tiling, kitchen splashbacks, floor tiling, waterproofing to NZ Standard, underfloor heating and tile repairs.",
-  "url": `${siteUrl}/`,
-  "telephone": PHONE_E164,
-  "email": EMAIL,
-  "image": OG_IMAGE,
-  "logo": `${siteUrl}/images/roh-tiling-logo.webp`,
-  "priceRange": "$$",
-  "founder": { "@type": "Person", "name": OWNER_NAME },
-  "address": {
+  name: BUSINESS_NAME,
+  alternateName: "ROH Tiling Wellington",
+  description:
+    "Owner-operated tiling business based in Whitby, Porirua, serving the Wellington region. Bathroom tiling, kitchen splashbacks and tiled floors.",
+  url: `${siteUrl}/`,
+  telephone: PHONE_E164,
+  email: EMAIL,
+  image: OG_IMAGE,
+  logo: `${siteUrl}/images/roh-tiling-logo.webp`,
+  founder: { "@type": "Person", name: OWNER_NAME },
+  address: {
     "@type": "PostalAddress",
-    "addressLocality": ADDRESS_LOCALITY,
-    "addressRegion": ADDRESS_REGION,
-    "postalCode": POSTAL_CODE,
-    "addressCountry": "NZ"
+    addressLocality: ADDRESS_LOCALITY,
+    addressRegion: ADDRESS_REGION,
+    addressCountry: "NZ",
   },
-  "areaServed": [
-    { "@type": "City", "name": "Wellington" },
-    { "@type": "City", "name": "Porirua" },
-    { "@type": "City", "name": "Lower Hutt" },
-    { "@type": "City", "name": "Upper Hutt" },
-    { "@type": "Place", "name": "Kapiti Coast" }
+  areaServed: [
+    { "@type": "City", name: "Wellington" },
+    { "@type": "City", name: "Porirua" },
+    { "@type": "City", name: "Lower Hutt" },
+    { "@type": "City", name: "Upper Hutt" },
+    { "@type": "Place", name: "Kapiti Coast" },
   ],
-  // Derived from HOURS so the schema can never drift from the visible hours.
-  "openingHoursSpecification": OPENING_HOURS_SPECIFICATION,
-  "sameAs": [GBP_URL, INSTAGRAM_URL]
+  sameAs: [GBP_URL, INSTAGRAM_URL],
 });
 
-let breadcrumbSchema = '';
+let breadcrumbSchema = "";
 if (breadcrumbs && breadcrumbs.length > 0) {
   breadcrumbSchema = JSON.stringify({
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
-    "itemListElement": breadcrumbs.map((crumb, index) => ({
+    itemListElement: breadcrumbs.map((crumb, index) => ({
       "@type": "ListItem",
-      "position": index + 1,
-      "name": crumb.name,
-      ...(crumb.url ? { "item": `${siteUrl}${crumb.url}` } : {})
-    }))
+      position: index + 1,
+      name: crumb.name,
+      ...(crumb.url ? { item: `${siteUrl}${crumb.url}` } : {}),
+    })),
   });
 }
 
 const year = new Date().getFullYear();
 
 function isActive(path: string): boolean {
-  if (path === '/') return currentPath === '/' || currentPath === '';
+  if (path === "/") return currentPath === "/" || currentPath === "";
   return currentPath.startsWith(path);
 }
 
-const serviceLinks = [
-  { name: 'Bathroom Tiling', href: '/services/bathroom-tiling' },
-  { name: 'Kitchen Tiling', href: '/services/kitchen-tiling' },
-  { name: 'Floor Tiling', href: '/services/floor-tiling' },
-  { name: 'Waterproofing', href: '/services/waterproofing' },
-  { name: 'Underfloor Heating', href: '/services/underfloor-heating' },
-  { name: 'Tile Repairs', href: '/services/tile-repairs' },
-];
-
 const navLinks = [
-  { name: 'Services', href: '/services', children: serviceLinks },
-  { name: 'Portfolio', href: '/portfolio' },
-  { name: 'Service Areas', href: '/service-areas' },
-  { name: 'About', href: '/about' },
-  { name: 'Contact', href: '/contact' },
+  { name: "Services", href: "/services" },
+  { name: "Portfolio", href: "/portfolio" },
+  { name: "Service Areas", href: "/service-areas" },
+  { name: "About", href: "/about" },
+  { name: "Contact", href: "/contact" },
 ];
 ---
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en-NZ">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="icon" href="/favicon.ico" sizes="any" />
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png" />
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png" />
-  <link rel="icon" type="image/png" sizes="512x512" href="/images/icon-512.png" />
-  <title>{title}</title>
-  <meta name="description" content={description} />
-  <link rel="canonical" href={canonicalUrl} />
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="/images/favicon-32x32.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="/images/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="512x512"
+      href="/images/icon-512.png"
+    />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    {(isPreview || noindex) && (
+      <meta name="robots" content="noindex, nofollow" />
+    )}
+    <link rel="canonical" href={canonicalUrl} />
 
-  <!-- Open Graph -->
-  <meta property="og:title" content={title} />
-  <meta property="og:description" content={description} />
-  <meta property="og:type" content={ogType} />
-  <meta property="og:url" content={canonicalUrl} />
-  <meta property="og:locale" content="en_NZ" />
-  <meta property="og:site_name" content={BUSINESS_NAME} />
-  <!-- JPG, not SVG: Facebook, LinkedIn, X, WhatsApp and Messenger do not render SVG in link previews. -->
-  <meta property="og:image" content={OG_IMAGE} />
-  <meta property="og:image:type" content="image/jpeg" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content={OG_IMAGE_ALT} />
+    <!-- Open Graph -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:locale" content="en_NZ" />
+    <meta property="og:site_name" content={BUSINESS_NAME} />
+    <!-- JPG, not SVG: Facebook, LinkedIn, X, WhatsApp and Messenger do not render SVG in link previews. -->
+    <meta property="og:image" content={OG_IMAGE} />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={OG_IMAGE_ALT} />
 
-  <!-- Twitter -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content={title} />
-  <meta name="twitter:description" content={description} />
-  <meta name="twitter:image" content={OG_IMAGE} />
-  <meta name="twitter:image:alt" content={OG_IMAGE_ALT} />
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={OG_IMAGE} />
+    <meta name="twitter:image:alt" content={OG_IMAGE_ALT} />
 
-  <link rel="preload" href="/fonts/dm-sans-latin-variable.woff2" as="font" type="font/woff2" crossorigin />
+    <link
+      rel="preload"
+      href="/fonts/dm-sans-latin-variable.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/playfair-display-latin-variable.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
 
-  <!-- LocalBusiness Schema -->
-  <script type="application/ld+json" set:html={localBusinessSchema} />
+    <!-- LocalBusiness Schema -->
+    <script type="application/ld+json" set:html={localBusinessSchema} />
+    {breadcrumbSchema && (
+      <script type="application/ld+json" set:html={breadcrumbSchema} />
+    )}
 
-  {breadcrumbSchema && (
-    <script type="application/ld+json" set:html={breadcrumbSchema} />
-  )}
+    {schemas && <script type="application/ld+json" set:html={schemas} />}
 
-  {schemas && (
-    <script type="application/ld+json" set:html={schemas} />
-  )}
-
-  <!-- Per-page head additions (e.g. the homepage hero preload) -->
-  <slot name="head" />
-</head>
-<body class="site-shell">
-  <a class="skip-link" href="#page-content">Skip to content</a>
-  <header class="site-header" id="site-header">
-    <div class="container nav-container">
-      <a href="/" class="logo" aria-label={`${BUSINESS_NAME} — Home`}>
-        <Image src={iconMark} alt="" width={38} height={38} loading="eager" class="logo-mark" aria-hidden="true" />
-        <span>ROH Tiling</span>
-      </a>
-      <nav class="nav-desktop" aria-label="Main navigation">
-        {navLinks.map((link) => <a href={link.href} aria-current={isActive(link.href) ? 'page' : undefined}>{link.name}</a>)}
+    <!-- Per-page head additions (e.g. the homepage hero preload) -->
+    <slot name="head" />
+  </head>
+  <body class="site-shell">
+    <a class="skip-link" href="#page-content">
+      Skip to content
+    </a>
+    <header class="site-header" id="site-header">
+      <div class="container nav-container">
+        <a href="/" class="logo" aria-label={`${BUSINESS_NAME} — Home`}>
+          <Image
+            src={iconMark}
+            alt=""
+            width={38}
+            height={38}
+            loading="eager"
+            class="logo-mark"
+            aria-hidden="true"
+          />
+          <span>ROH Tiling</span>
+        </a>
+        <nav class="nav-desktop" aria-label="Main navigation">
+          {navLinks.map((link) => (
+            <a
+              href={link.href}
+              aria-current={isActive(link.href) ? "page" : undefined}
+            >
+              {link.name}
+            </a>
+          ))}
+        </nav>
+        <a class="nav-phone" href={`tel:${PHONE_E164}`}>
+          <span>Call Roh</span>
+          {PHONE_DISPLAY}
+        </a>
+        <button
+          class="hamburger"
+          id="hamburger"
+          aria-label="Toggle navigation menu"
+          aria-expanded="false"
+          aria-controls="mobile-navigation"
+        >
+          <span>Menu</span>
+        </button>
+      </div>
+      <nav
+        class="nav-mobile"
+        id="mobile-navigation"
+        aria-label="Mobile navigation"
+      >
+        {navLinks.map((link) => (
+          <a href={link.href}>{link.name}</a>
+        ))}
+        <a href={`tel:${PHONE_E164}`}>Call {PHONE_DISPLAY}</a>
       </nav>
-      <a class="nav-phone" href={`tel:${PHONE_E164}`}>{PHONE_DISPLAY}</a>
-      <button class="hamburger" id="hamburger" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="mobile-navigation"><span>Menu</span></button>
-    </div>
-    <nav class="nav-mobile" id="mobile-navigation" aria-label="Mobile navigation">
-      {navLinks.map((link) => <a href={link.href}>{link.name}</a>)}
-      <a href={`tel:${PHONE_E164}`}>Call {PHONE_DISPLAY}</a>
-    </nav>
-  </header>
-  <main id="page-content"><slot /></main>
-  <footer class="site-footer">
-    <div class="container footer-top">
-      <div class="footer-person"><a href="/" aria-label={`${BUSINESS_NAME} — Home`}><img src="/images/roh-tiling-logo-440.webp" alt="ROH Tiling — Wellington Region" width="220" height="103" loading="lazy" decoding="async" /></a><p>{OWNER_NAME}<br />Owner-operated. Based in Whitby.</p></div>
-      <address><a href={`tel:${PHONE_E164}`}>{PHONE_DISPLAY}</a><a href={`mailto:${EMAIL}`}>{EMAIL}</a><span>{LOCALITY}</span></address>
-      <div class="footer-hours"><h2>Hours</h2>{HOURS.map((h) => <p>{h.label}<span>{h.value}</span></p>)}</div>
-    </div>
-    <div class="container footer-links"><a href="/services">Services</a><a href="/portfolio">Portfolio</a><a href="/service-areas">Service areas</a><a href={GBP_URL} target="_blank" rel="noopener noreferrer">Google Business Profile</a><a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer">Instagram</a></div>
-    <p class="container footer-wordmark" aria-hidden="true">ROH Tiling</p>
-    <div class="container footer-bottom"><span>© {year} {BUSINESS_NAME}</span><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="https://www.nexaii.com" target="_blank" rel="noopener noreferrer">Website by Nexaii</a></div>
-  </footer>
-  {showMobileCTA && <div class="mobile-cta-bar" id="mobile-cta-bar"><a class="mobile-cta-phone" href={`tel:${PHONE_E164}`}>Call {PHONE_DISPLAY}</a><a class="mobile-cta-quote" href={quoteHref}>Request a quote</a></div>}
-  <script is:inline src="/js/main.js"></script>
-</body>
+    </header>
+    <main id="page-content">
+      <slot />
+    </main>
+    <footer class="site-footer">
+      <div class="container footer-top">
+        <div class="footer-person">
+          <a href="/" class="footer-name">
+            ROH Tiling
+          </a>
+          <p>
+            {OWNER_NAME}
+            <br />
+            Owner-operated. Based in Whitby.
+          </p>
+        </div>
+        <address>
+          <a href={`tel:${PHONE_E164}`}>{PHONE_DISPLAY}</a>
+          <a href={`mailto:${EMAIL}`}>{EMAIL}</a>
+          <span>{LOCALITY}</span>
+        </address>
+        <div class="footer-invitation">
+          <p>Have a tiling job in mind?</p>
+          <a class="btn btn-primary" href="/contact#quote-form">
+            Request a quote
+          </a>
+          <p>Reply within 24 hours.</p>
+        </div>
+      </div>
+      <div class="container footer-links">
+        <a href="/services">Services</a>
+        <a href="/portfolio">Portfolio</a>
+        <a href="/service-areas">Service areas</a>
+        <a href={GBP_URL} target="_blank" rel="noopener noreferrer">
+          Google Business Profile
+        </a>
+        <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer">
+          Instagram
+        </a>
+      </div>
+      <div class="container footer-bottom">
+        <span>
+          © {year} {BUSINESS_NAME}
+        </span>
+        <a href="/privacy">Privacy</a>
+        <a href="/terms">Terms</a>
+        <a
+          href="https://www.nexaii.com"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Website by Nexaii
+        </a>
+      </div>
+    </footer>
+    <script is:inline src="/js/main.js"></script>
+  </body>
 </html>

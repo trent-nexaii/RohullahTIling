@@ -1,3 +1,5 @@
+> Historical iteration. For the 4 November brand and SEO redesign, see [redesign-seo-review.md](redesign-seo-review.md).
+
 # ROH Tiling visual redesign review
 
 This records the earlier Taste-guided visual pass. The current work uses Anthropic's `frontend-design` skill and is documented in [site-structure-review.md](site-structure-review.md).

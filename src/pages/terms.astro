@@ -1,163 +1,65 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import PageHeader from '../components/PageHeader.astro';
-import {
-  BUSINESS_NAME,
-  OWNER_NAME,
-  PHONE_DISPLAY,
-  PHONE_E164,
-  EMAIL,
-  LOCALITY,
-} from '../data/business';
-
-const title = "Terms of Service | ROH Tiling Wellington";
-const description = "Terms of service for ROH Tiling — quotes, variations, materials, workmanship, payment and warranty for tiling work across the Wellington region.";
-const canonical = "/terms";
-const breadcrumbs = [{ name: "Home", url: "/" }, { name: "Terms of Service" }];
-
-const updated = "12 August 2026";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHeader from "../components/PageHeader.astro";
+import { EMAIL, PHONE_DISPLAY, PHONE_E164 } from "../data/business";
 ---
 
-<BaseLayout title={title} description={description} canonical={canonical} breadcrumbs={breadcrumbs}>
+<BaseLayout
+  title="Terms of Service | ROH Tiling Wellington"
+  description="Discuss the scope, preparation, materials, responsibilities and written quote for your ROH Tiling job before work is agreed."
+  canonical="/terms"
+  breadcrumbs={[{ name: "Home", url: "/" }, { name: "Terms of Service" }]}
+>
   <PageHeader
     title="Terms of Service"
-    subtitle="How we quote, how we work, and what you can expect from us."
+    subtitle="Agree the details of your tiling job in writing before work starts."
   />
-
   <section class="section">
     <div class="container legal">
-      <p class="legal__updated">Last updated: {updated}</p>
-
       <p class="legal__lead">
-        These terms apply to tiling work carried out by {BUSINESS_NAME} ({OWNER_NAME}) and to your use of
-        <strong>rohullahtiling.co.nz</strong>. Where we have given you a written quote, that quote and these
-        terms together form our agreement. If anything here conflicts with your written quote, the quote wins.
+        This website introduces ROH Tiling and its work. The scope and terms for
+        your particular job need to be confirmed with Roh in a written quote.
       </p>
-
-      <h2>1. Quotes</h2>
-      <ul>
-        <li>Quotes are <strong>free and carry no obligation</strong>.</li>
-        <li>A quote is <strong>valid for 30 days</strong> from its date, after which material prices may have moved.</li>
-        <li>Quotes are based on the condition of the site as seen at the time of quoting and on the information you give us. If the substrate turns out to be unsound, out of level, or otherwise different from what was visible, we will tell you before continuing and give you a revised price.</li>
-        <li>Unless the quote says otherwise, it <strong>excludes</strong> demolition and removal of existing surfaces, plumbing and electrical work, waste disposal, and making good to adjacent surfaces.</li>
-      </ul>
-
-      <h2>2. Accepting a quote and scheduling</h2>
+      <h2>Your quote and scope</h2>
       <p>
-        Work is booked once you accept the quote in writing (email or text is fine). Dates are our best
-        estimate and can move because of weather, other trades running late, or delays in material supply.
-        We will keep you informed if a date changes.
+        Discuss the surfaces to be tiled, preparation, tile choice, layout,
+        access and the work of other trades. Ask what is included, what is
+        excluded and what may need further inspection. Confirm the price,
+        timing, quote validity, payment terms and any changes in writing.
       </p>
+      <h2>Materials and existing surfaces</h2>
       <p>
-        For larger jobs we may ask for a <strong>deposit</strong> to secure materials and the booking. Any
-        deposit will be stated in your quote.
+        Tell Roh about known damage, leaks, movement or earlier repairs.
+        Removing an old finish may reveal conditions that were not visible when
+        you first enquired. Discuss how any additional work would be assessed
+        and agreed.
       </p>
-
-      <h2>3. Variations</h2>
+      <h2>Wet areas and other trades</h2>
       <p>
-        Any change to the agreed scope — extra area, a different tile, a change of layout, or unforeseen
-        substrate work — is a variation. We will tell you the cost before carrying it out. Variations agreed
-        on site will be confirmed in writing and added to the final invoice.
+        For a shower or other wet area, confirm the waterproofing system, who is
+        carrying out the work and the documentation required for the project.
+        Electrical and plumbing work need the appropriate trades. Ask who is
+        arranging each part before booking.
       </p>
-
-      <h2>4. Your responsibilities</h2>
-      <ul>
-        <li>Provide clear, safe access to the work area at the agreed times, and access to power and water.</li>
-        <li>Clear the area of furniture, personal effects and breakables before we start.</li>
-        <li>Tell us about anything hidden in the walls or floor — pipes, cables, underfloor heating, waterproofing — before we cut into them.</li>
-        <li>Obtain any building consent required for the wider project. We will supply documentation for our own work, including <strong>PS3 producer statements</strong> for waterproofing where required.</li>
-      </ul>
-
-      <h2>5. Materials</h2>
-      <ul>
-        <li><strong>If you supply the tiles</strong>, please order the quantity we advise, including an allowance for cuts and breakage — usually 10–15%. We are not responsible for delays or extra cost caused by short supply, discontinued lines, or batch shade variation.</li>
-        <li><strong>If we supply materials</strong>, they are charged as quoted. Tiles from different batches can vary in shade; we will do our best to blend them, but this is a characteristic of the product, not a defect.</li>
-        <li>Natural stone varies in colour, veining and porosity, and generally needs sealing. Samples show the range, not the exact tile you will receive.</li>
-        <li>Materials remain our property until paid for in full.</li>
-      </ul>
-
-      <h2>6. Our workmanship</h2>
+      <h2>Workmanship and aftercare</h2>
       <p>
-        All work is carried out to the relevant New Zealand standards, including the New Zealand Building
-        Code and, for wet-area waterproofing, <strong>NZS 4858</strong>. We are careful about substrate
-        preparation, falls to drains, and correct membrane installation, because that is what determines
-        whether a bathroom is still sound in fifteen years.
+        Ask Roh to confirm any applicable workmanship warranty, product warranty
+        and aftercare instructions for your job. This page does not set a
+        warranty duration or promise a particular compliance document. Nothing
+        here limits your rights under applicable New Zealand consumer law.
       </p>
+      <h2>Photographs and enquiries</h2>
       <p>
-        Small variations in grout colour, minor lippage within tolerance on hand-laid tile, and hairline
-        movement in grout as a building settles are normal and are not defects.
+        Project photographs show past work. Work-in-progress photographs are
+        labelled; they do not establish the condition of hidden layers. A
+        website enquiry starts a conversation and does not book work. See the{" "}
+        <a href="/privacy">privacy policy</a> for how enquiry details and
+        optional photographs are handled.
       </p>
-
-      <h2>7. Warranty</h2>
-      <p>
-        We warrant our workmanship for <strong>12 months</strong> from completion. If something we installed
-        fails because of our work in that period, tell us and we will put it right at no charge.
-      </p>
-      <p>The warranty does not cover:</p>
-      <ul>
-        <li>Faults in materials you supplied, or manufacturer defects — these are covered by the supplier's own warranty</li>
-        <li>Damage from building movement, earthquake, structural failure, or water entering from outside our work</li>
-        <li>Damage from misuse, impact, unsuitable cleaning products, or failure to maintain grout and silicone</li>
-        <li>Work altered or repaired by someone else</li>
-      </ul>
-      <p>
-        Silicone and grout are maintenance items. They need periodic cleaning and eventual replacement in
-        wet areas, and this is normal wear rather than a defect.
-      </p>
-
-      <h2>8. Payment</h2>
-      <ul>
-        <li>Invoices are payable within <strong>7 days</strong> of the invoice date unless we have agreed otherwise in writing.</li>
-        <li>Payment is by bank transfer to the account shown on the invoice.</li>
-        <li>On longer jobs we may invoice in stages as work is completed.</li>
-        <li>Overdue accounts may incur reasonable recovery costs.</li>
-      </ul>
-
-      <h2>9. Cancellation</h2>
-      <p>
-        You can cancel a booking at any time. If you cancel after we have bought materials specifically for
-        your job, or within 48 hours of the start date, we may charge for those materials and for time
-        already committed. We will always keep any such charge to what we have actually incurred.
-      </p>
-
-      <h2>10. Your rights under New Zealand law</h2>
-      <p>
-        Where you engage us as a consumer, the <strong>Consumer Guarantees Act 1993</strong> applies and
-        nothing in these terms limits or excludes your rights under it. Our warranty above is in addition to
-        those rights, not instead of them. Where you engage us in trade — for example as a builder,
-        developer or property manager — the parties agree that the Consumer Guarantees Act does not apply.
-      </p>
-      <p>
-        Except where the Consumer Guarantees Act or other law says otherwise, our liability for any claim
-        relating to a job is limited to the amount you paid us for that job, and we are not liable for
-        indirect or consequential loss.
-      </p>
-
-      <h2>11. This website</h2>
-      <ul>
-        <li>All photographs on this site are of work carried out by {OWNER_NAME}. Some are taken mid-installation and are captioned as such.</li>
-        <li>Photographs show past projects. Tile, layout and finish will differ on your job, and images are not a guarantee of a particular result.</li>
-        <li>Content, images and design on this site are our property, or used with permission, and may not be reproduced without our consent.</li>
-        <li>We aim to keep the site accurate and current, but we do not warrant that it is free of errors or always available.</li>
-      </ul>
-
-      <h2>12. Privacy</h2>
-      <p>
-        Information you send us is handled as set out in our <a href="/privacy">Privacy Policy</a>.
-      </p>
-
-      <h2>13. Governing law</h2>
-      <p>
-        These terms are governed by New Zealand law, and the New Zealand courts have jurisdiction over any
-        dispute. If a problem arises, please talk to us first — most things are sorted out with a phone call.
-      </p>
-
-      <h2>14. Contact</h2>
       <address class="legal__contact">
-        <strong>{BUSINESS_NAME}</strong><br />
-        {LOCALITY}<br />
-        <a href={`tel:${PHONE_E164}`}>{PHONE_DISPLAY}</a><br />
-        <a href={`mailto:${EMAIL}`}>{EMAIL}</a>
+        Questions about your quote? Call{" "}
+        <a href={`tel:${PHONE_E164}`}>{PHONE_DISPLAY}</a> or email{" "}
+        <a href={`mailto:${EMAIL}`}>{EMAIL}</a>.
       </address>
     </div>
   </section>

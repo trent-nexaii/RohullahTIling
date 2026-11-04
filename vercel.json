@@ -1,5 +1,102 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "cleanUrls": true,
-  "trailingSlash": false
+  "redirects": [
+    {
+      "source": "/services/",
+      "destination": "/services",
+      "statusCode": 301
+    },
+    {
+      "source": "/services/bathroom-tiling/",
+      "destination": "/services/bathroom-tiling",
+      "statusCode": 301
+    },
+    {
+      "source": "/services/kitchen-tiling/",
+      "destination": "/services/kitchen-tiling",
+      "statusCode": 301
+    },
+    {
+      "source": "/services/floor-tiling/",
+      "destination": "/services/floor-tiling",
+      "statusCode": 301
+    },
+    {
+      "source": "/services/waterproofing/",
+      "destination": "/services/waterproofing",
+      "statusCode": 301
+    },
+    {
+      "source": "/services/tile-repairs/",
+      "destination": "/services/tile-repairs",
+      "statusCode": 301
+    },
+    {
+      "source": "/services/underfloor-heating/",
+      "destination": "/services/underfloor-heating",
+      "statusCode": 301
+    },
+    {
+      "source": "/portfolio/",
+      "destination": "/portfolio",
+      "statusCode": 301
+    },
+    {
+      "source": "/service-areas/",
+      "destination": "/service-areas",
+      "statusCode": 301
+    },
+    {
+      "source": "/about/",
+      "destination": "/about",
+      "statusCode": 301
+    },
+    {
+      "source": "/contact/",
+      "destination": "/contact",
+      "statusCode": 301
+    },
+    {
+      "source": "/privacy/",
+      "destination": "/privacy",
+      "statusCode": 301
+    },
+    {
+      "source": "/terms/",
+      "destination": "/terms",
+      "statusCode": 301
+    },
+    {
+      "source": "/thank-you/",
+      "destination": "/thank-you",
+      "statusCode": 301
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": ".*\\.vercel\\.app"
+        }
+      ],
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
+    },
+    {
+      "source": "/thank-you",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
+    }
+  ]
 }
