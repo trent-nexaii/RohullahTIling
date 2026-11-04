@@ -1,654 +1,89 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import ServiceCard from '../components/ServiceCard.astro';
-import TrustSignal from '../components/TrustSignal.astro';
-import CTASection from '../components/CTASection.astro';
-import { Image, getImage } from 'astro:assets';
-import { PHONE_DISPLAY, PHONE_E164, OWNER_NAME, GBP_URL } from '../data/business';
-
-// ===========================================================================
-// HERO REVIEW LINE — NOT PUBLISH-READY. Waiting on the real numbers.
-// Set all three and the line renders; leave any of them null and the whole
-// line is omitted, so placeholder figures can never reach production.
-// Claiming a rating or a review count that the Google profile does not back up
-// is a Fair Trading Act problem, which is why this is null rather than "5.0".
-// ===========================================================================
-const REVIEW_RATING: number | null = null;   // e.g. 5.0
-const REVIEW_COUNT: number | null = null;    // e.g. 12
-const REVIEW_URL: string | null = null;      // Google profile "write/see reviews" link; GBP_URL is the fallback
-const showReviews =
-  REVIEW_RATING !== null && REVIEW_COUNT !== null && REVIEW_COUNT > 0;
-
-import heroImg from '../assets/images/ensuite-large-format-porcelain-tiling-wellington.webp';
-import rohullahImg from '../assets/images/rohullah-rassuli-tiler-wellington.webp';
-import showerTealImg from '../assets/images/shower-tiling-vertical-stack-teal-tile-wellington.webp';
-import splashbackFlutedImg from '../assets/images/kitchen-splashback-fluted-terracotta-tile-wellington.webp';
-import walkInShowerImg from '../assets/images/walk-in-shower-tiling-linear-drain-wellington.webp';
-import floorFeatureImg from '../assets/images/bathroom-floor-tiling-feature-strip-wellington.webp';
-import windowSeatImg from '../assets/images/patterned-tile-window-seat-wellington.webp';
-
-// LCP element — resolve the exact generated asset so it can be preloaded.
-// The image bleeds to the right edge from 1024px up, so it is rendered far
-// wider than the old 380px box and needs the larger candidates to match.
-// HERO_SIZES is shared with the <Image> below and the preload <link> in the
-// head, so the three can never drift apart.
-const HERO_WIDTHS = [400, 560, 760, 1040, 1400];
-const HERO_SIZES = '(min-width: 1024px) 42vw, (min-width: 768px) 380px, 82vw';
-const hero = await getImage({
-  src: heroImg,
-  width: 1040,
-  height: 1387,
-  widths: HERO_WIDTHS,
-  sizes: HERO_SIZES,
-  format: 'webp',
-  quality: 72,
-});
-
-// Completed work, replacing the unverifiable testimonials that were here.
-// Suburbs are placeholders until confirmed — see the note in the handover.
-const recentWork = [
-  {
-    img: showerTealImg,
-    alt: 'Walk-in shower with teal vertical stack-bond wall tiles, dark large-format floor tiles and a linear drain, under a skylight',
-    caption: 'Shower tiling — Wellington',
-    href: '/services/bathroom-tiling',
-    linkText: 'Bathroom & shower tiling',
-    wip: true,
-  },
-  {
-    img: splashbackFlutedImg,
-    alt: 'Terracotta fluted tile kitchen splashback wrapping a corner return, with ribs aligned across the join',
-    caption: 'Fluted tile splashback — Wellington',
-    href: '/services/kitchen-tiling',
-    linkText: 'Kitchen tiling & splashbacks',
-    wip: true,
-  },
-  {
-    img: walkInShowerImg,
-    alt: 'Walk-in shower with grey large-format tiles, tiled hob and linear drain set to fall',
-    caption: 'Walk-in shower, linear drain — Wellington',
-    href: '/services/waterproofing',
-    linkText: 'Wet-area waterproofing',
-    wip: true,
-  },
-  {
-    img: floorFeatureImg,
-    alt: 'Bathroom floor tiling in beige stone-look porcelain with a patterned feature strip inset at wall height',
-    caption: 'Bathroom floor tiling — Wellington',
-    href: '/services/floor-tiling',
-    linkText: 'Floor tiling',
-    wip: true,
-  },
-  {
-    img: windowSeatImg,
-    alt: 'Window seat finished in monochrome patterned tiles, laid to a bush outlook',
-    caption: 'Patterned tile window seat — Wellington',
-    href: '/portfolio',
-    linkText: 'See the full portfolio',
-    wip: false,
-  },
+import { Image } from 'astro:assets';
+import { PHONE_DISPLAY, PHONE_E164, OWNER_NAME } from '../data/business';
+import ensuite from '../assets/images/ensuite-large-format-porcelain-tiling-wellington.webp';
+import corner from '../assets/images/kitchen-splashback-fluted-terracotta-tile-wellington.webp';
+import teal from '../assets/images/shower-tiling-vertical-stack-teal-tile-wellington.webp';
+import seat from '../assets/images/patterned-tile-window-seat-wellington.webp';
+import roh from '../assets/images/rohullah-rassuli-tiler-wellington.webp';
+const services = [
+  ['Bathroom tiling', '/services/bathroom-tiling', 'Showers, walls and floors.'],
+  ['Kitchen tiling', '/services/kitchen-tiling', 'Splashbacks and corner returns.'],
+  ['Floor tiling', '/services/floor-tiling', 'Porcelain, ceramic and natural stone.'],
+  ['Waterproofing', '/services/waterproofing', 'Preparation beneath wet-area tiles.'],
+  ['Underfloor heating', '/services/underfloor-heating', 'Electric heating beneath tiled floors.'],
+  ['Tile repairs', '/services/tile-repairs', 'Replacement tiles, grout and silicone.'],
 ];
 ---
-
 <BaseLayout
   title="Wellington Tiler | Bathroom, Kitchen & Floor Tiling | ROH Tiling"
   description="Wellington's trusted professional tiler. Expert bathroom, kitchen & floor tiling across the Wellington region. Free quotes. Call 021 026 02044 today."
   canonical="/"
 >
-  <link
-    slot="head"
-    rel="preload"
-    as="image"
-    href={hero.src}
-    imagesrcset={hero.srcSet.attribute}
-    imagesizes={HERO_SIZES}
-    fetchpriority="high"
-  />
-
-  <!-- Hero Section -->
-  <section class="hero tile-grid-bg">
-    <div class="container hero__layout">
-      <!--
-        No fade-in on this block: it holds the H1, which is the first thing a
-        visitor reads and part of the LCP. It paints immediately.
-      -->
-      <div class="hero__content">
-        <h1>Wellington Tiler — Bathrooms, Splashbacks and Floors</h1>
-        <p class="hero__subtitle">Ten years on the tools, based in Whitby. Every tile laid by me, not a subcontracted crew. Free quotes across the Wellington region.</p>
-        <div class="hero__cta-group">
-          <a href="/contact" class="btn btn--primary">Get a Free Quote</a>
-          <a href="tel:+642102602044" class="btn btn--secondary">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <path d="M22 16.92V19.92C22 20.48 21.56 20.93 21 20.97C20.68 21 20.35 21 20 21C10.61 21 3 13.39 3 4C3 3.65 3 3.32 3.03 3C3.07 2.44 3.52 2 4.08 2H7.08C7.56 2 7.99 2.34 8.07 2.81C8.14 3.27 8.23 3.73 8.36 4.17C8.47 4.55 8.36 4.96 8.07 5.24L6.62 6.69C8.06 9.43 10.57 11.94 13.31 13.38L14.76 11.93C15.04 11.64 15.45 11.53 15.83 11.64C16.27 11.77 16.73 11.86 17.19 11.93C17.66 12.01 18 12.44 18 12.92V15.92" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            Call Now: 021 026 02044
-          </a>
-        </div>
-        {showReviews && (
-          <a
-            class="hero__reviews"
-            href={REVIEW_URL ?? GBP_URL}
-            rel="noopener"
-            target="_blank"
-            aria-label={`Rated ${REVIEW_RATING} out of 5 from ${REVIEW_COUNT} Google reviews — read them on Google`}
-          >
-            <span class="hero__stars" aria-hidden="true">
-              {[0, 1, 2, 3, 4].map((i) => (
-                <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" class={i < Math.round(REVIEW_RATING ?? 0) ? 'is-filled' : ''}>
-                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z" fill="currentColor"/>
-                </svg>
-              ))}
-            </span>
-            <span class="hero__reviews-text">
-              {REVIEW_RATING?.toFixed(1)} from {REVIEW_COUNT} Google reviews
-            </span>
-          </a>
-        )}
-
-        <div class="hero__trust-badges">
-          <span class="hero__badge">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12 15l-2 5l9-9h-5l2-5l-9 9h5z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            10+ Years Experience
-          </span>
-          <span class="hero__badge">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M9 11l3 3L22 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            Free Quotes
-          </span>
-          <span class="hero__badge">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="10" r="3" stroke="currentColor" stroke-width="2"/></svg>
-            Wellington-Wide
-          </span>
-        </div>
+  <section class="home-opening container">
+    <h1>Wellington Tiler — Bathrooms, Splashbacks and Floors</h1>
+    <div class="opening-layout">
+      <div class="opening-copy">
+        <p>I'm Rohullah. I quote the job, prepare the surface and lay every tile myself.</p>
+        <p>Based in Whitby, working across the Wellington region.</p>
+        <a class="btn btn-primary" href="/contact">Talk to me about your job</a>
+        <a class="phone-text" href={`tel:${PHONE_E164}`}>{PHONE_DISPLAY}</a>
       </div>
+      <figure class="opening-photo">
+        <Image src={ensuite} alt="Finished ensuite with large-format porcelain walls, frameless shower and wall-hung basin, tiled by ROH Tiling" width={1280} widths={[480, 800, 1280, 1600]} sizes="(min-width: 900px) 70vw, 92vw" quality={80} format="webp" loading="eager" fetchpriority="high" />
+        <figcaption>Porcelain ensuite. Finished work, photographed on site.</figcaption>
+      </figure>
+    </div>
+  </section>
 
-      <!--
-        The only fully finished, styled shot in the set — the one photo that
-        earns a place above the fold. Eager + preloaded; this is the LCP element.
-      -->
-      <div class="hero__figure">
-        <Image
-          src={heroImg}
-          width={1040}
-          height={1387}
-          alt="Finished ensuite with large-format grey porcelain wall tiles, frameless glass shower and wall-hung basin, tiled by ROH Tiling in Wellington"
-          widths={HERO_WIDTHS}
-          sizes={HERO_SIZES}
-          quality={72}
-          format="webp"
-          loading="eager"
-          decoding="sync"
-          fetchpriority="high"
-          class="hero__img"
-        />
+  <section class="work-story container" aria-labelledby="work-heading">
+    <div class="work-intro">
+      <h2 id="work-heading">Look at the joins.</h2>
+      <p>The cut at a corner. The line under a skylight. The way a pattern meets its edge. Here is a closer look at my work.</p>
+    </div>
+    <div class="project-pair">
+      <figure class="project-print project-print--wide">
+        <a href="/portfolio#teal-stack-bond-shower"><Image src={teal} alt="Teal vertical stack-bond shower tiling under a skylight, during installation" width={900} widths={[420, 650, 900]} sizes="(min-width: 900px) 52vw, 92vw" quality={78} format="webp" loading="lazy" /></a>
+        <figcaption>
+          <h3>Stack-bond shower</h3>
+          <p>Every vertical joint runs from the first course to the last. Work in progress.</p>
+          <details class="work-note"><summary>Look at the setting out</summary><p>The skylight shows up every grout line. The dark floor tiles are set to fall towards the linear drain.</p><a href="/portfolio#teal-stack-bond-shower">Read the project notes →</a></details>
+        </figcaption>
+      </figure>
+      <figure class="project-print project-print--narrow">
+        <a href="/portfolio#fluted-terracotta-splashback"><Image src={corner} alt="Terracotta fluted splashback with ribs aligned around an internal corner, work in progress" width={700} widths={[350, 500, 700]} sizes="(min-width: 900px) 34vw, 78vw" quality={78} format="webp" loading="lazy" /></a>
+        <figcaption>
+          <h3>A fluted corner return</h3>
+          <p>The ribs carry around the join. Work in progress.</p>
+          <details class="work-note"><summary>Look at the setting out</summary><p>Setting out started at the internal corner and worked outward so the ribs met where the eye goes first.</p><a href="/portfolio#fluted-terracotta-splashback">Read the project notes →</a></details>
+        </figcaption>
+      </figure>
+    </div>
+    <div class="feature-print">
+      <figure><a href="/portfolio#patterned-window-seat"><Image src={seat} alt="Monochrome patterned tiles on a window seat with a bush outlook" width={1100} widths={[420, 750, 1100]} sizes="(min-width: 900px) 62vw, 92vw" quality={78} format="webp" loading="lazy" /></a><figcaption>A patterned window seat. Setting out the whole pattern before fixing the tiles.</figcaption></figure>
+      <a class="text-link" href="/portfolio">View the tiling portfolio →</a>
+    </div>
+  </section>
+
+  <section class="owner-story section section--light">
+    <div class="container owner-layout">
+      <figure><Image src={roh} alt={`${OWNER_NAME}, owner of ROH Tiling, on site in Wellington`} width={700} widths={[350, 500, 700]} sizes="(min-width: 900px) 35vw, 80vw" quality={78} format="webp" loading="lazy" /></figure>
+      <div>
+        <h2>Rohullah Rassuli.<br />On the tools.</h2>
+        <p>I have been on the tools for over ten years, and I still lay every tile myself. When you call ROH Tiling you get me on the phone, me doing the quote, and me on site.</p>
+        <p>Tiling is a trade where much of the work is hidden: the substrate preparation, the falls to the drain, the waterproofing.</p>
+        <a class="text-link" href="/about">More about how I work →</a>
       </div>
     </div>
   </section>
 
-  <!-- Intro Section -->
-  <section class="section intro-section">
-    <div class="container fade-in-up">
-      <h2>Your Local Wellington Tiling Expert</h2>
-      <div class="intro-section__content">
-        <p>Rohullah Rassuli is a professional tiler based in Whitby, Porirua, bringing over a decade of hands-on tiling experience to homes and businesses across the Wellington region. From precision bathroom renovations to large-scale commercial floor installations, Rohullah delivers the kind of quality craftsmanship that stands the test of time.</p>
-        <p>Specialising in bathroom tiling, kitchen splashbacks, floor tiling, waterproofing, and underfloor heating installation, ROH Tiling is your one-stop solution for all tiling needs. Every project receives the same meticulous attention to detail, whether it is a small tile repair or a full home renovation. We use only premium materials and proven techniques to ensure a flawless finish every time.</p>
-        <p>Proudly serving residential and commercial clients throughout Wellington City, Porirua, Lower Hutt, Upper Hutt, and the Kapiti Coast, we make expert tiling accessible across the entire Wellington region. Get in touch today for a free, no-obligation quote and discover why Wellington homeowners trust Rohullah Rassuli for their tiling projects.</p>
-      </div>
-    </div>
+  <section class="section container job-list">
+    <div class="job-list-intro"><h2>What needs tiling?</h2><p>A whole bathroom or a damaged tile. Start with the work you need.</p><p>Whitby, Porirua, Wellington City, Hutt Valley and Kapiti Coast. <a href="/service-areas">Check your location →</a></p></div>
+    <ul>{services.map(([name, href, note]) => <li><a href={href}><h3>{name}</h3><span aria-hidden="true">→</span></a><p>{note}</p></li>)}</ul>
   </section>
 
-  <!-- Services Grid -->
-  <section class="section section--light services-section">
-    <div class="container fade-in-up">
-      <h2>Our Tiling Services</h2>
-      <div class="services-grid">
-        <ServiceCard
-          title="Bathroom Tiling"
-          href="/services/bathroom-tiling"
-          description="Transform your bathroom with expertly installed wall and floor tiles. From modern ensuites to full bathroom renovations, we deliver waterproof, beautifully tiled spaces built to last."
-          icon='<svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 22V12M20 22V12M2 12h20M4 12V4a2 2 0 012-2h12a2 2 0 012 2v8M9 7h6M9 4v6M15 4v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>'
-        />
-        <ServiceCard
-          title="Kitchen Tiling"
-          href="/services/kitchen-tiling"
-          description="Elevate your kitchen with beautiful splashbacks and floor tiles that combine style and practicality. We help you choose the perfect tiles to complement your kitchen design."
-          icon='<svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 9h18M3 9v10a2 2 0 002 2h14a2 2 0 002-2V9M3 9l2.5-4h13L21 9M12 13v4M8 13v4M16 13v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>'
-        />
-        <ServiceCard
-          title="Floor Tiling"
-          href="/services/floor-tiling"
-          description="Durable, level, and beautifully laid floor tiles for any room in your home or business. We work with porcelain, ceramic, natural stone, and large-format tiles for stunning results."
-          icon='<svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="8" height="8" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="13" y="3" width="8" height="8" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="3" y="13" width="8" height="8" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="13" y="13" width="8" height="8" rx="1" stroke="currentColor" stroke-width="1.5"/></svg>'
-        />
-        <ServiceCard
-          title="Waterproofing"
-          href="/services/waterproofing"
-          description="Protect your home from moisture damage with professional waterproofing for bathrooms, showers, and wet areas. We use industry-approved membranes and methods for total peace of mind."
-          icon='<svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.69l5.66 5.66a8 8 0 11-11.31 0L12 2.69z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>'
-        />
-        <ServiceCard
-          title="Underfloor Heating"
-          href="/services/underfloor-heating"
-          description="Stay warm through Wellington winters with professionally installed underfloor heating beneath your tiles. Energy-efficient comfort for bathrooms, kitchens, and living areas."
-          icon='<svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 9a4 4 0 100 8 4 4 0 000-8zM12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>'
-        />
-        <ServiceCard
-          title="Tile Repairs"
-          href="/services/tile-repairs"
-          description="Cracked, chipped, or loose tiles? Fast, reliable repair and replacement services to restore your tiled surfaces. We match existing tiles wherever possible for a seamless finish."
-          icon='<svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94L14.7 6.3z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>'
-        />
-      </div>
-    </div>
+  <section class="contact-close section">
+    <div class="container contact-close-layout"><h2>Tell me about<br />your tiling job.</h2><div><p>Send your location, what you want tiled, and any measurements you already have. I'll reply within 24 hours.</p><a class="btn btn-primary" href="/contact">Request a free quote</a><a class="phone-text" href={`tel:${PHONE_E164}`}>{PHONE_DISPLAY}</a></div></div>
   </section>
-
-  <!-- Why Choose Us -->
-  <section class="section why-choose-section">
-    <div class="container fade-in-up">
-      <h2>Why Choose ROH Tiling?</h2>
-      <div class="trust-signals-grid">
-        <TrustSignal
-          title="Years of Experience"
-          description="With over 10 years in the tiling trade, Rohullah brings deep expertise and proven techniques to every project, large or small."
-          icon='<svg width="36" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z" stroke="currentColor" stroke-width="1.5"/><path d="M12 6v6l4 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>'
-        />
-        <TrustSignal
-          title="Quality Workmanship"
-          description="We never cut corners. Every tile is precisely laid, every surface properly prepared, and every finish meticulously checked for a result you will be proud of."
-          icon='<svg width="36" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22 11.08V12a10 10 0 11-5.93-9.14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M22 4L12 14.01l-3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>'
-        />
-        <TrustSignal
-          title="Free Quotes"
-          description="Every project starts with a free, no-obligation quote. We visit your site, discuss your vision, and provide an honest, transparent price with no hidden costs."
-          icon='<svg width="36" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>'
-        />
-        <TrustSignal
-          title="Wellington-Wide Service"
-          description="Based in Whitby, we serve the entire Wellington region including Porirua, Lower Hutt, Upper Hutt, Wellington City, and the Kapiti Coast."
-          icon='<svg width="36" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="10" r="3" stroke="currentColor" stroke-width="1.5"/></svg>'
-        />
-      </div>
-    </div>
-  </section>
-
-  <!--
-    Recent Work — replaced the three named testimonials that stood here.
-    They were unverifiable (no corroborating reviews on the Google profile) and
-    unverifiable testimonials are a Fair Trading Act risk. Photos of real jobs do
-    the same job honestly.
-
-    ===================================================================
-    REVIEWS PLACEHOLDER — when real Google reviews exist, the reviews
-    section goes HERE, directly below this grid. Do not add review or
-    aggregateRating schema until the reviews are live and verifiable.
-    ===================================================================
-  -->
-  <section class="section section--light recent-work-section">
-    <div class="container fade-in-up">
-      <h2 class="section-title">Recent Tiling Work Across Wellington</h2>
-      <p class="section-subtitle">Real jobs, photographed on site. Several are mid-installation — that is what quality tiling looks like before the trades finish behind it.</p>
-      <div class="work-grid">
-        {recentWork.map((item) => (
-          <a href={item.href} class="work-card">
-            <Image
-              src={item.img}
-              alt={item.alt}
-              widths={[300, 420, 600]}
-              sizes="(min-width: 992px) 300px, (min-width: 600px) 45vw, 92vw"
-              quality={70}
-              format="webp"
-              loading="lazy"
-              decoding="async"
-              class="work-card__img"
-            />
-            <div class="work-card__body">
-              <span class="work-card__caption">
-                {item.caption}
-                {item.wip && <span class="work-card__wip">Work in progress</span>}
-              </span>
-              <span class="work-card__link">{item.linkText} <span aria-hidden="true">&rarr;</span></span>
-            </div>
-          </a>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- Service Areas -->
-  <section class="section service-areas-section">
-    <div class="container fade-in-up">
-      <h2>Areas We Serve Across Wellington</h2>
-      <div class="service-areas-grid">
-        <div class="service-area-group">
-          <h3>Porirua & Northern</h3>
-          <ul>
-            <li><strong>Whitby</strong> <span class="badge">Home Base</span></li>
-            <li>Papakowhai</li>
-            <li>Aotea</li>
-            <li>Plimmerton</li>
-            <li>Pukerua Bay</li>
-            <li>Porirua</li>
-          </ul>
-        </div>
-        <div class="service-area-group">
-          <h3>Wellington City</h3>
-          <ul>
-            <li>CBD</li>
-            <li>Karori</li>
-            <li>Kilbirnie</li>
-            <li>Newtown</li>
-            <li>Island Bay</li>
-            <li>Miramar</li>
-            <li>Johnsonville</li>
-            <li>Tawa</li>
-          </ul>
-        </div>
-        <div class="service-area-group">
-          <h3>Hutt Valley & Beyond</h3>
-          <ul>
-            <li>Lower Hutt</li>
-            <li>Upper Hutt</li>
-            <li>Petone</li>
-            <li>Eastbourne</li>
-            <li>Kapiti Coast</li>
-          </ul>
-        </div>
-      </div>
-      <div class="service-areas-cta">
-        <a href="/service-areas" class="btn btn--outline">View All Service Areas</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- Meet Rohullah -->
-  <section class="section meet-section">
-    <div class="container meet-band fade-in-up">
-      <div class="meet-band__figure">
-        <Image
-          src={rohullahImg}
-          alt={`${OWNER_NAME}, tiler and owner of ROH Tiling, on site in Wellington`}
-          widths={[260, 360, 520]}
-          sizes="(min-width: 768px) 300px, 70vw"
-          quality={72}
-          format="webp"
-          loading="lazy"
-          decoding="async"
-          class="meet-band__img"
-        />
-      </div>
-      <div class="meet-band__text">
-        <h2 class="section-title section-title--left">Meet {OWNER_NAME}</h2>
-        <p>I have been on the tools for over ten years, and I still lay every tile myself. When you call ROH Tiling you get me on the phone, me doing the quote, and me on site — not a crew I have subcontracted the job to.</p>
-        <p>That is deliberate. Tiling is a trade where the difference between a good job and a bad one is hidden behind the tile: the substrate prep, the falls to the drain, the waterproofing. I would rather take on fewer jobs and know every one of them was done properly.</p>
-        <p>I am based in Whitby and work right across the Wellington region. If you want to talk through a project, <a href="/contact">get in touch for a free quote</a> or call me on <a href={`tel:${PHONE_E164}`}>{PHONE_DISPLAY}</a>.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- CTA Section -->
-  <CTASection
-    heading="Ready to Transform Your Space?"
-    text="Get in touch today for a free, no-obligation quote. Whether you are planning a bathroom renovation, kitchen upgrade, or any tiling project across the Wellington region, ROH Tiling is here to help."
-  />
-
 </BaseLayout>
-
-<style>
-  /* Hero — text first, photo second. Explicit intrinsic sizing keeps CLS at 0. */
-  .hero__layout {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 2.5rem;
-    align-items: center;
-  }
-  /*
-    Stacked all the way to 1024px — there was a two-column split from 768px, but
-    it left the text about 320px wide on a tablet, which broke the headline onto
-    five lines and wrapped the phone button. The split now starts at 1024px,
-    where the photo has room to bleed and the desktop nav appears.
-
-    Sit above .hero::before / ::after, which are z-index 1 — otherwise the gold
-    gradient washes the photo out.
-  */
-  .hero__figure {
-    position: relative;
-    z-index: 2;
-    justify-self: center;
-    width: 100%;
-    max-width: 380px;
-  }
-  .hero__img {
-    display: block;
-    width: 100%;
-    height: auto;
-    aspect-ratio: 3 / 4;
-    object-fit: cover;
-    border-radius: 10px;
-    box-shadow: 0 18px 48px rgba(0, 0, 0, 0.32);
-  }
-
-  /*
-    White, not the muted cream this used to be. The gold-brown gradient is the
-    client's brand colour and cannot change, so the text has to carry the
-    contrast: white clears 4.5:1 against both the darkest and the lightest
-    point of the gradient behind this column.
-  */
-  .hero__subtitle {
-    color: var(--color-white);
-    max-width: 34rem;
-  }
-  .hero__trust-badges {
-    color: var(--color-white);
-  }
-
-  /*
-    Review line. Sits between the CTAs and the trust row. The stars are gold as
-    an accent but the rating text is white, so the line itself carries the
-    contrast rather than relying on the gold. Renders only when real numbers
-    are supplied — see the constants at the top of this file.
-  */
-  .hero__reviews {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.55rem;
-    margin: -1rem 0 1.35rem;
-    color: var(--color-white);
-    font-size: 0.95rem;
-    font-weight: 600;
-    text-decoration: none;
-  }
-  .hero__reviews:hover .hero__reviews-text,
-  .hero__reviews:focus-visible .hero__reviews-text {
-    text-decoration: underline;
-  }
-  .hero__stars {
-    display: inline-flex;
-    gap: 0.1rem;
-    /* Unfilled stars: still legible against the gradient, not invisible. */
-    color: rgba(255, 255, 255, 0.45);
-  }
-  .hero__stars .is-filled {
-    color: #FFC53D;
-  }
-
-  /*
-    From 1024px the photo bleeds to the right edge of the viewport and runs the
-    full height of the hero — no right margin, no right-hand radius, no floating
-    rounded box leaving a gold void above the headline.
-  */
-  @media (min-width: 1024px) {
-    .hero {
-      align-items: stretch;
-      min-height: 0;
-      padding: 0;
-    }
-    .hero__layout {
-      max-width: none;
-      padding: 0;
-      gap: 0;
-      align-items: stretch;
-      grid-template-columns: minmax(0, 1fr) clamp(340px, 42%, 820px);
-      min-height: 38rem;
-    }
-    /*
-      .hero__layout no longer carries the container padding, so the text column
-      re-creates it: this left padding puts the H1 on exactly the same vertical
-      line as every section below, at any viewport width.
-      Top padding is deliberately short — enough to clear the 72px fixed header
-      and no more — so the H1 lands in the upper third rather than the middle.
-    */
-    .hero__content {
-      align-self: start;
-      /* The grid column governs the measure now, not a fixed 700px box. */
-      max-width: none;
-      padding: 6.5rem 3rem 4rem
-               max(5vw, calc((100vw - var(--container-max)) / 2 + 60px));
-    }
-    /* Three lines at every desktop width, not four. */
-    .hero h1 {
-      font-size: clamp(2rem, 4.2vw, 3.4rem);
-    }
-    /*
-      The join with the gradient is softened by a narrow mask on the left edge
-      only — 6% of the column width, so the seam stops reading as two images
-      pasted together without dissolving any of the tiling. Nav legibility over
-      the photo is handled by the scrim on .site-header, not here.
-      overflow:hidden does the horizontal cropping described on .hero__img.
-    */
-    .hero__figure {
-      max-width: none;
-      justify-self: stretch;
-      overflow: hidden;
-      mask-image: linear-gradient(to right, transparent 0, #000 6%, #000 100%);
-      -webkit-mask-image: linear-gradient(to right, transparent 0, #000 6%, #000 100%);
-    }
-    /*
-      Reframing. object-position cannot do this on its own: at 1440px and above
-      the column is wider than the photo's 3:4 ratio needs, so object-fit:cover
-      already shows the photo's full width (measured horizontal overflow: 0) and
-      only crops vertically. Any x value is therefore a no-op at desktop.
-
-      So the photo is rendered wider than its column and pinned left, and the
-      figure clips the overflow. At 112% the right ~11% — plain wall tile doing
-      nothing — falls outside the column.
-
-      112% and not more, because the two goals fight each other: zooming also
-      shortens the visible slice of a 3:4 photo inside a landscape column, and
-      the basin sits low in the source (70–93% down). Anchoring y at the bottom
-      leaves clearance under the basin — 48px at 1440px, 54px at 1920px,
-      touching neither edge — at the cost of the shower head at the top. Past
-      ~120% the basin itself starts reaching the bottom edge at 1920px.
-    */
-    .hero__img {
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      left: 0;
-      right: auto;
-      width: 112%;
-      /* The global img reset caps images at max-width:100%, which silently
-         clamps the width above back to the column and cancels the crop. */
-      max-width: none;
-      height: 100%;
-      aspect-ratio: auto;
-      border-radius: 0;
-      /* Only y bites here — see above. 95% keeps the basin clear of the bottom
-         edge (48px at 1440px, 54px at 1920px) without losing more of the top. */
-      object-position: center 95%;
-    }
-  }
-
-  /* Recent work grid */
-  .work-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 1.5rem;
-    margin-top: 2.5rem;
-  }
-  .work-card {
-    display: block;
-    background: var(--color-white);
-    border-radius: 8px;
-    overflow: hidden;
-    text-decoration: none;
-    box-shadow: var(--shadow-card);
-    transition: box-shadow var(--transition-smooth), transform var(--transition-fast);
-  }
-  .work-card:hover,
-  .work-card:focus-visible {
-    box-shadow: var(--shadow-card-hover);
-    transform: translateY(-4px);
-  }
-  .work-card__img {
-    display: block;
-    width: 100%;
-    height: auto;
-    aspect-ratio: 4 / 3;
-    object-fit: cover;
-  }
-  .work-card__body {
-    padding: 1.1rem 1.25rem 1.35rem;
-  }
-  .work-card__caption {
-    display: block;
-    font-family: var(--font-body);
-    font-weight: 600;
-    font-size: 0.95rem;
-    color: var(--color-dark-text);
-    margin-bottom: 0.5rem;
-  }
-  .work-card__wip {
-    display: inline-block;
-    margin-left: 0.5rem;
-    padding: 0.1rem 0.5rem;
-    font-size: 0.7rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    border-radius: 999px;
-    background: var(--color-light-bg);
-    color: var(--color-link-gold);
-    vertical-align: middle;
-  }
-  .work-card__link {
-    display: inline-block;
-    font-size: 0.88rem;
-    font-weight: 600;
-    color: var(--color-link-gold);
-  }
-  .work-card:hover .work-card__link { text-decoration: underline; }
-
-  /* Meet Rohullah band */
-  .meet-section { background: var(--color-white); border-top: 1px solid var(--color-border-warm); }
-  .meet-band {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 2rem;
-    align-items: center;
-  }
-  @media (min-width: 768px) {
-    .meet-band {
-      grid-template-columns: 300px 1fr;
-      gap: 3rem;
-    }
-  }
-  .meet-band__figure {
-    width: 100%;
-    max-width: 300px;
-    justify-self: center;
-  }
-  .meet-band__img {
-    display: block;
-    width: 100%;
-    height: auto;
-    aspect-ratio: 3 / 4;
-    object-fit: cover;
-    border-radius: 10px;
-    box-shadow: var(--shadow-card);
-  }
-  .meet-band__text p {
-    margin-bottom: 1.1rem;
-    line-height: 1.8;
-    color: var(--color-body-text);
-  }
-  .meet-band__text p:last-child { margin-bottom: 0; }
-</style>

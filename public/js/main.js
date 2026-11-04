@@ -54,14 +54,16 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // ─── 2. Scroll Fade-In Animations ───
-  const fadeElements = document.querySelectorAll('.fade-in-up, .fade-in');
+  const fadeElements = document.querySelectorAll(
+    '.fade-in-up, .fade-in, .work-intro > *, .project-print, .feature-print > *, .owner-layout > *, .job-list li, .contact-close-layout > *'
+  );
 
   if ('IntersectionObserver' in window) {
     const obs = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
+            entry.target.classList.add('visible', 'in-view');
             obs.unobserve(entry.target);
           }
         });

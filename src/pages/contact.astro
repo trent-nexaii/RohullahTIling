@@ -158,215 +158,24 @@ const breadcrumbs = [{ name: "Home", url: "/" }, { name: "Contact" }];
     </div>
   </section>
 
-  <!-- Google Maps -->
-  <section class="section section--light">
-    <div class="container">
-      <h2 class="section-title fade-in-up">Find Us</h2>
-      <p class="section-subtitle fade-in-up">Based in Whitby, serving the entire Wellington region</p>
-      <!--
-        Lazy-loaded, explicit height, never render-blocking.
-        NOTE: this is the generic Maps place embed, not the Google Business Profile
-        embed — the GBP embed iframe was not supplied. Swap the src for the GBP
-        "Share > Embed a map" iframe src when it is available; nothing else changes.
-      -->
-      <div class="map-container fade-in-up">
-        <iframe
-          src="https://maps.google.com/maps?q=Whitby%2C%20Porirua%2C%20Wellington%2C%20New%20Zealand&z=12&output=embed"
-          width="100%"
-          height="450"
-          style="border:0;"
-          loading="lazy"
-          referrerpolicy="no-referrer-when-downgrade"
-          title="ROH Tiling service area map"
-        ></iframe>
-      </div>
-    </div>
-  </section>
+  <section class="section section--light"><div class="container contact-location"><h2>Based in Whitby.</h2><p>I come to your property. Check the <a href="/service-areas">service areas</a>, or send your suburb with your enquiry.</p><a class="text-link" href="https://maps.google.com/maps?q=Whitby%2C%20Porirua%2C%20Wellington%2C%20New%20Zealand" target="_blank" rel="noopener noreferrer">Find Whitby on Google Maps →</a></div></section>
 </BaseLayout>
 
 <style>
-  .contact-nap__note {
-    font-size: 0.83rem !important;
-    color: var(--color-muted) !important;
-    font-style: italic;
-  }
-
-  /* Contact Layout */
-  .contact-layout {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 2.5rem;
-  }
-  @media (min-width: 992px) {
-    .contact-layout {
-      grid-template-columns: minmax(0, 1fr) 320px;
-      gap: 3rem;
-    }
-  }
-
-  /* NAP Details */
-  .contact-details {
-    background: var(--color-light-bg);
-    border-radius: 8px;
-    padding: 2rem;
-    height: fit-content;
-    position: sticky;
-    top: 6rem;
-  }
-  .contact-details__heading {
-    font-family: var(--font-heading);
-    font-size: 1.4rem;
-    margin-bottom: 1.5rem;
-    color: var(--color-dark-text);
-  }
-  .contact-nap {
-    font-style: normal;
-    display: grid;
-    gap: 1.5rem;
-  }
-  .contact-nap__item {
-    display: flex;
-    gap: 1rem;
-    align-items: flex-start;
-  }
-  .contact-nap__item svg {
-    flex-shrink: 0;
-    margin-top: 2px;
-    color: var(--color-primary);
-  }
-  .contact-nap__item strong {
-    display: block;
-    font-size: 0.85rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: var(--color-muted);
-    margin-bottom: 0.25rem;
-  }
-  .contact-nap__item p {
-    font-size: 0.95rem;
-    line-height: 1.5;
-    color: var(--color-dark-text);
-  }
-  .contact-nap__item a {
-    color: var(--color-link-gold);
-    text-decoration: none;
-    font-weight: 600;
-  }
-  .contact-nap__item a:hover {
-    text-decoration: underline;
-  }
-  .contact-response-note {
-    margin-top: 2rem;
-    padding-top: 1.5rem;
-    border-top: 1px solid var(--color-border-warm);
-  }
-  .contact-response-note p {
-    font-size: 0.9rem;
-    color: var(--color-body-text);
-    font-style: italic;
-  }
-
-  /* Contact form */
-  .contact-forms {
-    display: grid;
-    gap: 2.5rem;
-  }
-  .contact-form {
-    background: var(--color-white);
-    border-radius: 8px;
-    padding: 2.5rem;
-    box-shadow: var(--shadow-card);
-  }
-  .contact-form h2 {
-    font-family: var(--font-heading);
-    font-size: 1.4rem;
-    margin-bottom: 0.5rem;
-    color: var(--color-dark-text);
-  }
-  .quote-form-card {
-    border-top: 4px solid var(--color-primary);
-  }
-  .form-intro {
-    font-size: 0.95rem;
-    line-height: 1.6;
-    color: var(--color-body-text);
-    margin-bottom: 1.75rem;
-  }
-
-  /* Form Elements */
-  .form-row {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 1.25rem;
-  }
-  @media (min-width: 600px) {
-    .form-row {
-      grid-template-columns: 1fr 1fr;
-    }
-  }
-  .form-group {
-    margin-bottom: 1.25rem;
-  }
-  .form-group label,
-  .form-group legend {
-    display: block;
-    font-family: var(--font-body);
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: var(--color-dark-text);
-    margin-bottom: 0.4rem;
-  }
-  .required {
-    color: var(--color-accent);
-  }
-  .form-group input,
-  .form-group select,
-  .form-group textarea {
-    width: 100%;
-    padding: 12px 14px;
-    font-family: var(--font-body);
-    font-size: 0.95rem;
-    color: var(--color-dark-text);
-    background: var(--color-white);
-    border: 1px solid var(--color-border-warm);
-    border-radius: 6px;
-    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
-  }
-  .form-group input:focus,
-  .form-group select:focus,
-  .form-group textarea:focus {
-    outline: none;
-    border-color: var(--color-primary);
-    box-shadow: 0 0 0 3px rgba(212, 160, 23, 0.15);
-  }
-  .form-group textarea {
-    resize: vertical;
-  }
-  /* Map */
-  .map-container {
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: var(--shadow-card);
-    margin-top: 2rem;
-  }
-  .map-container iframe {
-    display: block;
-    width: 100%;
-    height: 450px;
-  }
+  .contact-layout { display: grid; grid-template-columns: 1.5fr 1fr; gap: 6%; }
+  .contact-nap { display: grid; gap: 24px; font-style: normal; }
+  .contact-nap__item p { margin-bottom: 4px; }
+  .contact-nap__item strong { display: block; margin-bottom: 6px; }
+  .contact-nap__note { color: var(--color-muted); }
+  .contact-details__heading { margin-bottom: 30px; }
+  .contact-form h2 { margin-bottom: 20px; }
+  .form-intro { margin-bottom: 35px; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .form-group { margin-bottom: 25px; }
+  .form-group label { display: block; font-size: 16px; font-weight: 500; margin-bottom: 10px; }
+  .form-group input, .form-group textarea { width: 100%; padding: 14px; color: var(--color-dark-text); line-height: 1.5; }
+  .form-group textarea { resize: vertical; }
+  .contact-response-note { margin-top: 30px; }
+  @media(max-width:899px) { .contact-layout { grid-template-columns: 1fr; gap: 40px; } }
+  @media(max-width:599px) { .form-row { grid-template-columns: 1fr; gap: 0; } }
 </style>
-
-<script>
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-          observer.unobserve(entry.target);
-        }
-      });
-    },
-    { threshold: 0.1 }
-  );
-  document.querySelectorAll('.fade-in-up').forEach((el) => observer.observe(el));
-</script>

@@ -92,20 +92,11 @@ const projects = [
     subtitle="Recent projects photographed on site — ensuites, walk-in showers, splashbacks and feature tiling, tiled by Rohullah Rassuli personally."
   />
 
-  <!-- Intro Section -->
-  <section class="section section--light">
-    <div class="container">
-      <div class="portfolio-intro fade-in-up">
-        <p>Explore a selection of our recent tiling projects across the Wellington region. From residential bathrooms to commercial spaces, every project reflects our commitment to precision, quality materials, and lasting craftsmanship.</p>
-      </div>
-    </div>
-  </section>
-
   <!-- Portfolio Grid -->
   <section class="section">
     <div class="container">
       <!-- h2 required so the project h3s do not skip a heading level after the page h1 -->
-      <h2 class="section-title">Recent Tiling Projects Across Wellington</h2>
+      <h2 class="section-title">Tiling projects</h2>
       <div class="portfolio-grid">
         {projects.map((project) => (
           <article class="portfolio-item fade-in-up" id={project.id}>
@@ -145,7 +136,7 @@ const projects = [
   <section class="section section--light">
     <div class="container">
       <div class="portfolio-seo fade-in-up">
-        <h2 class="section-title">Wellington Tiling You Can Trust</h2>
+        <h2 class="section-title">The work behind the finish</h2>
         <p>Every project on this page was tiled by {OWNER_NAME} personally, right here in the Wellington region. Several are photographed mid-installation, before the surrounding trades finished — that is deliberate. It shows the substrate prep, the falls, the setting out and the waterproofing that a styled photograph taken after handover would hide.</p>
         <p>Whether you are planning a simple bathroom refresh or a full renovation, the same care goes into every job: precise cuts, consistent grout lines, correct <a href="/services/waterproofing">wet-area waterproofing</a>, and a clean workspace at the end of each day. Browse the projects above, then read more about <a href="/services/bathroom-tiling">bathroom and shower tiling</a>, <a href="/services/kitchen-tiling">kitchen splashbacks</a> or <a href="/services/floor-tiling">floor tiling</a> — or check the <a href="/service-areas">Wellington suburbs we cover</a> and get in touch for a free quote.</p>
       </div>
@@ -158,112 +149,3 @@ const projects = [
     text="Get in touch today for a free, no-obligation quote. We would love to add your project to our portfolio."
   />
 </BaseLayout>
-
-<style>
-  .portfolio-intro {
-    max-width: 720px;
-    margin: 0 auto;
-    text-align: center;
-  }
-
-  .portfolio-intro p {
-    font-size: 1.125rem;
-    line-height: 1.75;
-    color: var(--color-text, #333);
-  }
-
-  .portfolio-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 2rem;
-  }
-
-  @media (min-width: 768px) {
-    .portfolio-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-
-  .portfolio-item {
-    background: #fff;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
-
-  .portfolio-item:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-  }
-
-  .portfolio-item img {
-    width: 100%;
-    height: auto;
-    object-fit: cover;
-    aspect-ratio: 4 / 3;
-    display: block;
-  }
-
-  .portfolio-wip {
-    font-size: 0.85rem !important;
-    font-style: italic;
-    color: var(--color-muted, #777) !important;
-    margin-bottom: 0.75rem !important;
-  }
-
-  .portfolio-service-link {
-    margin-bottom: 1rem !important;
-    font-size: 0.92rem !important;
-    font-weight: 600;
-  }
-
-  .portfolio-service-link a {
-    color: var(--color-link-gold, #946A09);
-  }
-
-  .portfolio-item-content {
-    padding: 1.5rem;
-  }
-
-  .portfolio-item-content h3 {
-    margin: 0 0 0.75rem;
-    font-size: 1.2rem;
-    color: var(--color-heading, #1a1a2e);
-  }
-
-  .portfolio-item-content p {
-    margin: 0 0 1rem;
-    font-size: 0.95rem;
-    line-height: 1.65;
-    color: var(--color-text, #555);
-  }
-
-  .portfolio-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-  }
-
-  .portfolio-tag {
-    display: inline-block;
-    padding: 0.25rem 0.75rem;
-    font-size: 0.8rem;
-    font-weight: 500;
-    border-radius: 999px;
-    background: #fdf4e3;
-    color: #8b6914;
-  }
-
-  .portfolio-seo {
-    max-width: 800px;
-    margin: 0 auto;
-  }
-
-  .portfolio-seo p {
-    font-size: 1rem;
-    line-height: 1.75;
-    color: var(--color-text, #555);
-    margin-bottom: 1rem;
-  }
-</style>

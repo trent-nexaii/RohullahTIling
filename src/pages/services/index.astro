@@ -33,7 +33,7 @@ const services = [
         <ul class="service-list">
           {services.map((service) => (
             <li>
-              <h3><a href={service.href}>{service.name}<span aria-hidden="true"> ↗</span></a></h3>
+              <h3><a href={service.href}>{service.name}<span aria-hidden="true"> →</span></a></h3>
               <p>{service.description}</p>
             </li>
           ))}
@@ -94,5 +94,9 @@ const services = [
   .service-next .btn { flex-shrink: 0; }
   @media (min-width: 900px) {
     .service-directory { grid-template-columns: 1.3fr 1fr; gap: 4rem; }
+  }
+  @media (max-width: 599px) {
+    .service-directory { display: block; }
+    .work-detail { margin-top: 45px; }
   }
 </style>

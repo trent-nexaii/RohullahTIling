@@ -153,13 +153,7 @@ const navLinks = [
   <meta name="twitter:image" content={OG_IMAGE} />
   <meta name="twitter:image:alt" content={OG_IMAGE_ALT} />
 
-  <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@400;500;700&display=swap"
-    rel="stylesheet"
-  />
+  <link rel="preload" href="/fonts/dm-sans-latin-variable.woff2" as="font" type="font/woff2" crossorigin />
 
   <!-- LocalBusiness Schema -->
   <script type="application/ld+json" set:html={localBusinessSchema} />
@@ -175,214 +169,37 @@ const navLinks = [
   <!-- Per-page head additions (e.g. the homepage hero preload) -->
   <slot name="head" />
 </head>
-<body>
-
-  <!-- ========== NAVIGATION ========== -->
+<body class="site-shell">
+  <a class="skip-link" href="#page-content">Skip to content</a>
   <header class="site-header" id="site-header">
-    <div class="nav-container">
-      <!--
-        Text wordmark, not the supplied logo raster: that file is gold lettering on a
-        solid brushed-gold plate with no transparency, so it reads as a gold rectangle
-        on a light header and the lettering loses contrast at header size. The circular
-        tile mark is high-contrast on dark and works at any size, so it leads instead.
-      -->
+    <div class="container nav-container">
       <a href="/" class="logo" aria-label={`${BUSINESS_NAME} — Home`}>
-        <Image
-          src={iconMark}
-          alt=""
-          width={40}
-          height={40}
-          densities={[1, 2]}
-          loading="eager"
-          decoding="sync"
-          class="logo-mark"
-          aria-hidden="true"
-        />
-        <span class="logo-wordmark">ROH TILING</span>
+        <Image src={iconMark} alt="" width={38} height={38} loading="eager" class="logo-mark" aria-hidden="true" />
+        <span>ROH Tiling</span>
       </a>
-
-      <!-- Desktop Navigation -->
       <nav class="nav-desktop" aria-label="Main navigation">
-        {navLinks.map((link) =>
-          link.children ? (
-            <div class="nav-dropdown">
-              <a
-                href={link.href}
-                class={`nav-link${isActive(link.href) ? ' active' : ''}`}
-              >
-                {link.name}
-              </a>
-              <ul class="nav-dropdown-menu">
-                {link.children.map((child) => (
-                  <li>
-                    <a href={child.href} class={isActive(child.href) ? 'active' : ''}>
-                      {child.name}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ) : (
-            <a
-              href={link.href}
-              class={`nav-link${isActive(link.href) ? ' active' : ''}`}
-            >
-              {link.name}
-            </a>
-          )
-        )}
+        {navLinks.map((link) => <a href={link.href} aria-current={isActive(link.href) ? 'page' : undefined}>{link.name}</a>)}
       </nav>
-
-      <!-- Phone Link -->
-      <a href={`tel:${PHONE_E164}`} class="nav-phone" aria-label={`Call ${BUSINESS_NAME} on ${PHONE_DISPLAY}`}>
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
-        </svg>
-        <span>{PHONE_DISPLAY}</span>
-      </a>
-
-      <!-- Hamburger Button -->
-      <button class="hamburger" id="hamburger" aria-label="Toggle navigation menu" aria-expanded="false">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
+      <a class="nav-phone" href={`tel:${PHONE_E164}`}>{PHONE_DISPLAY}</a>
+      <button class="hamburger" id="hamburger" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="mobile-navigation"><span>Menu</span></button>
     </div>
-
-    <!-- Mobile Navigation Overlay -->
-    <nav class="nav-mobile" aria-label="Mobile navigation">
-      {navLinks.map((link) => (
-        <a href={link.href}>{link.name}</a>
-      ))}
-      {serviceLinks.map((link) => (
-        <a href={link.href} style="font-size: 1.1rem; opacity: 0.8;">{link.name}</a>
-      ))}
-      <a href={`tel:${PHONE_E164}`} style="color: var(--color-primary);">{PHONE_DISPLAY}</a>
+    <nav class="nav-mobile" id="mobile-navigation" aria-label="Mobile navigation">
+      {navLinks.map((link) => <a href={link.href}>{link.name}</a>)}
+      <a href={`tel:${PHONE_E164}`}>Call {PHONE_DISPLAY}</a>
     </nav>
   </header>
-
-  <!-- ========== PAGE CONTENT ========== -->
-  <main>
-    <slot />
-  </main>
-
-  <!-- ========== FOOTER ========== -->
+  <main id="page-content"><slot /></main>
   <footer class="site-footer">
-    <div class="container footer-grid">
-      <div class="footer-col">
-        <a href="/" class="footer-logo" aria-label={`${BUSINESS_NAME} — Home`}>
-          <!-- The gold-on-gold logo plate only works on a dark ground. This is that ground. -->
-          <!-- 440px = 2x the 220px display width. The full-resolution original
-               stays at /images/roh-tiling-logo.webp for the schema logo field. -->
-          <img
-            src="/images/roh-tiling-logo-440.webp"
-            alt={`${BUSINESS_NAME} — Wellington Region`}
-            width="220"
-            height="103"
-            loading="lazy"
-            decoding="async"
-            class="footer-logo-img"
-          />
-        </a>
-        <p class="footer-desc">
-          Owner-operated tiling across the Wellington region. Every job is done by {OWNER_NAME} personally — bathrooms, kitchen splashbacks, floors, waterproofing and repairs.
-        </p>
-        <ul class="footer-social">
-          <li>
-            <a href={GBP_URL} rel="noopener" target="_blank" aria-label={`${BUSINESS_NAME} on Google Business Profile`}>
-              <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M12.24 10.29v3.62h5.05a4.33 4.33 0 0 1-1.88 2.84l3.03 2.35c1.77-1.63 2.79-4.04 2.79-6.9 0-.67-.06-1.31-.17-1.91h-8.82z"/><path d="M5.28 14.28l-.68.52-2.42 1.88A9.98 9.98 0 0 0 12 22c2.7 0 4.96-.89 6.61-2.42l-3.23-2.5c-.89.6-2.02.96-3.38.96-2.6 0-4.81-1.75-5.6-4.11z"/><path d="M2.18 7.32A9.94 9.94 0 0 0 2 12c0 1.69.41 3.28 1.12 4.68l3.1-2.4a5.99 5.99 0 0 1 0-3.83l-4.04-3.13z"/><path d="M12 5.98c1.47 0 2.79.51 3.83 1.5l2.86-2.86C16.95 2.99 14.7 2 12 2 8.09 2 4.71 4.24 3.07 7.51l3.1 2.4C6.96 7.55 9.17 5.98 12 5.98z"/></svg>
-              <span>Google Business Profile</span>
-            </a>
-          </li>
-          <li>
-            <a href={INSTAGRAM_URL} rel="noopener" target="_blank" aria-label={`${BUSINESS_NAME} on Instagram`}>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/></svg>
-              <span>Instagram</span>
-            </a>
-          </li>
-        </ul>
-      </div>
-
-      <div class="footer-col">
-        <h3 class="footer-heading">Contact Us</h3>
-        <!-- NAP block — crawlable text, never an image. Must match the Google Business Profile exactly. -->
-        <address class="footer-contact">
-          <p class="footer-nap-name"><strong>{BUSINESS_NAME}</strong></p>
-          <p>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-            {LOCALITY}
-          </p>
-          <p>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-            <a href={`tel:${PHONE_E164}`}>{PHONE_DISPLAY}</a>
-          </p>
-          <p>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-            <a href={`mailto:${EMAIL}`}>{EMAIL}</a>
-          </p>
-        </address>
-
-        <h3 class="footer-heading footer-heading--hours">Hours</h3>
-        <ul class="footer-hours">
-          {HOURS.map((h) => (
-            <li><span class="footer-hours__day">{h.label}</span><span class="footer-hours__time">{h.value}</span></li>
-          ))}
-        </ul>
-      </div>
-
-      <div class="footer-col">
-        <h3 class="footer-heading">Quick Links</h3>
-        <ul class="footer-links">
-          <li><a href="/">Home</a></li>
-          <li><a href="/services">Services</a></li>
-          <li><a href="/service-areas">Service Areas</a></li>
-          <li><a href="/about">About</a></li>
-          <li><a href="/contact">Contact</a></li>
-        </ul>
-      </div>
-
-      <div class="footer-col">
-        <h3 class="footer-heading">Our Services</h3>
-        <ul class="footer-links">
-          {serviceLinks.map((link) => (
-            <li><a href={link.href}>{link.name}</a></li>
-          ))}
-        </ul>
-      </div>
+    <div class="container footer-top">
+      <div class="footer-person"><a href="/" aria-label={`${BUSINESS_NAME} — Home`}><img src="/images/roh-tiling-logo-440.webp" alt="ROH Tiling — Wellington Region" width="220" height="103" loading="lazy" decoding="async" /></a><p>{OWNER_NAME}<br />Owner-operated. Based in Whitby.</p></div>
+      <address><a href={`tel:${PHONE_E164}`}>{PHONE_DISPLAY}</a><a href={`mailto:${EMAIL}`}>{EMAIL}</a><span>{LOCALITY}</span></address>
+      <div class="footer-hours"><h2>Hours</h2>{HOURS.map((h) => <p>{h.label}<span>{h.value}</span></p>)}</div>
     </div>
-
-    <div class="footer-bottom">
-      <div class="container footer-bottom-inner">
-        <div class="footer-bottom-left">
-          <span>&copy; {year} {BUSINESS_NAME}. All rights reserved.</span>
-          <span class="footer-bottom-sep">|</span>
-          <a href="/privacy">Privacy Policy</a>
-          <span class="footer-bottom-sep">|</span>
-          <a href="/terms">Terms of Service</a>
-        </div>
-        <div class="footer-bottom-right">
-          <a href="https://www.nexaii.com" target="_blank" rel="noopener noreferrer">Website designed by Nexaii</a>
-        </div>
-      </div>
-    </div>
+    <div class="container footer-links"><a href="/services">Services</a><a href="/portfolio">Portfolio</a><a href="/service-areas">Service areas</a><a href={GBP_URL} target="_blank" rel="noopener noreferrer">Google Business Profile →</a><a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer">Instagram →</a></div>
+    <p class="container footer-wordmark" aria-hidden="true">ROH Tiling</p>
+    <div class="container footer-bottom"><span>© {year} {BUSINESS_NAME}</span><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="https://www.nexaii.com" target="_blank" rel="noopener noreferrer">Website by Nexaii →</a></div>
   </footer>
-
-  <!-- ========== MOBILE STICKY CTA BAR ========== -->
-  {showMobileCTA && (
-    <div class="mobile-cta-bar" id="mobile-cta-bar">
-      <!-- Accessible name must contain the visible text ("Call Now") to satisfy
-           label-content-name-mismatch. -->
-      <a href={`tel:${PHONE_E164}`} class="mobile-cta-btn mobile-cta-phone" aria-label={`Call Now — ${BUSINESS_NAME} on ${PHONE_DISPLAY}`}>
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
-        </svg>
-        Call Now
-      </a>
-      <a href="/contact" class="mobile-cta-btn mobile-cta-quote">Get a Free Quote</a>
-    </div>
-  )}
-
-  <!-- Client-side JS -->
+  {showMobileCTA && <div class="mobile-cta-bar" id="mobile-cta-bar"><a class="mobile-cta-phone" href={`tel:${PHONE_E164}`}>Call {PHONE_DISPLAY}</a><a class="mobile-cta-quote" href="/contact">Request a quote</a></div>}
   <script is:inline src="/js/main.js"></script>
 </body>
 </html>

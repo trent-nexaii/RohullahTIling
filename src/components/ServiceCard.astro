@@ -10,7 +10,6 @@ const { title, description, href, icon } = Astro.props;
 ---
 
 <div class="service-card">
-  <div class="service-card__icon" set:html={icon} />
   <h3 class="service-card__title">{title}</h3>
   <p class="service-card__description">{description}</p>
   <!-- Descriptive anchor text — never a bare "Learn more" or "Click here". -->
