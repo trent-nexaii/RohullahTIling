@@ -1,5 +1,7 @@
 # ROH Tiling visual redesign review
 
+This records the earlier Taste-guided visual pass. The current work uses Anthropic's `frontend-design` skill and is documented in [site-structure-review.md](site-structure-review.md).
+
 Preview branch: `feat/roh-tiling-vercel-update`. This revision responds to the user's request to remove the remaining generic, AI-looking design. It expands the earlier scoped visual work; the original brief's factual, route and production constraints remain in force.
 
 

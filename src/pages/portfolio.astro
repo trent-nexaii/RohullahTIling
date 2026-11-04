@@ -4,6 +4,7 @@ import PageHeader from '../components/PageHeader.astro';
 import CTASection from '../components/CTASection.astro';
 import { Image } from 'astro:assets';
 import { OWNER_NAME } from '../data/business';
+import { quotePath, type ServiceId } from '../data/services';
 
 import ensuiteImg from '../assets/images/ensuite-large-format-porcelain-tiling-wellington.webp';
 import showerTealImg from '../assets/images/shower-tiling-vertical-stack-teal-tile-wellington.webp';
@@ -11,6 +12,8 @@ import splashbackFlutedImg from '../assets/images/kitchen-splashback-fluted-terr
 import walkInShowerImg from '../assets/images/walk-in-shower-tiling-linear-drain-wellington.webp';
 import whiteGlossImg from '../assets/images/shower-tiling-white-gloss-wall-tile-wellington.webp';
 import windowSeatImg from '../assets/images/patterned-tile-window-seat-wellington.webp';
+import floorFeatureImg from '../assets/images/bathroom-floor-tiling-feature-strip-wellington.webp';
+import subwayImg from '../assets/images/kitchen-splashback-subway-tile-wellington.webp';
 
 const title = "Tiling Portfolio Wellington | ROH Tiling";
 const description = "Recent tiling projects across Wellington by ROH Tiling. Ensuites, walk-in showers, kitchen splashbacks and feature tiling — photographed on site.";
@@ -83,7 +86,28 @@ const projects = [
     tags: ["Feature Tiling", "Patterned Tile", "Monochrome", "Detail Work"],
     wip: false,
   },
+  {
+    id: 'stone-look-floor-feature',
+    title: 'Stone-look floor and patterned feature strip',
+    image: floorFeatureImg,
+    alt: 'Stone-look porcelain bathroom floor and wall tiles, with a patterned strip below the window, during installation',
+    description: 'Stone-look porcelain tiles across the floor and walls, with a patterned strip below the window. The photograph shows the floor layout, wall junctions and feature strip while installation was under way.',
+    service: { href: '/services/floor-tiling', label: 'floor tiling' },
+    tags: ['Floor Tiling', 'Porcelain', 'Feature Strip'],
+    wip: true,
+  },
+  {
+    id: 'subway-splashback',
+    title: 'White subway tiles around the kitchen windows',
+    image: subwayImg,
+    alt: 'White subway tile splashback extending from the benchtop around the kitchen windows, during installation',
+    description: 'White subway tiles run above the benchtop and around two kitchen windows. The horizontal courses continue across the corner. The kitchen fittings were still being completed when this photograph was taken.',
+    service: { href: '/services/kitchen-tiling', label: 'kitchen tiling and splashbacks' },
+    tags: ['Kitchen Splashback', 'Subway Tile', 'Window Returns'],
+    wip: true,
+  },
 ];
+const groupFor = (href: string) => href.endsWith('kitchen-tiling') ? 'kitchens' : href.endsWith('floor-tiling') ? 'floors' : 'bathrooms';
 ---
 
 <BaseLayout title={title} description={description} canonical={canonical} breadcrumbs={breadcrumbs}>
@@ -97,9 +121,16 @@ const projects = [
     <div class="container">
       <!-- h2 required so the project h3s do not skip a heading level after the page h1 -->
       <h2 class="section-title">Tiling projects</h2>
-      <div class="portfolio-grid">
+      <div class="portfolio-filters" role="group" aria-label="Filter work by service" hidden>
+        <button type="button" data-work-filter="all" aria-pressed="true" aria-controls="work-entries">All work</button>
+        <button type="button" data-work-filter="bathrooms" aria-pressed="false" aria-controls="work-entries">Bathrooms</button>
+        <button type="button" data-work-filter="kitchens" aria-pressed="false" aria-controls="work-entries">Kitchens</button>
+        <button type="button" data-work-filter="floors" aria-pressed="false" aria-controls="work-entries">Floors and features</button>
+      </div>
+      <p class="portfolio-filter-status" role="status" aria-live="polite" hidden></p>
+      <div class="portfolio-grid" id="work-entries">
         {projects.map((project) => (
-          <article class="portfolio-item fade-in-up" id={project.id}>
+          <article class="portfolio-item" id={project.id} data-project-group={groupFor(project.service.href)}>
             <Image
               src={project.image}
               alt={project.alt}
@@ -120,6 +151,7 @@ const projects = [
               <p class="portfolio-service-link">
                 <a href={project.service.href}>See our {project.service.label} service</a>
               </p>
+              <p><a class="text-link" href={quotePath(project.service.href.split('/').pop() as ServiceId)}>Discuss a similar job</a></p>
               <div class="portfolio-tags">
                 {project.tags.map((tag) => (
                   <span class="portfolio-tag">{tag}</span>
@@ -144,8 +176,43 @@ const projects = [
   </section>
 
   <!-- CTA Section -->
-  <CTASection
-    heading="Ready to Start Your Tiling Project?"
-    text="Get in touch today for a free, no-obligation quote. We would love to add your project to our portfolio."
-  />
+  <CTASection />
 </BaseLayout>
+
+<script>
+  const controls = document.querySelector<HTMLElement>('.portfolio-filters');
+  const status = document.querySelector<HTMLElement>('.portfolio-filter-status');
+  const buttons = [...document.querySelectorAll<HTMLButtonElement>('[data-work-filter]')];
+  const entries = [...document.querySelectorAll<HTMLElement>('[data-project-group]')];
+  const services: Record<string, string> = { bathrooms: 'bathroom-tiling', kitchens: 'kitchen-tiling', floors: 'floor-tiling' };
+  function select(group: string, updateUrl = false) {
+    const valid = buttons.some((button) => button.dataset.workFilter === group) ? group : 'all';
+    for (const entry of entries) entry.hidden = valid !== 'all' && entry.dataset.projectGroup !== valid;
+    for (const button of buttons) button.setAttribute('aria-pressed', String(button.dataset.workFilter === valid));
+    if (status) status.textContent = `${entries.filter((entry) => !entry.hidden).length} photos shown`;
+    if (updateUrl) {
+      const url = new URL(location.href);
+      if (valid === 'all') url.searchParams.delete('service'); else url.searchParams.set('service', services[valid]);
+      url.hash = '';
+      history.replaceState(null, '', url);
+    }
+  }
+  function showLinkedProject() {
+    let id = '';
+    try { id = decodeURIComponent(location.hash.slice(1)); } catch { return; }
+    const entry = entries.find((item) => item.id === id);
+    if (entry) {
+      select(entry.dataset.projectGroup || 'all');
+      requestAnimationFrame(() => entry.scrollIntoView({ block: 'start', behavior: 'instant' }));
+    }
+  }
+  if (controls && status) {
+    controls.hidden = false;
+    status.hidden = false;
+    const requested = new URLSearchParams(location.search).get('service');
+    select(Object.keys(services).find((group) => services[group] === requested) || 'all');
+    showLinkedProject();
+    buttons.forEach((button) => button.addEventListener('click', () => select(button.dataset.workFilter || 'all', true)));
+    window.addEventListener('hashchange', showLinkedProject);
+  }
+</script>

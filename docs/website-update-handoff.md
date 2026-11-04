@@ -1,6 +1,6 @@
 # ROH Tiling website update — branch review
 
-This document records the initial scoped implementation. The subsequent visual redesign requested by the user is recorded in [visual-redesign-review.md](visual-redesign-review.md), which supersedes the design and validation notes below. The owner-confirmation items and deployment follow-up still apply.
+This document records the initial scoped implementation. See [site-structure-review.md](site-structure-review.md) for the current click-through structure work and validation, and [visual-redesign-review.md](visual-redesign-review.md) for the earlier visual pass. The owner-confirmation items and deployment follow-up still apply.
 
 Branch: `feat/roh-tiling-vercel-update`. No merge or production deployment is authorised by this change.
 

@@ -53,28 +53,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // ─── 2. Scroll Fade-In Animations ───
-  const fadeElements = document.querySelectorAll(
-    '.fade-in-up, .fade-in, .work-intro > *, .project-print, .feature-print > *, .owner-layout > *, .job-list li, .contact-close-layout > *'
-  );
-
-  if ('IntersectionObserver' in window) {
-    const obs = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('visible', 'in-view');
-            obs.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
-    fadeElements.forEach((el) => obs.observe(el));
-  } else {
-    fadeElements.forEach((el) => el.classList.add('visible'));
-  }
-
   // ─── 3. Sticky Header ───
   const header = document.querySelector('.site-header');
 
@@ -83,22 +61,6 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
   }
-
-  // ─── 4. Smooth Scroll for Anchor Links ───
-  document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
-    anchor.addEventListener('click', (e) => {
-      const id = anchor.getAttribute('href');
-      if (!id || id === '#') return;
-      const target = document.querySelector(id);
-      if (!target) return;
-      e.preventDefault();
-      const offset = header ? header.offsetHeight : 0;
-      window.scrollTo({
-        top: target.getBoundingClientRect().top + window.scrollY - offset,
-        behavior: 'smooth',
-      });
-    });
-  });
 
   // ─── 5. Mobile Sticky CTA Bar ───
   const ctaBar = document.getElementById('mobile-cta-bar');
@@ -150,7 +112,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const fields = form.querySelectorAll('input, textarea, select');
-    fields.forEach((f) => f.addEventListener('blur', () => validate(f)));
+    fields.forEach((f) => {
+      f.addEventListener('blur', () => validate(f));
+      // Clear stale feedback during edits so input blur does not shift the
+      // submit button during a click.
+      f.addEventListener('input', () => clearError(f));
+    });
 
     // Readable labels for the email body, keyed by field name.
     const LABELS = {

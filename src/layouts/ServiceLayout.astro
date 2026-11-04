@@ -2,6 +2,7 @@
 import BaseLayout from './BaseLayout.astro';
 import PageHeader from '../components/PageHeader.astro';
 import CTASection from '../components/CTASection.astro';
+import { services, quotePath } from '../data/services';
 
 interface Props {
   title: string;
@@ -22,6 +23,8 @@ const {
 } = Astro.props;
 
 const siteUrl = Astro.site?.toString().replace(/\/$/, '') ?? 'https://www.rohullahtiling.co.nz';
+const service = services.find((item) => canonical === `/services/${item.id}`);
+const enquiryHref = service ? quotePath(service.id) : '/contact#quote-form';
 
 const breadcrumbs = [
   { name: 'Home', url: '/' },
@@ -55,14 +58,12 @@ const serviceSchema = JSON.stringify({
   canonical={canonical}
   breadcrumbs={breadcrumbs}
   schemas={serviceSchema}
+  quoteHref={enquiryHref}
 >
-  <PageHeader title={serviceName} subtitle={serviceDescription} />
+  <PageHeader title={serviceName} subtitle={serviceDescription} actionHref={enquiryHref} compact={service?.primary} />
+  {service?.primary && <nav class="container service-page-nav" aria-label="On this service page"><a href="#recent-work">See the work</a><a href="#service-scope">What is included</a><a href="#quote-details">Plan your quote</a></nav>}
 
   <slot />
 
-  <CTASection
-    heading="Ready to Start Your Tiling Project?"
-    text="Get in touch with ROH Tiling for a free, no-obligation quote. We'd love to help bring your vision to life."
-    variant="gold"
-  />
+  <CTASection service={service?.id} />
 </BaseLayout>

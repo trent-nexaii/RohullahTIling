@@ -1,0 +1,5 @@
+# Reusable client website brief
+
+Use Anthropic’s `frontend-design` skill as the standing design default, as requested by the user.
+
+Use the client’s real business, buyers, assets, proof and existing code to shape the site. Before writing UI, inspect the current repo, page routes, design tokens, live pages, approved claims, genuine images and the visitor’s main task. Choose a page composition that fits the client’s work; do not start from a generic template and recolour it. State what makes this visual direction specific to this client. Use real, permissioned proof or leave the proof gap visible in the handoff. Do not invent customers, locations, reviews, credentials, prices, metrics or before/after results. Do not repeat the same section order or card grid across every service page. Preserve working URLs and the current brand unless evidence and explicit approval support changing them. Build on a branch, run the existing tests, inspect a real preview on mobile and desktop, and report only checks actually completed. No production deploy, DNS change, domain purchase, paid dependency or client-account update without approval.

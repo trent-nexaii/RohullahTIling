@@ -1,5 +1,6 @@
 ---
 import ServiceLayout from '../../layouts/ServiceLayout.astro';
+import QuoteBrief from '../../components/QuoteBrief.astro';
 import { Image } from 'astro:assets';
 import subwayImg from '../../assets/images/kitchen-splashback-subway-tile-wellington.webp';
 import flutedImg from '../../assets/images/kitchen-splashback-fluted-terracotta-tile-wellington.webp';
@@ -19,26 +20,23 @@ import flutedImg from '../../assets/images/kitchen-splashback-fluted-terracotta-
     <div class="container">
       <div class="split-layout fade-in-up">
         <div>
-          <p class="lead">
-            The kitchen is the heart of every Wellington home, and the right tiles can transform it from functional to stunning. Whether you need a striking splashback behind the hob, durable floor tiles that handle heavy foot traffic, or a feature wall that ties the whole room together, ROH Tiling delivers kitchen tiling that looks exceptional and performs brilliantly.
-          </p>
-          <p>
-            We work with homeowners, kitchen designers, and builders across the Wellington region to install tiles that complement cabinetry, benchtops, and appliances. From classic subway tiles in a Thorndon villa to bold geometric patterns in a modern Petone apartment, we bring precision and care to every kitchen tiling project.
-          </p>
+          <p class="lead">Kitchen splashbacks, full-height wall tiling and floors. A corner return, window or power point changes where the cuts fall, so the layout starts with the whole surface.</p>
+          <p>The fluted terracotta splashback below was set out from the internal corner so its ribs aligned across the join. <a href="/portfolio#fluted-terracotta-splashback">Read the project notes</a> before planning a similar finish.</p>
         </div>
-        <div>
+        <div class="service-intro-photo">
           <Image
-            src={subwayImg}
-            alt="Kitchen with white subway tile splashback running full height around the window and benchtop"
+            src={flutedImg}
+            alt="Fluted terracotta splashback with ribs aligned at the internal corner, work in progress"
             width={640}
             widths={[320, 480, 640]}
             sizes="(min-width: 768px) 46vw, 92vw"
             quality={70}
             format="webp"
-            loading="lazy"
+            loading="eager"
             decoding="async"
             class="service-photo"
           />
+          <p class="service-image-note">Fluted terracotta corner return. Work in progress.</p>
         </div>
       </div>
     </div>
@@ -47,7 +45,7 @@ import flutedImg from '../../assets/images/kitchen-splashback-fluted-terracotta-
   <!-- Kitchen Tiling Services -->
   <section class="section section--light">
     <div class="container">
-      <h2 class="section-title">Kitchen Tiling Services</h2>
+      <h2 class="section-title" id="service-scope">Kitchen Tiling Services</h2>
       <p class="section-subtitle">Expert tile installation for every surface in your kitchen.</p>
 
       <div class="services-grid">
@@ -78,6 +76,8 @@ import flutedImg from '../../assets/images/kitchen-splashback-fluted-terracotta-
       </div>
     </div>
   </section>
+
+  <QuoteBrief service="kitchen-tiling" />
 
   <!-- Popular Tile Styles -->
   <section class="section">
@@ -110,6 +110,45 @@ import flutedImg from '../../assets/images/kitchen-splashback-fluted-terracotta-
           <h3>Handmade &amp; Artisan Tiles</h3>
           <p>Slightly irregular edges and glazes give handmade tiles a warm, characterful look that complements Wellington's many heritage homes. Each tile is unique, creating a one-of-a-kind finish.</p>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Real project photographs -->
+  <section class="section section--light" id="recent-work">
+    <div class="container">
+      <h2 class="section-title">Kitchen Tiling Gallery</h2>
+      <div class="service-gallery service-gallery--two fade-in-up">
+        <a href="/portfolio#fluted-terracotta-splashback" class="service-gallery__item">
+          <Image
+            src={flutedImg}
+            alt="Terracotta fluted tile kitchen splashback wrapping a corner return, with ribs aligned across the join"
+            width={640}
+            widths={[320, 480, 640]}
+            sizes="(min-width: 768px) 45vw, 92vw"
+            quality={70}
+            format="webp"
+            loading="lazy"
+            decoding="async"
+            class="service-photo"
+          />
+          <span class="service-gallery__caption">Fluted terracotta splashback, corner return — Wellington <em>(work in progress)</em></span>
+        </a>
+        <a href="/portfolio#subway-splashback" class="service-gallery__item">
+          <Image
+            src={subwayImg}
+            alt="Kitchen with white subway tile splashback running full height around the window and benchtop"
+            width={640}
+            widths={[320, 480, 640]}
+            sizes="(min-width: 768px) 45vw, 92vw"
+            quality={70}
+            format="webp"
+            loading="lazy"
+            decoding="async"
+            class="service-photo"
+          />
+          <span class="service-gallery__caption">Full-height subway splashback — Wellington <em>(work in progress)</em></span>
+        </a>
       </div>
     </div>
   </section>
@@ -147,44 +186,7 @@ import flutedImg from '../../assets/images/kitchen-splashback-fluted-terracotta-
     </div>
   </section>
 
-  <!-- Gallery Placeholder -->
-  <section class="section section--light">
-    <div class="container">
-      <h2 class="section-title">Kitchen Tiling Gallery</h2>
-      <div class="service-gallery service-gallery--two fade-in-up">
-        <a href="/portfolio#fluted-terracotta-splashback" class="service-gallery__item">
-          <Image
-            src={flutedImg}
-            alt="Terracotta fluted tile kitchen splashback wrapping a corner return, with ribs aligned across the join"
-            width={640}
-            widths={[320, 480, 640]}
-            sizes="(min-width: 768px) 45vw, 92vw"
-            quality={70}
-            format="webp"
-            loading="lazy"
-            decoding="async"
-            class="service-photo"
-          />
-          <span class="service-gallery__caption">Fluted terracotta splashback, corner return — Wellington <em>(work in progress)</em></span>
-        </a>
-        <a href="/portfolio" class="service-gallery__item">
-          <Image
-            src={subwayImg}
-            alt="Kitchen with white subway tile splashback running full height around the window and benchtop"
-            width={640}
-            widths={[320, 480, 640]}
-            sizes="(min-width: 768px) 45vw, 92vw"
-            quality={70}
-            format="webp"
-            loading="lazy"
-            decoding="async"
-            class="service-photo"
-          />
-          <span class="service-gallery__caption">Full-height subway splashback — Wellington <em>(work in progress)</em></span>
-        </a>
-      </div>
-    </div>
-  </section>
+
 
   <!-- Internal Links -->
   <section class="section">

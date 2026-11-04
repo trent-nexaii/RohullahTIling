@@ -28,6 +28,7 @@ interface Props {
   breadcrumbs?: { name: string; url?: string }[];
   schemas?: string;
   showMobileCTA?: boolean;
+  quoteHref?: string;
 }
 
 const {
@@ -38,6 +39,7 @@ const {
   breadcrumbs,
   schemas,
   showMobileCTA = true,
+  quoteHref = '/contact#quote-form',
 } = Astro.props;
 
 const siteUrl = Astro.site?.toString().replace(/\/$/, '') ?? 'https://www.rohullahtiling.co.nz';
@@ -195,11 +197,11 @@ const navLinks = [
       <address><a href={`tel:${PHONE_E164}`}>{PHONE_DISPLAY}</a><a href={`mailto:${EMAIL}`}>{EMAIL}</a><span>{LOCALITY}</span></address>
       <div class="footer-hours"><h2>Hours</h2>{HOURS.map((h) => <p>{h.label}<span>{h.value}</span></p>)}</div>
     </div>
-    <div class="container footer-links"><a href="/services">Services</a><a href="/portfolio">Portfolio</a><a href="/service-areas">Service areas</a><a href={GBP_URL} target="_blank" rel="noopener noreferrer">Google Business Profile →</a><a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer">Instagram →</a></div>
+    <div class="container footer-links"><a href="/services">Services</a><a href="/portfolio">Portfolio</a><a href="/service-areas">Service areas</a><a href={GBP_URL} target="_blank" rel="noopener noreferrer">Google Business Profile</a><a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer">Instagram</a></div>
     <p class="container footer-wordmark" aria-hidden="true">ROH Tiling</p>
-    <div class="container footer-bottom"><span>© {year} {BUSINESS_NAME}</span><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="https://www.nexaii.com" target="_blank" rel="noopener noreferrer">Website by Nexaii →</a></div>
+    <div class="container footer-bottom"><span>© {year} {BUSINESS_NAME}</span><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="https://www.nexaii.com" target="_blank" rel="noopener noreferrer">Website by Nexaii</a></div>
   </footer>
-  {showMobileCTA && <div class="mobile-cta-bar" id="mobile-cta-bar"><a class="mobile-cta-phone" href={`tel:${PHONE_E164}`}>Call {PHONE_DISPLAY}</a><a class="mobile-cta-quote" href="/contact">Request a quote</a></div>}
+  {showMobileCTA && <div class="mobile-cta-bar" id="mobile-cta-bar"><a class="mobile-cta-phone" href={`tel:${PHONE_E164}`}>Call {PHONE_DISPLAY}</a><a class="mobile-cta-quote" href={quoteHref}>Request a quote</a></div>}
   <script is:inline src="/js/main.js"></script>
 </body>
 </html>

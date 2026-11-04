@@ -39,9 +39,9 @@ export const POSTAL_CODE = '5024';
  * that is closed, so it is shown to humans but not asserted as open
  * hours to Google.
  *
- * Current values mirror the Google Business Profile: Mon–Fri 8am–5pm,
- * weekends closed. If the weekend offering changes, change it on the GBP
- * first, then mirror it here — never the other way around.
+ * These are the previously published values. Owner/GBP confirmation is still
+ * pending; do not describe them as newly verified. After confirmation, keep
+ * the visible hours, schema and the owner's business profile consistent.
  */
 export const HOURS = [
   {

@@ -14,6 +14,7 @@ const regions = [
   { name: 'Hutt Valley', places: ['Lower Hutt', 'Petone', 'Upper Hutt', 'Eastbourne'] },
   { name: 'Kapiti Coast', places: ['Paraparaumu', 'Waikanae', 'Raumati'] },
 ];
+const regionIds = ['porirua', 'wellington-city', 'northern-suburbs', 'hutt-valley', 'kapiti-coast'];
 ---
 
 <BaseLayout title={title} description={description} canonical={canonical} breadcrumbs={breadcrumbs}>
@@ -28,11 +29,13 @@ const regions = [
         <h2>Where Rohullah works</h2>
         <p>Find your suburb below, then <a href="/contact">send your location and project details</a> for a free quote. For the type of work you need, see <a href="/services">tiling services</a>.</p>
       </div>
+      <nav class="coverage-jumps" aria-label="Find a service area">{regions.map((region, index) => <a href={`#${regionIds[index]}`}>{region.name}</a>)}</nav>
       <div class="coverage-directory">
-        {regions.map((region) => (
-          <section class="coverage-region" aria-label={region.name}>
+        {regions.map((region, index) => (
+          <section class="coverage-region" id={regionIds[index]} aria-label={region.name}>
             <h3>{region.name}</h3>
             <ul>{region.places.map((place) => <li>{place}</li>)}</ul>
+            <a class="coverage-service-link" href="/services#core-services">Choose a tiling service</a>
           </section>
         ))}
       </div>
@@ -59,6 +62,7 @@ const regions = [
   .coverage-region h3 { font-size: 1.35rem; margin-bottom: 0.75rem; }
   .coverage-region ul { display: flex; gap: 0.3rem 1.5rem; flex-wrap: wrap; }
   .coverage-region li { font-size: 1rem; }
+  .coverage-service-link { display: inline-block; margin-top: 1rem; color: var(--color-link-gold); text-decoration: underline; text-underline-offset: 0.2em; }
   .coverage-next { display: flex; gap: 1.5rem 3rem; flex-wrap: wrap; align-items: center; justify-content: space-between; }
   .coverage-next p { max-width: 55ch; margin-top: 0.75rem; }
   @media (min-width: 768px) {

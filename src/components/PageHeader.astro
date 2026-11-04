@@ -1,8 +1,8 @@
 ---
-interface Props { title: string; subtitle?: string; }
-const { title, subtitle } = Astro.props;
+interface Props { title: string; subtitle?: string; actionHref?: string; actionLabel?: string; compact?: boolean; }
+const { title, subtitle, actionHref = '/contact#quote-form', actionLabel = 'Request a free quote', compact = false } = Astro.props;
 ---
-<section class:list={['page-header', 'container', { 'page-header--long': title.length > 32 }]}>
+<section class:list={['page-header', 'container', { 'page-header--long': title.length > 32, 'page-header--service': compact }]}>
   <h1>{title}</h1>
-  <div>{subtitle && <p>{subtitle}</p>}<a class="text-link" href="/contact">Discuss your tiling job →</a></div>
+  <div>{subtitle && <p>{subtitle}</p>}<a class="btn btn-primary" href={actionHref}>{actionLabel}</a></div>
 </section>
