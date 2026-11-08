@@ -6,20 +6,7 @@ import ServiceCard from '../components/ServiceCard.astro';
 import TrustSignal from '../components/TrustSignal.astro';
 import CTASection from '../components/CTASection.astro';
 import { Image, getImage } from 'astro:assets';
-import { PHONE_DISPLAY, PHONE_E164, OWNER_NAME, GBP_URL } from '../data/business';
-
-// ===========================================================================
-// HERO REVIEW LINE — NOT PUBLISH-READY. Waiting on the real numbers.
-// Set all three and the line renders; leave any of them null and the whole
-// line is omitted, so placeholder figures can never reach production.
-// Claiming a rating or a review count that the Google profile does not back up
-// is a Fair Trading Act problem, which is why this is null rather than "5.0".
-// ===========================================================================
-const REVIEW_RATING: number | null = null;   // e.g. 5.0
-const REVIEW_COUNT: number | null = null;    // e.g. 12
-const REVIEW_URL: string | null = null;      // Google profile "write/see reviews" link; GBP_URL is the fallback
-const showReviews =
-  REVIEW_RATING !== null && REVIEW_COUNT !== null && REVIEW_COUNT > 0;
+import { PHONE_DISPLAY, PHONE_E164, OWNER_NAME } from '../data/business';
 
 import heroImg from '../assets/images/ensuite-large-format-porcelain-tiling-wellington.webp';
 import rohullahImg from '../assets/images/rohullah-rassuli-tiler-wellington.webp';
@@ -46,9 +33,10 @@ const hero = await getImage({
   quality: 72,
 });
 
+// Only portfolio projects marked complete and visually free of active construction.
+// A third finished project photo (ideally a kitchen) must be supplied by ROH.
 const heroSlides = [
-  {src: splashbackFlutedImg, alt: 'Fluted terracotta kitchen splashback during installation', caption: 'Fluted kitchen splashback · work in progress'},
-  {src: showerTealImg, alt: 'Teal vertical-stack shower tiles with surrounding building work unfinished', caption: 'Teal shower tiling · work in progress'},
+  {src: windowSeatImg, alt: 'Completed monochrome patterned-tile window seat beside a finished window, overlooking trees', caption: 'Completed patterned-tile window seat'},
 ];
 const deferredHeroImages = await Promise.all(heroSlides.map(slide => getImage({
   src: slide.src, width: 1040, height: 1387, widths: HERO_WIDTHS,
@@ -136,27 +124,6 @@ const recentWork = [
             Call Now: 021 026 02044
           </a>
         </div>
-        {showReviews && (
-          <a
-            class="hero__reviews"
-            href={REVIEW_URL ?? GBP_URL}
-            rel="noopener"
-            target="_blank"
-            aria-label={`Rated ${REVIEW_RATING} out of 5 from ${REVIEW_COUNT} Google reviews — read them on Google`}
-          >
-            <span class="hero__stars" aria-hidden="true">
-              {[0, 1, 2, 3, 4].map((i) => (
-                <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" class={i < Math.round(REVIEW_RATING ?? 0) ? 'is-filled' : ''}>
-                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01L12 2z" fill="currentColor"/>
-                </svg>
-              ))}
-            </span>
-            <span class="hero__reviews-text">
-              {REVIEW_RATING?.toFixed(1)} from {REVIEW_COUNT} Google reviews
-            </span>
-          </a>
-        )}
-
         <div class="hero__trust-badges">
           <span class="hero__badge">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12 15l-2 5l9-9h-5l2-5l-9 9h5z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -203,7 +170,7 @@ const recentWork = [
           <span class="hero__carousel-caption" data-hero-caption>Completed porcelain ensuite</span>
           <div class="hero__carousel-buttons">
             <button type="button" data-hero-prev aria-label="Previous project photograph">←</button>
-            <span data-hero-position>1 / 3</span>
+            <span data-hero-position>1 / {heroSlides.length + 1}</span>
             <button type="button" data-hero-next aria-label="Next project photograph">→</button>
             <button type="button" data-hero-pause>Pause slideshow</button>
           </div>
@@ -474,36 +441,6 @@ const recentWork = [
   }
 
   /*
-    Review line. Sits between the CTAs and the trust row. The stars are gold as
-    an accent but the rating text is white, so the line itself carries the
-    contrast rather than relying on the gold. Renders only when real numbers
-    are supplied — see the constants at the top of this file.
-  */
-  .hero__reviews {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.55rem;
-    margin: -1rem 0 1.35rem;
-    color: var(--color-white);
-    font-size: 0.95rem;
-    font-weight: 600;
-    text-decoration: none;
-  }
-  .hero__reviews:hover .hero__reviews-text,
-  .hero__reviews:focus-visible .hero__reviews-text {
-    text-decoration: underline;
-  }
-  .hero__stars {
-    display: inline-flex;
-    gap: 0.1rem;
-    /* Unfilled stars: still legible against the gradient, not invisible. */
-    color: rgba(255, 255, 255, 0.45);
-  }
-  .hero__stars .is-filled {
-    color: #FFC53D;
-  }
-
-  /*
     From 1024px the photo bleeds to the right edge of the viewport and runs the
     full height of the hero — no right margin, no right-hand radius, no floating
     rounded box leaving a gold void above the headline.
@@ -692,6 +629,8 @@ const recentWork = [
   .hero__img--deferred {position:absolute; inset:0; height:100%;}
   .hero__carousel-controls {position:absolute; z-index:3; inset:auto 0 0; padding:2rem 1rem .8rem 8%; background:linear-gradient(transparent,rgba(0,0,0,.9)); color:white; font-size:.8rem;}
   .hero__carousel-controls[hidden] {display:none;}
+  /* Keep the completed seat's tiled surface clear of the photo overlay. */
+  .hero__figure[data-current-slide="1"] .hero__carousel-controls {top:0;bottom:auto;padding-top:.8rem;padding-bottom:2rem;background:linear-gradient(rgba(0,0,0,.85),transparent);}
   .hero__carousel-caption {display:block; margin-bottom:.5rem;}
   .hero__carousel-buttons {display:flex; gap:.6rem; align-items:center; flex-wrap:wrap;}
   .hero__carousel-buttons button {font:inherit; color:white; background:#26221c; border:1px solid #c6b99b; border-radius:4px; min-height:44px; min-width:44px; padding:.4rem .65rem; cursor:pointer;}
@@ -722,6 +661,7 @@ const recentWork = [
       try {await image.decode();} catch {return;}
       if (request !== requested) return;
       current = next;
+      carousel!.dataset.currentSlide = String(current);
       slides.forEach((slide, i) => {slide.classList.toggle('is-active', i === current); slide.setAttribute('aria-hidden', String(i !== current));});
       carousel!.querySelector('[data-hero-position]')!.textContent = `${current+1} / ${slides.length}`;
       carousel!.querySelector('[data-hero-caption]')!.textContent = image.dataset.caption!;

@@ -1,11 +1,19 @@
 ---
 import { GBP_URL } from '../data/business';
-// Link only: no authenticated rating/count, approved reviews or Shapo configuration supplied.
+interface Props { compact?: boolean; }
+const { compact = false } = Astro.props;
+// The exact GBP rating is unverified. One source/link, with no stars or numeric claim.
 ---
-<aside class="review-trust" aria-label="Google reviews">
-  <div class="container"><a href={GBP_URL} target="_blank" rel="noopener noreferrer">Read our Google reviews <span aria-hidden="true">→</span></a></div>
+<aside class:list={['review-trust', {'review-trust--compact': compact}]} aria-label="ROH Tiling Google reviews">
+  <div class="container review-trust__inner">
+    <span class="review-trust__source">Google</span>
+    <a href={GBP_URL} target="_blank" rel="noopener noreferrer">Read our Google reviews <span aria-hidden="true">↗</span></a>
+  </div>
 </aside>
 <style>
- .review-trust {padding:.7rem 0; text-align:center; background:var(--color-cream); border-bottom:1px solid var(--color-border-warm); font-size:.9rem;}
- a {color:var(--color-link-gold); text-decoration:underline; font-weight:500;}
+ .review-trust {padding:.8rem 0; background:var(--color-cream); border-bottom:1px solid var(--color-border-warm); font-size:.9rem;}
+ .review-trust__inner {display:flex;justify-content:center;align-items:center;gap:.65rem 1rem;flex-wrap:wrap;}
+ .review-trust__source {font-family:var(--font-body);font-weight:700;color:var(--color-dark-text);border-right:1px solid var(--color-border-warm);padding-right:1rem;}
+ a {color:var(--color-link-gold);text-decoration:underline;text-underline-offset:.2em;font-weight:500;}
+ .review-trust--compact {padding:.55rem 0;font-size:.85rem;}
 </style>

@@ -40,7 +40,7 @@ const photo=photos[key];
   </div>
 </section>
 
-{['/services', '/about', '/portfolio', '/service-areas', '/contact'].some(path => Astro.url.pathname === path || Astro.url.pathname.startsWith(path + '/')) && <GoogleReviewTrust />}
+{['/services', '/about', '/portfolio', '/service-areas', '/contact'].some(path => Astro.url.pathname === path || Astro.url.pathname.startsWith(path + '/')) && <GoogleReviewTrust compact />}
 
 <style>
  .page-header__quote {margin-top:1.25rem;}
