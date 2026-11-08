@@ -8,11 +8,11 @@ import CTASection from '../components/CTASection.astro';
 import { Image, getImage } from 'astro:assets';
 import { PHONE_DISPLAY, PHONE_E164, OWNER_NAME } from '../data/business';
 
+import greenNicheImg from '../assets/images/sage-green-shower-niche-progress.jpg';
+import charcoalShowerImg from '../assets/images/charcoal-shower-floor-progress.jpg';
 import heroImg from '../assets/images/ensuite-large-format-porcelain-tiling-wellington.webp';
 import rohullahImg from '../assets/images/rohullah-rassuli-tiler-wellington.webp';
-import showerTealImg from '../assets/images/shower-tiling-vertical-stack-teal-tile-wellington.webp';
 import splashbackFlutedImg from '../assets/images/kitchen-splashback-fluted-terracotta-tile-wellington.webp';
-import walkInShowerImg from '../assets/images/walk-in-shower-tiling-linear-drain-wellington.webp';
 import floorFeatureImg from '../assets/images/bathroom-floor-tiling-feature-strip-wellington.webp';
 import windowSeatImg from '../assets/images/patterned-tile-window-seat-wellington.webp';
 
@@ -48,11 +48,11 @@ const deferredHeroImages = await Promise.all(heroSlides.map(slide => getImage({
 const recentWork = [
   {img:heroImg,alt:'Completed porcelain ensuite with frameless shower and wall-hung basin',caption:'Completed large-format porcelain ensuite',href:'/portfolio#ensuite-large-format-porcelain',linkText:'Explore this bathroom project',wip:false},
   {
-    img: showerTealImg,
-    alt: 'Walk-in shower with teal vertical stack-bond wall tiles, dark large-format floor tiles and a linear drain, under a skylight',
-    caption: 'Shower tiling — Wellington',
-    href: '/services/bathroom-tiling',
-    linkText: 'Bathroom & shower tiling',
+    img: greenNicheImg,
+    alt: 'Green vertical shower tiles and a recessed niche, photographed before fittings were installed',
+    caption: 'Green shower tiles and recessed niche',
+    href: '/portfolio#green-shower-niche',
+    linkText: 'Explore this shower project',
     wip: true,
   },
   {
@@ -64,11 +64,12 @@ const recentWork = [
     wip: true,
   },
   {
-    img: walkInShowerImg,
-    alt: 'Walk-in shower with grey large-format tiles, tiled hob and linear drain set to fall',
-    caption: 'Walk-in shower, linear drain — Wellington',
-    href: '/services/waterproofing',
-    linkText: 'Wet-area waterproofing',
+    img: charcoalShowerImg,
+    position: "center bottom",
+    alt: 'Charcoal shower tiles with angled floor cuts around a square drain and capped plumbing points',
+    caption: 'Charcoal shower wall and floor tiles',
+    href: '/portfolio#charcoal-shower-floor',
+    linkText: 'View this shower tiling project',
     wip: true,
   },
   {
@@ -237,6 +238,7 @@ const recentWork = [
             <Image
               src={item.img}
               alt={item.alt}
+              style={item.position ? `object-position: ${item.position}` : undefined}
               widths={[300, 420, 600]}
               sizes="(min-width: 992px) 300px, (min-width: 600px) 45vw, 92vw"
               quality={70}

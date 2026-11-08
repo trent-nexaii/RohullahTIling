@@ -13,6 +13,10 @@ import whiteGlossImg from '../assets/images/shower-tiling-white-gloss-wall-tile-
 import floorFeatureImg from '../assets/images/bathroom-floor-tiling-feature-strip-wellington.webp';
 import windowSeatImg from '../assets/images/patterned-tile-window-seat-wellington.webp';
 
+import greenNicheImg from '../assets/images/sage-green-shower-niche-progress.jpg';
+import charcoalShowerImg from '../assets/images/charcoal-shower-floor-progress.jpg';
+import botanicalBathroomImg from '../assets/images/botanical-bathroom-tiling-progress.jpg';
+
 const title = "Tiling Portfolio Wellington | ROH Tiling";
 const description = "Recent tiling projects across Wellington by ROH Tiling. Ensuites, walk-in showers, kitchen splashbacks and feature tiling — photographed on site.";
 const canonical = "/portfolio";
@@ -75,6 +79,38 @@ const projects = [
     wip: true,
   },
   {
+    id: "green-shower-niche",
+    title: "Shower — Green Vertical Tiles & Recessed Niche",
+    image: greenNicheImg,
+    alt: "Glossy green vertical shower tiles and a recessed niche, photographed before plumbing and electrical fittings were installed",
+    description: "Glossy green tiles run vertically across the shower walls and into a recessed niche. Light-coloured floor tiles meet a linear drain. The photograph records the installation before the fittings and surrounding work were finished.",
+    service: { href: "/services/bathroom-tiling", label: "bathroom and shower tiling" },
+    tags: ["Shower Tiling", "Vertical Layout", "Recessed Niche"],
+    wip: true,
+  },
+  {
+    id: "charcoal-shower-floor",
+    title: "Shower — Charcoal Tiles & Cut Floor Layout",
+    image: charcoalShowerImg,
+    position: "center bottom",
+    alt: "Charcoal shower wall and floor tiles cut around a square drain, with capped plumbing points awaiting fittings",
+    description: "Large charcoal tiles continue from the shower walls onto the floor, with angled cuts around a square drain. The dark finish contrasts with the surrounding light walls. Photographed before the shower fittings were installed.",
+    service: { href: "/services/bathroom-tiling", label: "bathroom and shower tiling" },
+    tags: ["Shower Tiling", "Charcoal Tiles", "Floor Layout"],
+    wip: true,
+  },
+  {
+    id: "botanical-bathroom-floor",
+    title: "Bathroom — Light Tiles & Botanical Feature Wall",
+    image: botanicalBathroomImg,
+    position: "center bottom",
+    alt: "Light bathroom wall and floor tiles alongside a botanical feature wall, with levelling clips and installation tools still present",
+    description: "Light-coloured wall and floor tiles sit alongside a botanical feature wall. Floor cuts meet a central drain. Levelling clips and tools remain visible, with fittings and ceiling work still to be completed at the time of the photograph.",
+    service: { href: "/services/floor-tiling", label: "floor tiling and preparation" },
+    tags: ["Floor Tiling", "Bathroom Tiling", "Installation Detail"],
+    wip: true,
+  },
+  {
     id: "bathroom-floor-feature-strip",
     title: "Bathroom Floor — Stone-Look Tiles & Patterned Feature Strip",
     image: floorFeatureImg,
@@ -123,6 +159,7 @@ const projects = [
             <Image
               src={project.image}
               alt={project.alt}
+              style={project.position ? `object-position: ${project.position}` : undefined}
               width={640}
               widths={[320, 480, 640]}
               sizes="(min-width: 768px) 46vw, 92vw"

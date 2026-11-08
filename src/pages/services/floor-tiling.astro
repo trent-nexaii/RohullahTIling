@@ -3,6 +3,7 @@ import ServiceLayout from '../../layouts/ServiceLayout.astro';
 import { Image } from 'astro:assets';
 import floorFeatureImg from '../../assets/images/bathroom-floor-tiling-feature-strip-wellington.webp';
 import windowSeatImg from '../../assets/images/patterned-tile-window-seat-wellington.webp';
+import botanicalBathroomImg from '../../assets/images/botanical-bathroom-tiling-progress.jpg';
 ---
 
 <ServiceLayout
@@ -174,6 +175,10 @@ import windowSeatImg from '../../assets/images/patterned-tile-window-seat-wellin
             class="service-photo"
           />
           <span class="service-gallery__caption">Monochrome patterned tile window seat — Wellington</span>
+        </a>
+        <a href="/portfolio#botanical-bathroom-floor" class="service-gallery__item">
+          <Image src={botanicalBathroomImg} style="object-position: center bottom;" alt="Light bathroom floor tiles cut around a central drain, with tools and levelling clips still in place" width={640} widths={[320,480,640]} sizes="(min-width: 768px) 45vw, 92vw" quality={70} format="webp" loading="lazy" decoding="async" class="service-photo" />
+          <span class="service-gallery__caption">Light floor tiles beside a botanical feature wall <em>(work in progress)</em></span>
         </a>
       </div>
     </div>
