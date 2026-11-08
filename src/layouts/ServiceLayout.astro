@@ -1,4 +1,6 @@
 ---
+import { SITE_URL, AREA_SERVED } from '../data/business';
+import { canonicalUrlFor } from '../lib/seo';
 import BaseLayout from './BaseLayout.astro';
 import PageHeader from '../components/PageHeader.astro';
 import CTASection from '../components/CTASection.astro';
@@ -21,7 +23,8 @@ const {
   serviceDescription,
 } = Astro.props;
 
-const siteUrl = Astro.site?.toString().replace(/\/$/, '') ?? 'https://www.rohullahtiling.co.nz';
+const siteUrl = SITE_URL;
+const serviceUrl = canonicalUrlFor(canonical);
 
 const breadcrumbs = [
   { name: 'Home', url: '/' },
@@ -32,20 +35,15 @@ const breadcrumbs = [
 const serviceSchema = JSON.stringify({
   "@context": "https://schema.org",
   "@type": "Service",
-  "@id": `${siteUrl}${canonical}#service`,
+  "@id": `${serviceUrl}#service`,
   "serviceType": serviceType,
   "name": serviceName,
   "description": serviceDescription,
-  "url": `${siteUrl}${canonical}`,
+  "url": serviceUrl,
+  "mainEntityOfPage": { "@id": `${serviceUrl}#webpage` },
   // Points at the single LocalBusiness node defined in BaseLayout.
   "provider": { "@id": `${siteUrl}/#business` },
-  "areaServed": [
-    { "@type": "City", "name": "Wellington" },
-    { "@type": "City", "name": "Porirua" },
-    { "@type": "City", "name": "Lower Hutt" },
-    { "@type": "City", "name": "Upper Hutt" },
-    { "@type": "Place", "name": "Kapiti Coast" }
-  ]
+  "areaServed": AREA_SERVED
 });
 ---
 
@@ -56,7 +54,7 @@ const serviceSchema = JSON.stringify({
   breadcrumbs={breadcrumbs}
   schemas={serviceSchema}
 >
-  <PageHeader title={serviceName} subtitle={serviceDescription} />
+  <PageHeader title={canonical === '/services/kitchen-tiling' ? 'Kitchen Tiling & Splashbacks in Wellington' : `${serviceName} in Wellington`} subtitle={serviceDescription} />
 
   <slot />
 

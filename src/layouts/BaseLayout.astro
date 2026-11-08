@@ -1,9 +1,12 @@
 ---
 import '../styles/global.css';
+import { canonicalUrlFor } from '../lib/seo';
 import { Image } from 'astro:assets';
 import iconMark from '../assets/images/roh-tiling-icon.webp';
 import {
   BUSINESS_NAME,
+  SITE_URL,
+  AREA_SERVED,
   OWNER_NAME,
   PHONE_DISPLAY,
   PHONE_E164,
@@ -40,19 +43,20 @@ const {
   showMobileCTA = true,
 } = Astro.props;
 
-const siteUrl = Astro.site?.toString().replace(/\/$/, '') ?? 'https://www.rohullahtiling.co.nz';
-const canonicalUrl = `${siteUrl}${canonical}`;
+const siteUrl = SITE_URL;
+const canonicalUrl = canonicalUrlFor(canonical);
+const noindex = canonical === '/404' || process.env.VERCEL_ENV === 'preview' || process.env.SITE_PREVIEW === 'true';
 const currentPath = Astro.url.pathname;
 
 // No aggregateRating or review markup: there are no verified reviews to back it
 // and unverifiable review markup risks a manual action.
-const localBusinessSchema = JSON.stringify({
+const localBusiness = {
   "@context": "https://schema.org",
-  "@type": "LocalBusiness",
+  "@type": "HomeAndConstructionBusiness",
   "@id": `${siteUrl}/#business`,
   "name": BUSINESS_NAME,
   "alternateName": "ROH Tiling Wellington",
-  "description": "Wellington tiler specialising in bathroom and shower tiling, kitchen splashbacks, floor tiling, waterproofing to NZ Standard, underfloor heating and tile repairs.",
+  "description": "Bathroom and shower tiling, kitchen splashbacks, floor tiling, wet-area waterproofing, underfloor heating and tile repairs across the Wellington region.",
   "url": `${siteUrl}/`,
   "telephone": PHONE_E164,
   "email": EMAIL,
@@ -67,31 +71,36 @@ const localBusinessSchema = JSON.stringify({
     "postalCode": POSTAL_CODE,
     "addressCountry": "NZ"
   },
-  "areaServed": [
-    { "@type": "City", "name": "Wellington" },
-    { "@type": "City", "name": "Porirua" },
-    { "@type": "City", "name": "Lower Hutt" },
-    { "@type": "City", "name": "Upper Hutt" },
-    { "@type": "Place", "name": "Kapiti Coast" }
-  ],
+  "areaServed": AREA_SERVED,
   // Derived from HOURS so the schema can never drift from the visible hours.
   "openingHoursSpecification": OPENING_HOURS_SPECIFICATION,
   "sameAs": [GBP_URL, INSTAGRAM_URL]
-});
+};
 
-let breadcrumbSchema = '';
+let breadcrumbSchema: Record<string, unknown> | undefined;
 if (breadcrumbs && breadcrumbs.length > 0) {
-  breadcrumbSchema = JSON.stringify({
+  breadcrumbSchema = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
+    "@id": `${canonicalUrl}#breadcrumb`,
     "itemListElement": breadcrumbs.map((crumb, index) => ({
       "@type": "ListItem",
       "position": index + 1,
       "name": crumb.name,
-      ...(crumb.url ? { "item": `${siteUrl}${crumb.url}` } : {})
+      "item": crumb.url ? canonicalUrlFor(crumb.url) : canonicalUrl
     }))
-  });
+  };
 }
+
+const siteSchema = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@graph': [
+    localBusiness,
+    { '@type': 'WebSite', '@id': `${siteUrl}/#website`, url: `${siteUrl}/`, name: BUSINESS_NAME, inLanguage: 'en-NZ', publisher: { '@id': `${siteUrl}/#business` } },
+    { '@type': 'WebPage', '@id': `${canonicalUrl}#webpage`, url: canonicalUrl, name: title, description, inLanguage: 'en-NZ', isPartOf: { '@id': `${siteUrl}/#website` }, about: { '@id': `${siteUrl}/#business` }, ...(breadcrumbSchema ? { breadcrumb: { '@id': `${canonicalUrl}#breadcrumb` } } : {}) },
+    ...(breadcrumbSchema ? [breadcrumbSchema] : []),
+  ],
+});
 
 const year = new Date().getFullYear();
 
@@ -130,6 +139,7 @@ const navLinks = [
   <title>{title}</title>
   <meta name="description" content={description} />
   <link rel="canonical" href={canonicalUrl} />
+  {noindex && <meta name="robots" content="noindex, follow" />}
 
   <!-- Open Graph -->
   <meta property="og:title" content={title} />
@@ -160,12 +170,8 @@ const navLinks = [
     rel="stylesheet"
   />
 
-  <!-- LocalBusiness Schema -->
-  <script type="application/ld+json" set:html={localBusinessSchema} />
-
-  {breadcrumbSchema && (
-    <script type="application/ld+json" set:html={breadcrumbSchema} />
-  )}
+  <!-- A single connected business/site/page graph, with stable production IDs. -->
+  {canonical !== '/404' && <script type="application/ld+json" set:html={siteSchema} />}
 
   {schemas && (
     <script type="application/ld+json" set:html={schemas} />

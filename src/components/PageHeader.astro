@@ -7,18 +7,51 @@
  * schema is unaffected: it is emitted from BaseLayout and still describes the
  * hierarchy to Google.
  */
+import { Image } from 'astro:assets';
+import ensuite from '../assets/images/ensuite-large-format-porcelain-tiling-wellington.webp';
+import kitchen from '../assets/images/kitchen-splashback-fluted-terracotta-tile-wellington.webp';
+import floor from '../assets/images/bathroom-floor-tiling-feature-strip-wellington.webp';
+import GoogleReviewTrust from './GoogleReviewTrust.astro';
+
 interface Props {
   title: string;
   subtitle?: string;
 }
 
 const { title, subtitle } = Astro.props;
+const photos = {
+ '/services/bathroom-tiling': {src:ensuite, alt:'Completed grey porcelain ensuite with frameless shower and wall-hung basin', caption:'Completed porcelain ensuite'},
+ '/services/kitchen-tiling': {src:kitchen, alt:'Fluted terracotta splashback while kitchen cabinetry is still being installed', caption:'Kitchen splashback · work in progress'},
+ '/services/floor-tiling': {src:floor, alt:'Stone-look tiled bathroom floor with surrounding renovation work unfinished', caption:'Bathroom floor tiling · work in progress'},
+};
+const key=Astro.url.pathname.replace(/\/$/, '') as keyof typeof photos;
+const photo=photos[key];
 ---
 
-<section class="page-header">
+<section class:list={["page-header", {"page-header--project": photo}]}>
   <div class="container page-header__inner">
+    <div class="page-header__copy">
     <span class="page-header__rule" aria-hidden="true"></span>
     <h1 class="page-header__title">{title}</h1>
     {subtitle && <p class="page-header__subtitle">{subtitle}</p>}
+    {Astro.url.pathname.startsWith('/services') && <a class="btn btn--primary page-header__quote" href="/contact#quote-form">Get a Free Quote</a>}
+    </div>
+    {photo && <figure class="page-header__photo"><Image src={photo.src} alt={photo.alt} width={900} widths={[400,640,900]} sizes="(min-width: 900px) 40vw, 92vw" loading="eager" fetchpriority="high" quality={75}/><figcaption>{photo.caption}</figcaption></figure>}
   </div>
 </section>
+
+{['/services', '/about', '/portfolio', '/service-areas', '/contact'].some(path => Astro.url.pathname === path || Astro.url.pathname.startsWith(path + '/')) && <GoogleReviewTrust compact />}
+
+<style>
+ .page-header__quote {margin-top:1.25rem;}
+ .page-header--project {background:var(--color-cream);background-image:none; padding-block:7.5rem 2rem;text-align:left;}
+ .page-header--project::before,.page-header--project::after {display:none;}
+ .page-header--project .page-header__inner {max-width:1280px;display:grid;grid-template-columns:1fr 1fr;gap:3.5rem;align-items:center;}
+ .page-header--project .page-header__title {color:var(--color-dark-text);font-weight:500;}
+ .page-header--project .page-header__subtitle {color:var(--color-body-text);}
+ .page-header--project .page-header__rule {margin-left:0;}
+ .page-header__photo {margin:0;min-width:0;}
+ .page-header__photo img {width:100%;height:370px;object-fit:cover;object-position:center;}
+ .page-header__photo figcaption {font-size:.8rem;color:var(--color-muted);padding-top:.5rem;}
+ @media(max-width:899px) {.page-header--project .page-header__inner {grid-template-columns:1fr;gap:1.5rem;} .page-header__photo img {height:320px;}}
+</style>

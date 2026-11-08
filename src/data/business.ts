@@ -71,3 +71,12 @@ export const INSTAGRAM_URL = 'https://www.instagram.com/rohtiling/';
 export const OG_IMAGE = `${SITE_URL}/images/og-image.jpg`;
 export const OG_IMAGE_ALT =
   'ROH Tiling — Wellington tiler. Finished ensuite with large-format porcelain wall tiles.';
+
+/** Regions already published in the service-area hub; shared by business/services. */
+export const AREA_SERVED = [
+  { '@type': 'City', name: 'Wellington' },
+  { '@type': 'City', name: 'Porirua' },
+  { '@type': 'City', name: 'Lower Hutt' },
+  { '@type': 'City', name: 'Upper Hutt' },
+  { '@type': 'Place', name: 'Kapiti Coast' },
+];

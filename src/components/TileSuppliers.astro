@@ -1,0 +1,16 @@
+---
+const suppliers = [{name:'Tilemax',url:'https://tilemax.co.nz/'},{name:'Tile Space',url:'https://tiles.co.nz/'},{name:'Tile Trends',url:'https://tiletrends.co.nz/'}];
+---
+<section class="section section--light">
+ <div class="container">
+  <h2 class="section-title">Local Tile Suppliers &amp; Showrooms</h2>
+  <p class="section-subtitle">Explore tile ranges and finishes through these suppliers. Check showroom locations and availability directly.</p>
+  <div class="services-grid supplier-links">{suppliers.map(s => <a class="service-card" href={s.url} target="_blank" rel="noopener noreferrer">{s.name} <span aria-hidden="true">→</span></a>)}</div>
+ </div>
+</section>
+<style>
+ .supplier-links {grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem;}
+ .supplier-links .service-card {padding:1rem; text-align:center; font-weight:600; color:var(--color-link-gold); text-decoration:underline; box-shadow:none; transform:none; transition:none;}
+ .supplier-links .service-card:hover {box-shadow:none;transform:none;}
+ @media(max-width:599px) {.supplier-links {grid-template-columns:1fr;}}
+</style>
