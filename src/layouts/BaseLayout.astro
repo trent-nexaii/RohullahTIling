@@ -43,22 +43,23 @@ const {
 const siteUrl = Astro.site?.toString().replace(/\/$/, '') ?? 'https://www.rohullahtiling.co.nz';
 const canonicalUrl = `${siteUrl}${canonical}`;
 const currentPath = Astro.url.pathname;
+// Keep publicly accessible Vercel previews out of search while retaining
+// production indexing. This is evaluated when Astro builds static pages.
+const isPreviewBuild = process.env.VERCEL_ENV === 'preview' || process.env.SITE_PREVIEW === 'true';
 
 // No aggregateRating or review markup: there are no verified reviews to back it
 // and unverifiable review markup risks a manual action.
 const localBusinessSchema = JSON.stringify({
   "@context": "https://schema.org",
-  "@type": "LocalBusiness",
+  "@type": "HomeAndConstructionBusiness",
   "@id": `${siteUrl}/#business`,
   "name": BUSINESS_NAME,
-  "alternateName": "ROH Tiling Wellington",
-  "description": "Wellington tiler specialising in bathroom and shower tiling, kitchen splashbacks, floor tiling, waterproofing to NZ Standard, underfloor heating and tile repairs.",
+  "description": "Whitby-based tiling business serving Wellington, Porirua and the Hutt Valley with bathroom, shower, kitchen, floor and related tiling services.",
   "url": `${siteUrl}/`,
   "telephone": PHONE_E164,
   "email": EMAIL,
   "image": OG_IMAGE,
   "logo": `${siteUrl}/images/roh-tiling-logo.webp`,
-  "priceRange": "$$",
   "founder": { "@type": "Person", "name": OWNER_NAME },
   "address": {
     "@type": "PostalAddress",
@@ -92,6 +93,18 @@ if (breadcrumbs && breadcrumbs.length > 0) {
     }))
   });
 }
+
+// Site identity helps connect the website to the ONE existing business entity.
+// Service and breadcrumb nodes retain their original IDs and relationships.
+const websiteSchema = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": `${siteUrl}/#website`,
+  "url": `${siteUrl}/`,
+  "name": BUSINESS_NAME,
+  "inLanguage": "en-NZ",
+  "publisher": { "@id": `${siteUrl}/#business` },
+});
 
 const year = new Date().getFullYear();
 
@@ -129,6 +142,8 @@ const navLinks = [
   <link rel="icon" type="image/png" sizes="512x512" href="/images/icon-512.png" />
   <title>{title}</title>
   <meta name="description" content={description} />
+  {isPreviewBuild && <meta name="robots" content="noindex, nofollow" />}
+  <link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
   <link rel="canonical" href={canonicalUrl} />
 
   <!-- Open Graph -->
@@ -162,6 +177,7 @@ const navLinks = [
 
   <!-- LocalBusiness Schema -->
   <script type="application/ld+json" set:html={localBusinessSchema} />
+  {canonical === '/' && <script type="application/ld+json" set:html={websiteSchema} />}
 
   {breadcrumbSchema && (
     <script type="application/ld+json" set:html={breadcrumbSchema} />
