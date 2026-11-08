@@ -2,6 +2,16 @@
 
 Branch: `feat/roh-wellington-enhancements`. These changes build on `1024a7e`; main is unchanged. The gold/charcoal/cream identity, typography, main-derived split hero, headline/actions, section order, API, navigation/footer and service content remain unchanged.
 
+## Photo/carousel follow-up
+
+The hero now advances every **nine seconds**. Its overlay/buttons are hidden during normal viewing and appear only when a keyboard user focuses the controls. Hover/focus pause, manual operation, reduced-motion behaviour, image optimization and stable framing remain intact. The two finished hero projects are unchanged because the newly shown job photos have unfinished fittings or installation equipment.
+
+The fifth supplied photo matches the existing higher-resolution `bathroom-floor-tiling-feature-strip-wellington.webp` asset. It now has a dedicated portfolio entry (`/portfolio#bathroom-floor-feature-strip`), linked from the homepage project card and Floor gallery. The existing portfolio progress notice and new caption clearly identify it as mid-installation, without inventing a suburb or technical certification.
+
+The other four photos are visible inline in chat, but their original files are not exposed in the workspace or through a downloadable attachment ID. They could not be added as image assets. Upload the originals as file attachments or a ZIP for a subsequent addition; no substitute or generated picture was used. No photo was altered to hide construction or fabricate completion.
+
+Build passed (15 pages); internal links/project anchors passed across all 14 regular pages. Desktop/mobile validation covers Home, Portfolio and Floor at 1440px/390px, plus the nine-second interval, hover pause, reduced motion and keyboard-only control visibility. All six page/width checks passed with no axe WCAG A/AA violations, broken images or overflow. The nine-second interval, hover pause, reduced-motion default and keyboard-revealed controls passed. No API, main-branch or production changes.
+
 ## Exact files changed
 
 - `src/pages/index.astro`: replace construction hero slides with the existing completed patterned window-seat photograph; retain the completed porcelain ensuite as the first slide. Derive the initial counter from actual slide count. Remove the dormant rating/count/URL constants, conditional rating markup and associated unused styles so there is only one review display source. Timing, controls, reduced motion, original crop/layout, first-image preload and deferred loading are retained. The overlay moves to the top on the window-seat slide so it does not obscure the completed tiles.

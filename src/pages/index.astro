@@ -75,8 +75,8 @@ const recentWork = [
     img: floorFeatureImg,
     alt: 'Bathroom floor tiling in beige stone-look porcelain with a patterned feature strip inset at wall height',
     caption: 'Bathroom floor tiling — Wellington',
-    href: '/services/floor-tiling',
-    linkText: 'Floor tiling',
+    href: '/portfolio#bathroom-floor-feature-strip',
+    linkText: 'View this floor tiling project',
     wip: true,
   },
   {
@@ -629,6 +629,9 @@ const recentWork = [
   .hero__img--deferred {position:absolute; inset:0; height:100%;}
   .hero__carousel-controls {position:absolute; z-index:3; inset:auto 0 0; padding:2rem 1rem .8rem 8%; background:linear-gradient(transparent,rgba(0,0,0,.9)); color:white; font-size:.8rem;}
   .hero__carousel-controls[hidden] {display:none;}
+  /* No visible overlay during normal viewing; controls appear on keyboard focus. */
+  .hero__carousel-controls:not(:focus-within) {width:1px;height:1px;padding:0;overflow:hidden;clip-path:inset(50%);white-space:nowrap;}
+
   /* Keep the completed seat's tiled surface clear of the photo overlay. */
   .hero__figure[data-current-slide="1"] .hero__carousel-controls {top:0;bottom:auto;padding-top:.8rem;padding-bottom:2rem;background:linear-gradient(rgba(0,0,0,.85),transparent);}
   .hero__carousel-caption {display:block; margin-bottom:.5rem;}
@@ -649,7 +652,7 @@ const recentWork = [
     function schedule() {
       clearTimeout(timer);
       if (!paused && !hovered && !focused && !document.hidden) {
-        timer = setTimeout(async () => {await show(current + 1); schedule();}, 5500);
+        timer = setTimeout(async () => {await show(current + 1); schedule();}, 9000);
       }
     }
     function label() {pause.textContent = paused ? 'Play slideshow' : 'Pause slideshow';}
