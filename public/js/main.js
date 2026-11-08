@@ -93,7 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const offset = header ? header.offsetHeight : 0;
       window.scrollTo({
         top: target.getBoundingClientRect().top + window.scrollY - offset,
-        behavior: 'smooth',
+        behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
       });
     });
   });
@@ -108,6 +108,14 @@ document.addEventListener('DOMContentLoaded', () => {
       lastY = y;
     }, { passive: true });
   }
+
+  function track(name, detail) {
+    window.dispatchEvent(new CustomEvent(name, { detail }));
+    if (Array.isArray(window.dataLayer)) window.dataLayer.push({ event: name, ...detail });
+  }
+  document.querySelectorAll('a[href^="tel:"]').forEach(link => {
+    link.addEventListener('click', () => track('roh_click_to_call', { path: location.pathname }));
+  });
 
   // ─── 6. Contact Forms ───
   // Select the <form> itself, not the .contact-form card wrapping it — the
@@ -209,6 +217,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
+      if (form.dataset.submitting === "true") return;
       const data = new FormData(form);
       const payload = {};
       const rows = [];
@@ -219,6 +228,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (key !== 'company') rows.push([LABELS[key] || key, value]);
       }
 
+      form.dataset.submitting = 'true';
+      form.setAttribute('aria-busy', 'true');
       const msg = statusBox();
       const submit = form.querySelector('[type="submit"]');
       const original = submit ? submit.textContent : '';
@@ -233,11 +244,13 @@ document.addEventListener('DOMContentLoaded', () => {
           body: JSON.stringify(payload),
         });
 
-        if (res.ok) {
+        const result = await res.json().catch(() => null);
+        if (res.ok && result?.ok === true) {
+          if (!payload.company) track('roh_enquiry_success', { form: form.dataset.subject?.startsWith('Quote') ? 'quote' : 'contact' });
           form.reset();
           fields.forEach((f) => clearError(f));
           msg.innerHTML =
-            'Thanks &mdash; your enquiry has been sent. Rohullah will get back to you within 24 hours. ' +
+            'Thanks &mdash; your enquiry has been sent. Thank you for sharing your project. ' +
             'If it is urgent, call <a href="tel:+642102602044">021 026 02044</a>.';
         } else {
           // 503 not_configured, 404 not deployed, 502 delivery failure.
@@ -246,6 +259,8 @@ document.addEventListener('DOMContentLoaded', () => {
       } catch (err) {
         mailtoFallback(rows, msg);
       } finally {
+        delete form.dataset.submitting;
+        form.removeAttribute("aria-busy");
         if (submit) { submit.disabled = false; submit.textContent = original; }
       }
     });

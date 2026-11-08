@@ -121,6 +121,7 @@ export default async function handler(req, res) {
         Authorization: `Bearer ${apiKey}`,
         'Content-Type': 'application/json',
       },
+      signal: AbortSignal.timeout(15000),
       body: JSON.stringify({
         from: process.env.ENQUIRY_FROM || DEFAULT_FROM,
         to: [process.env.ENQUIRY_TO || DEFAULT_TO],
@@ -133,14 +134,13 @@ export default async function handler(req, res) {
     });
 
     if (!resend.ok) {
-      const detail = await resend.text();
-      console.error('Resend rejected the enquiry:', resend.status, detail);
+      console.error('Resend rejected the enquiry:', resend.status);
       return res.status(502).json({ ok: false, error: 'Delivery failed' });
     }
 
     return res.status(200).json({ ok: true });
   } catch (err) {
-    console.error('Enquiry send failed:', err);
+    console.error('Enquiry provider unavailable');
     return res.status(502).json({ ok: false, error: 'Delivery failed' });
   }
 }

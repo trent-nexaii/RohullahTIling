@@ -1,4 +1,13 @@
 ---
+import { Image } from 'astro:assets';
+import bathroom from '../assets/images/ensuite-large-format-porcelain-tiling-wellington.webp';
+import kitchen from '../assets/images/kitchen-splashback-fluted-terracotta-tile-wellington.webp';
+import floor from '../assets/images/bathroom-floor-tiling-feature-strip-wellington.webp';
+const photos={
+ '/services/bathroom-tiling':{src:bathroom,alt:'Completed porcelain ensuite',caption:'Completed ensuite'},
+ '/services/kitchen-tiling':{src:kitchen,alt:'Fluted kitchen splashback during installation',caption:'Splashback · work in progress'},
+ '/services/floor-tiling':{src:floor,alt:'Bathroom floor tiles during renovation',caption:'Floor tiling · work in progress'},
+};
 interface Props {
   title: string;
   description: string;
@@ -7,9 +16,11 @@ interface Props {
 }
 
 const { title, description, href, icon } = Astro.props;
+const photo=photos[href as keyof typeof photos];
 ---
 
 <div class="service-card">
+  {photo && <figure class="service-card__photo"><Image src={photo.src} alt={photo.alt} width={600} height={400} widths={[320,450,600]} sizes="(min-width: 900px) 30vw, 92vw" loading="lazy" quality={70}/><figcaption>{photo.caption}</figcaption></figure>}
   <div class="service-card__icon" set:html={icon} />
   <h3 class="service-card__title">{title}</h3>
   <p class="service-card__description">{description}</p>
@@ -18,3 +29,9 @@ const { title, description, href, icon } = Astro.props;
     More about {title} <span aria-hidden="true">&rarr;</span>
   </a>
 </div>
+
+<style>
+ .service-card__photo {margin:0 0 1.25rem;}
+ .service-card__photo img {width:100%;aspect-ratio:3/2;object-fit:cover;border-radius:4px;}
+ .service-card__photo figcaption {font-size:.8rem;color:var(--color-muted);padding-top:.4rem;}
+</style>

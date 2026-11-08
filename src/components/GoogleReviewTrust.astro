@@ -1,0 +1,11 @@
+---
+import { GBP_URL } from '../data/business';
+// Link only: no authenticated rating/count, approved reviews or Shapo configuration supplied.
+---
+<aside class="review-trust" aria-label="Google reviews">
+  <div class="container"><a href={GBP_URL} target="_blank" rel="noopener noreferrer">Read our Google reviews <span aria-hidden="true">→</span></a></div>
+</aside>
+<style>
+ .review-trust {padding:.7rem 0; text-align:center; background:var(--color-cream); border-bottom:1px solid var(--color-border-warm); font-size:.9rem;}
+ a {color:var(--color-link-gold); text-decoration:underline; font-weight:500;}
+</style>
