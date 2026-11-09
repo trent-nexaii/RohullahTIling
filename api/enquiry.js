@@ -9,7 +9,7 @@
  *   RESEND_API_KEY   required. From resend.com → API Keys.
  *   ENQUIRY_TO       optional. Defaults to the address below.
  *   ENQUIRY_FROM     optional. Must be on a domain verified in Resend, e.g.
- *                    "ROH Tiling <enquiries@rohullahtiling.co.nz>". Until the
+ *                    "ROH Tiling <enquiries@rohtiling.co.nz>". Until the
  *                    domain is verified, Resend accepts "onboarding@resend.dev".
  *
  * If RESEND_API_KEY is absent this returns 503 with { code: "not_configured" },
@@ -98,7 +98,7 @@ export default async function handler(req, res) {
 
   const text =
     rows.map(([k, v]) => `${k}: ${v}`).join('\n') +
-    '\n\n— Sent from the contact form at rohullahtiling.co.nz';
+    '\n\n— Sent from the contact form at rohtiling.co.nz';
 
   const html =
     '<h2 style="font-family:Georgia,serif;margin:0 0 16px">New website enquiry</h2>' +
@@ -112,7 +112,7 @@ export default async function handler(req, res) {
       .join('') +
     '</table>' +
     '<p style="font-family:Arial,sans-serif;font-size:12px;color:#6F6F6F;margin-top:20px">' +
-    'Sent from the contact form at rohullahtiling.co.nz. Reply directly to answer the enquirer.</p>';
+    'Sent from the contact form at rohtiling.co.nz. Reply directly to answer the enquirer.</p>';
 
   try {
     const resend = await fetch('https://api.resend.com/emails', {

@@ -6,7 +6,7 @@
  * Change them here, not in individual pages.
  */
 
-export const SITE_URL = 'https://www.rohullahtiling.co.nz';
+export const SITE_URL = 'https://www.rohtiling.co.nz';
 
 /** Business name. The person is "Rohullah Rassuli"; the business is "ROH Tiling". */
 export const BUSINESS_NAME = 'ROH Tiling';

@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { readFile, readdir, stat } from 'node:fs/promises';
 
 const root = new URL('../dist/', import.meta.url);
-const origin = 'https://www.rohullahtiling.co.nz';
+const origin = 'https://www.rohtiling.co.nz';
 const preview = process.argv.includes('--preview');
 const expected = ['/', '/about', '/contact', '/portfolio', '/privacy', '/service-areas', '/services', '/services/bathroom-tiling', '/services/floor-tiling', '/services/kitchen-tiling', '/services/tile-repairs', '/services/underfloor-heating', '/services/waterproofing', '/terms'];
 const attrs = tag => Object.fromEntries([...tag.matchAll(/([\w:-]+)="([^"]*)"/g)].map(m => [m[1], m[2].replaceAll('&amp;', '&')]));
@@ -25,6 +25,11 @@ for (const path of expected) {
   assert.equal(links.filter(t => t.rel === 'canonical').length, 1, path);
   assert.equal(links.find(t => t.rel === 'canonical').href, canonical(path), path);
   assert.equal(meta.find(t => t.property === 'og:url').content, canonical(path));
+  assert.equal(meta.find(t => t.name === 'twitter:url').content, canonical(path));
+  for (const name of ['og:image', 'twitter:image']) {
+    assert.equal(meta.find(t => t.property === name || t.name === name).content, origin + '/images/og-image.jpg');
+  }
+  assert(!/rohullahtiling\.co\.nz|https?:\/\/[^\s"<>]*\.vercel\.app/i.test(html), path + ' stale or preview URL');
   assert.equal((html.match(/<h1\b/g) || []).length, 1, path);
   titles.push(html.match(/<title>([\s\S]*?)<\/title>/)[1]);
   descriptions.push(meta.find(t => t.name === 'description').content);
@@ -38,6 +43,9 @@ for (const path of expected) {
   assert.equal(business.length, 1, path);
   const biz = business[0];
   assert.equal(biz['@id'], origin + '/#business');
+  assert.equal(biz.url, canonical('/'));
+  assert.equal(biz.logo, origin + '/images/roh-tiling-logo.webp');
+  assert.equal(biz.image, origin + '/images/og-image.jpg');
   assert.equal(biz.name, 'ROH Tiling');
   assert.equal(biz.telephone, '+642102602044');
   assert.equal(biz.address.addressLocality, 'Whitby');
@@ -47,6 +55,7 @@ for (const path of expected) {
   assert.equal(biz.openingHoursSpecification[0].opens, '08:00');
   assert.deepEqual(biz.areaServed.map(a => a.name), ['Wellington', 'Porirua', 'Lower Hutt', 'Upper Hutt', 'Kapiti Coast']);
   assert.equal(nodes.find(n => n['@type'] === 'WebSite').publisher['@id'], biz['@id']);
+  assert.equal(nodes.find(n => n['@type'] === 'WebSite').url, canonical('/'));
   const webpage = nodes.find(n => n['@type'] === 'WebPage');
   assert.equal(webpage.url, canonical(path));
   assert.equal(webpage['@id'], canonical(path) + '#webpage');
@@ -97,4 +106,8 @@ if (!preview) assert(robots.includes('Sitemap: ' + origin + '/sitemap-index.xml'
 const notFound = await readFile(new URL('404.html', root), 'utf8');
 assert(tags(notFound, 'meta').find(t => t.name === 'robots')?.content.includes('noindex'));
 assert(!locations.includes(origin + '/404'));
+const config = JSON.parse(await readFile(new URL('../vercel.json', import.meta.url), 'utf8'));
+assert(!config.redirects?.length, 'Domain migration redirects belong in Vercel domain settings');
+assert.equal(config.cleanUrls, true);
+assert.equal(config.trailingSlash, false);
 console.log(`SEO verified: 14 pages, 6 Service nodes, business/site/page/breadcrumb IDs, internal links, sitemap and ${preview ? 'preview noindex' : 'production indexing'} policy.`);

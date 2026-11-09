@@ -1,3 +1,5 @@
+> Historical pre-migration report. Production-domain and redirect statements below are superseded by [domain-migration.md](domain-migration.md).
+
 # SEO release and merge
 
 This release completes the sitemap/schema/URL work previously deferred during the visual enhancement phase. No page slug, visible design, quote destination or business contact detail was changed.

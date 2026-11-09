@@ -191,7 +191,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const to = form.dataset.mailto;
       const subject = form.dataset.subject || 'Website enquiry';
       const body = rows.map(([k, v]) => k + ': ' + v).join('\n') +
-        '\n\n— Sent from rohullahtiling.co.nz';
+        '\n\n— Sent from rohtiling.co.nz';
       msg.className = 'form-success';
       msg.innerHTML =
         'Opening your email app with this enquiry ready to send &mdash; please press send to deliver it. ' +

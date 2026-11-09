@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://www.rohullahtiling.co.nz/sitemap-index.xml
+Sitemap: https://www.rohtiling.co.nz/sitemap-index.xml
