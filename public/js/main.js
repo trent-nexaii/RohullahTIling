@@ -111,7 +111,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function track(name, detail) {
     window.dispatchEvent(new CustomEvent(name, { detail }));
-    if (Array.isArray(window.dataLayer)) window.dataLayer.push({ event: name, ...detail });
+    // Send only privacy-safe, consented analytics events; never submit form field values.
+    if (window.rohAnalytics && typeof window.rohAnalytics.record === 'function') {
+      window.rohAnalytics.record(name, detail);
+    }
   }
   document.querySelectorAll('a[href^="tel:"]').forEach(link => {
     link.addEventListener('click', () => track('roh_click_to_call', { path: location.pathname }));
