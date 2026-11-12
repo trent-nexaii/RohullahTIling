@@ -363,6 +363,7 @@ const navLinks = [
           <span>&copy; {year} {BUSINESS_NAME}. All rights reserved.</span>
           <span class="footer-bottom-sep">|</span>
           <a href="/privacy">Privacy Policy</a>
+          {!noindex && <button type="button" class="roh-analytics-pref" id="roh-analytics-manage">Analytics preferences</button>}
           <span class="footer-bottom-sep">|</span>
           <a href="/terms">Terms of Service</a>
         </div>
@@ -388,7 +389,31 @@ const navLinks = [
     </div>
   )}
 
-  <!-- Client-side JS -->
+  <!-- Optional analytics: no Google Analytics script or cookies load before consent. -->
+  {!noindex && (
+    <div id="roh-analytics-consent" class="roh-analytics-consent" role="region" aria-label="Analytics preferences" hidden>
+      <p>May we use Google Analytics to understand website visits and improve enquiries? Optional analytics is off unless you agree. <a href="/privacy">Privacy details</a>.</p>
+      <div class="roh-analytics-actions">
+        <button type="button" id="roh-analytics-accept">Allow analytics</button>
+        <button type="button" id="roh-analytics-decline">No thanks</button>
+      </div>
+    </div>
+  )}
+  <style is:global>
+    .roh-analytics-consent[hidden] { display: none !important; }
+    .roh-analytics-consent { position: fixed; z-index: 1100; left: 16px; bottom: 16px; width: min(440px, calc(100vw - 32px)); padding: 16px 18px; border: 1px solid #c7d0da; border-radius: 12px; background: #fff; color: #1b2a41; box-shadow: 0 10px 32px rgba(0,0,0,.22); font-size: 14px; line-height: 1.5; }
+    .roh-analytics-consent p { margin: 0 0 12px; color: #1b2a41; }
+    .roh-analytics-consent a { color: #2251a2; text-decoration: underline; }
+    .roh-analytics-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+    .roh-analytics-actions button { border: 1px solid #1b2a41; border-radius: 6px; padding: 9px 15px; cursor: pointer; font: inherit; font-weight: 700; }
+    #roh-analytics-accept { color: white; background: #1b2a41; }
+    #roh-analytics-decline { color: #1b2a41; background: white; }
+    .roh-analytics-pref { display: inline-block; border: none; padding: 0; margin: 0; cursor: pointer; background: none; color: inherit; font: inherit; text-decoration: underline; }
+    .roh-analytics-actions button:focus-visible,.roh-analytics-pref:focus-visible { outline: 3px solid #5b9de5; outline-offset: 2px; }
+  </style>
+
+  <!-- Consent-aware Google Analytics 4, followed by the existing application JavaScript. -->
+  {!noindex && <script is:inline src="/js/analytics.js"></script>}
   <script is:inline src="/js/main.js"></script>
 </body>
 </html>

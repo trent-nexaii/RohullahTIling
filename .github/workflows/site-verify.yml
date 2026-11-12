@@ -1,0 +1,33 @@
+name: ROH website verification
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main, feat/ga4-conversion-tracking-nov-2026]
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: JavaScript syntax
+        run: |
+          node --check public/js/analytics.js
+          node --check public/js/main.js
+      - name: Test enquiry delivery
+        run: npm test
+      - name: Build site
+        run: npm run build
+      - name: Check SEO output
+        run: npm run check:seo
