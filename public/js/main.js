@@ -110,14 +110,22 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function track(name, detail) {
-    window.dispatchEvent(new CustomEvent(name, { detail }));
-    // Send only privacy-safe, consented analytics events; never submit form field values.
-    if (window.rohAnalytics && typeof window.rohAnalytics.record === 'function') {
-      window.rohAnalytics.record(name, detail);
+    // Measurement must never interrupt navigation or a successful enquiry.
+    try {
+      window.dispatchEvent(new CustomEvent(name, { detail }));
+      if (window.rohAnalytics && typeof window.rohAnalytics.record === 'function') {
+        window.rohAnalytics.record(name, detail);
+      }
+    } catch (_) {
+      // Leave the existing customer flow working if analytics is unavailable.
     }
   }
-  document.querySelectorAll('a[href^="tel:"]').forEach(link => {
-    link.addEventListener('click', () => track('roh_click_to_call', { path: location.pathname }));
+  // Delegate once so links inserted into success/fallback messages also work.
+  document.addEventListener('click', (event) => {
+    const link = event.target.closest?.('a[href]');
+    const href = link?.getAttribute('href') || '';
+    if (/^tel:/i.test(href)) track('roh_click_to_call');
+    if (/^mailto:/i.test(href)) track('roh_email_click');
   });
 
   // ─── 6. Contact Forms ───

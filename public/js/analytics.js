@@ -7,10 +7,21 @@
  */
 (() => {
   'use strict';
+  // Keep one configuration and one page view even if this file is included twice.
+  if (window.rohAnalytics) return;
   const MEASUREMENT_ID = 'G-2PHKFXFMS7';
   const CONSENT_KEY = 'roh-analytics-choice-v1';
   let consent = 'unset';
   let started = false;
+
+  // Canonical paths are authored by the site, including /404 for unknown URLs.
+  // Never pass visitor-supplied query strings, fragments or unknown paths to GA.
+  const pagePath = new URL(document.querySelector('link[rel="canonical"]').href).pathname;
+  let referrer = '';
+  try {
+    // Keep the referring site for attribution, without its potentially private URL.
+    referrer = new URL(document.referrer).origin + '/';
+  } catch (_) { /* No referrer on direct visits. */ }
 
   function readChoice() {
     try {
@@ -43,6 +54,8 @@
     window.gtag('js', new Date());
     window.gtag('config', MEASUREMENT_ID, {
       send_page_view: true,
+      page_location: window.location.origin + pagePath,
+      page_referrer: referrer,
       allow_google_signals: false,
       allow_ad_personalization_signals: false
     });
@@ -58,14 +71,20 @@
       if (name === 'roh_click_to_call') {
         // A phone-link tap is NOT a confirmed connected call or qualified lead.
         window.gtag('event', 'click_to_call', {
-          page_path: window.location.pathname,
+          page_path: pagePath,
           engagement_type: 'phone_link'
         });
+      } else if (name === 'roh_email_click') {
+        // Opening an email app does not confirm an enquiry was sent.
+        window.gtag('event', 'email_click', {
+          page_path: pagePath,
+          engagement_type: 'email_link'
+        });
       } else if (name === 'roh_enquiry_success') {
-        // This is called only after /api/enquiry confirms successful delivery.
+        // Only after /api/enquiry confirms provider acceptance, not inbox delivery.
         window.gtag('event', 'generate_lead', {
           form_type: detail.form === 'quote' ? 'quote' : 'contact',
-          page_path: window.location.pathname
+          page_path: pagePath
         });
       }
     }
