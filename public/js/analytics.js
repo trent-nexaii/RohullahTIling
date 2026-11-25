@@ -1,5 +1,5 @@
 /**
- * ROH Tiling — privacy-conscious Google Analytics 4.
+ * ROH Tiling — consent-gated Google Tag Manager.
  * Basic consent mode: no analytics library loads until the visitor opts in.
  * Keeps analytics and advertising consent separate; advertising stays denied.
  * Never send form contents, names, email addresses, phone numbers or full URLs
@@ -7,8 +7,22 @@
  */
 (() => {
   'use strict';
-  const MEASUREMENT_ID = 'G-2PHKFXFMS7';
+  // Guard the consent bridge if a second script element is added accidentally.
+  if (window.rohAnalytics) return;
+  const CONTAINER_ID = 'GTM-MW3J6S4L';
   const CONSENT_KEY = 'roh-analytics-choice-v1';
+  const preview = document.currentScript?.dataset.preview === 'true';
+
+  // A preview deployment is measurable only in the tab used for Tag Assistant.
+  if (preview) {
+    const debugLink = new URLSearchParams(window.location.search).has('gtm_debug');
+    try {
+      if (debugLink) sessionStorage.setItem('roh-tag-assistant-preview', 'yes');
+      if (sessionStorage.getItem('roh-tag-assistant-preview') !== 'yes') return;
+    } catch (_) {
+      if (!debugLink) return;
+    }
+  }
   let consent = 'unset';
   let started = false;
 
@@ -27,6 +41,32 @@
     }
   }
 
+  function safePageLocation() {
+    const incoming = new URL(window.location.href);
+    const canonical = document.querySelector('link[rel="canonical"]');
+    const path = canonical ? new URL(canonical.href).pathname : '/';
+    const sanitized = new URL(path, incoming.origin);
+    const campaign = incoming.searchParams.get('utm_campaign');
+    const gbpCampaigns = ['gbp', 'google_business_profile', 'google-business-profile'];
+    if (incoming.searchParams.get('utm_source') === 'google'
+      && incoming.searchParams.get('utm_medium') === 'organic'
+      && gbpCampaigns.includes(campaign)) {
+      sanitized.searchParams.set('utm_source', 'google');
+      sanitized.searchParams.set('utm_medium', 'organic');
+      sanitized.searchParams.set('utm_campaign', 'gbp');
+    }
+    return sanitized.href;
+  }
+
+  function safePageReferrer() {
+    try {
+      const referrer = new URL(document.referrer);
+      return ['http:', 'https:'].includes(referrer.protocol) ? referrer.origin + '/' : '';
+    } catch (_) {
+      return '';
+    }
+  }
+
   function startAnalytics() {
     if (started || consent !== 'accepted') return;
     started = true;
@@ -40,32 +80,29 @@
       ad_personalization: 'denied'
     });
     window.gtag('consent', 'update', { analytics_storage: 'granted' });
-    window.gtag('js', new Date());
-    window.gtag('config', MEASUREMENT_ID, {
-      send_page_view: true,
-      allow_google_signals: false,
-      allow_ad_personalization_signals: false
+    window.dataLayer.push({
+      'gtm.start': Date.now(),
+      event: 'gtm.js',
+      roh_page_location: safePageLocation(),
+      roh_page_referrer: safePageReferrer()
     });
     const script = document.createElement('script');
     script.async = true;
-    script.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(MEASUREMENT_ID);
+    script.src = 'https://www.googletagmanager.com/gtm.js?id=' + encodeURIComponent(CONTAINER_ID);
     document.head.appendChild(script);
   }
 
   window.rohAnalytics = {
     record(name, detail = {}) {
-      if (consent !== 'accepted' || !started || typeof window.gtag !== 'function') return;
+      if (consent !== 'accepted' || !started) return;
       if (name === 'roh_click_to_call') {
-        // A phone-link tap is NOT a confirmed connected call or qualified lead.
-        window.gtag('event', 'click_to_call', {
-          page_path: window.location.pathname,
-          engagement_type: 'phone_link'
-        });
+        window.dataLayer.push({ event: 'phone_click', roh_form_type: undefined });
+      } else if (name === 'roh_email_click') {
+        window.dataLayer.push({ event: 'email_click', roh_form_type: undefined });
       } else if (name === 'roh_enquiry_success') {
-        // This is called only after /api/enquiry confirms successful delivery.
-        window.gtag('event', 'generate_lead', {
-          form_type: detail.form === 'quote' ? 'quote' : 'contact',
-          page_path: window.location.pathname
+        window.dataLayer.push({
+          event: 'generate_lead',
+          roh_form_type: detail.form === 'quote' ? 'quote' : 'contact'
         });
       }
     }
@@ -75,6 +112,7 @@
   const manage = document.getElementById('roh-analytics-manage');
   const allow = document.getElementById('roh-analytics-accept');
   const decline = document.getElementById('roh-analytics-decline');
+  if (manage) manage.hidden = false;
   const choice = readChoice();
   if (choice === 'accepted') {
     consent = 'accepted';
